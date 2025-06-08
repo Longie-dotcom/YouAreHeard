@@ -50,7 +50,7 @@ function PatientNavBar({ user }) {
                     ) :
                     (
                         <Link to="/login">
-                            <i className="bi bi-person-circle"></i>
+                            <i className="bi bi-person-circle">aascasd</i>
                         </Link>
                     )
                 )}
