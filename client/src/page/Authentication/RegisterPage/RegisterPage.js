@@ -1,120 +1,131 @@
-import './RegisterPage.css';
-import { Link } from 'react-router-dom';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import Icon from '../../../uploads/logo-nobg.png';
+// Modules
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+// Style sheet
+import './RegisterPage.css';
+
+// Assets
+import LogoPicture from '../../../uploads/logo-picture.png';
+import EyeIcon from '../../../uploads/icon/eye.png';
+import EyeBlindIcon from '../../../uploads/icon/eye-blind.png';
+
+// Components
+import Icon from '../../../component/Icon/Icon';
+
+// Hooks
 import useRegister from '../../../hook/useRegister';
 
 function RegisterPage() {
-    const {
-        error,
-        setEmail,
-        setPassword,
-        setConfirmedPassword,
-        setName,
-        setAge,
-        setSex,
-        phone, setPhone,
-        handleSubmit
-    } = useRegister();
+
+    // Texts
+    const t1 = 'Tạo tài khoản mới'
+    const t2 = 'Hoặc';
+    const t3 = 'đăng nhập với tài khoản sẵn có';
+    const t4 = 'Họ và tên';
+    const t5 = 'Nguyễn Văn A';
+    const t6 = 'Địa chỉ email';
+    const t7 = 'your@email.com';
+    const t8 = 'Mật khẩu';
+    const t9 = 'Nhập mật khẩu';
+    const t10 = 'Số điện thoại';
+    const t11 = '0123456789';
+    const t12 = 'Ngày sinh';
+    const t14m1 = 'Xác nhận mật khẩu';
+    const t14 = 'Nhập lại mật khẩu';
+    const t15 = 'Tôi đồng ý với'
+    const t16 = 'điều khoản sử dụng';
+    const t17 = 'và';
+    const t18 = 'chính sách bảo mật';
+    const t19 = 'Tạo tài khoản'
+
+    const navigate = useNavigate();
+
+    // States
+    const [seeConfirmedPassword, setSeeConfirmedPassword] = useState(false);
+    const [seePassword, setSeePassword] = useState(false);
+    
+    // Functions
+    const togglePasswordVisibility = (setSee) => {
+        setSee(prev => !prev);
+    };
 
     return (
-        <div className='register-page'>
-            <div className='background-image'></div>
-            <div className='register'>
-                <div className="logo">
-                    <Link to="/home"><img src={Icon} alt='Logo of You are heard' /></Link>
+        <div id='register-page'>
+            <div className='header'>
+                <div className='logo'>
+                    <img src={LogoPicture} />
                 </div>
-                <form onSubmit={handleSubmit}>
-                    <fieldset>
-                        <legend>Account information</legend>
-                        <div className='input-group'>
-                            <label>User email</label>
-                            <input
-                                type="email"
-                                placeholder="User email"
-                                required
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div className='input-group'>
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                required
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                        <div className='input-group'>
-                            <label>Confirmed password</label>
-                            <input
-                                type="password"
-                                placeholder="Confirmed password"
-                                required
-                                onChange={(e) => setConfirmedPassword(e.target.value)}
-                            />
-                        </div>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Personal information</legend>
-                        <div className='input-group'>
-                            <label>User full name</label>
-                            <input
-                                type="text"
-                                placeholder="User full name"
-                                required
-                                minLength={10}
-                                maxLength={99}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-                        <div className='input-group'>
-                            <label>User age</label>
-                            <input
-                                type="number"
-                                placeholder="Age"
-                                required
-                                min={1}
-                                max={100}
-                                onChange={(e) => setAge(e.target.value)}
-                            />
-                        </div>
-                        <div className='input-group'>
-                            <label>User gender</label>
-                            <select
-                                required
-                                onChange={(e) => setSex(e.target.value)}
-                            >
-                                <option value='male'>Male</option>
-                                <option value='female'>Female</option>
-                                <option value='other'>Other</option>
-                            </select>
-                        </div>
-                        <div className='input-group'>
-                            <label>User phone</label>
-                            <PhoneInput
-                                country={'vn'} // default to Vietnam
-                                onChange={(value, data) => setPhone(`+${value}`)}
-                                enableSearch={true}
-                                inputProps={{
-                                    name: 'phone',
-                                    required: true,
-                                    autoFocus: true
-                                }}
-                                placeholder={phone}
-                            />
-                        </div>
-                    </fieldset>
-                    <button type="submit">Sign up</button>
-                </form>
-
-                <div className='error'>{error}</div>
-                <div className="register-directing">
-                    <Link to="/login">You already have an account? Login here</Link>
+                <div className='title'>
+                    <h1>
+                        {t1}
+                    </h1>
+                    <p>
+                        <span className='normal'>
+                            {t2}
+                        </span>
+                        &nbsp;
+                        <span onClick={() => navigate('/login')} className='login'>
+                            {t3}
+                        </span>
+                    </p>
                 </div>
+            </div>
+
+            <div className='body'>
+                <div className='input-group'>
+                    <label for="username">{t4}</label>
+                    <input type="text" id="username" name="username" placeholder={t5} />
+                </div>
+                <div className='input-group'>
+                    <label for="email">{t6}</label>
+                    <input type="email" id="email" name="email" placeholder={t7} />
+                </div>
+                <div className='input-group'>
+                    <label for="password">{t8}</label>
+                    <div className='password-input'>
+                        <input type={seePassword ? 'text' : 'password'} id="password" name="password" placeholder={t9} />
+                        <button onClick={() => togglePasswordVisibility(setSeePassword)}>
+                            <Icon src={seePassword ? EyeIcon : EyeBlindIcon} alt={'eye-icon'} />
+                        </button>
+                    </div>
+                </div>
+                <div className='input-group'>
+                    <label for="phone">{t10}</label>
+                    <input type="number" id="phone" name="phone" placeholder={t11} />
+                </div>
+                <div className='input-group'>
+                    <label for="dob">{t12}</label>
+                    <input type="date" id="dob" name="dob" />
+                </div>
+                <div className='input-group'>
+                    <label for="reConfirm-password">{t14m1}</label>
+                    <div className='password-input'>
+                        <input type={seeConfirmedPassword ? 'text' : 'password'} id="reConfirm-password" name="reConfirm-password" placeholder={t14} />
+                        <button onClick={() => togglePasswordVisibility(setSeeConfirmedPassword)}>
+                            <Icon src={seeConfirmedPassword ? EyeIcon : EyeBlindIcon} alt={'eye-icon'} />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className='footer'>
+                <div className='policy'>
+                    <input type='checkbox' />
+                    <div className='policy-detail'>
+                        &nbsp;{t15}&nbsp;
+                        <span className='usability'>
+                            {t16}
+                        </span>
+                        &nbsp;{t17}&nbsp;
+                        <span className='security'>
+                            {t18}
+                        </span>
+                    </div>
+                </div>
+                <button className='submit-button' >
+                    {t19}
+                </button>
             </div>
         </div>
     )

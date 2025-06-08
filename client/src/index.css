@@ -1,12 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Nanum+Gothic+Coding&display=swap');
 
+html::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
 body {
     padding: 0;
     margin: 0;
+    overflow: auto;
 }
 
 input {
     font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #f1f1f1 inset !important;
+    -webkit-text-fill-color: #333 !important; /* Your text color */
+    caret-color: #333 !important; /* Match text color */
+    transition: background-color 5000s ease-in-out 0s !important;
+    background-color: #f1f1f1 !important;
+}
+
+input:-internal-autofill-selected {
+    background-color: #f1f1f1 !important;
+    background-image: none !important;
+    color: #333 !important; /* Fallback text color */
+}
+
+input:focus {
+    outline: #415AFA solid 1px;
 }
 
 button {
