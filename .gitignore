@@ -1,0 +1,39 @@
+# .NET build/output
+**/[Bb]in/
+**/[Oo]bj/
+*.user
+*.suo
+*.cache
+*.vs/
+*.vscode/
+*.msbuild
+*.dotnet/
+
+# NuGet packages
+**/packages/
+*.nupkg
+nuget.config
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+
+# Client (React) - Keep existing rules
+client/node_modules/
+client/.env
+client/build/
+client/.eslintcache
+
+# General
+.env
+*.log
+*.swp
+.DS_Store

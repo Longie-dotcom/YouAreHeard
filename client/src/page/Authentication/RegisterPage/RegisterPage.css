@@ -1,0 +1,209 @@
+.register-page {
+    position: relative;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.register-page::-webkit-scrollbar {
+    display: none;
+}
+
+.register-page .background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../../uploads/register-bg.jpg');
+    background-size: cover;
+    background-position: center top;
+    z-index: -1;
+}
+
+.register-page .register {
+    width: 40%;
+    margin-top: 3vh;
+    margin-left: 27%;
+    margin-right: 27%;
+    margin-bottom: 10vh;
+    height: 50vh;
+    padding: 3%;
+    padding-top: 7%;
+    position: relative;
+    z-index: 1;
+}
+
+.register-page .register fieldset{
+    color: rgb(255, 255, 255);
+    margin-bottom: 8vh;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.register-page .register .logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    overflow: hidden;
+    height: 50%;
+}
+
+.register-page .register .logo img {
+    height: 100%;
+}
+
+.register-page .register .logo a {
+    padding: 0;
+}
+
+.register-page .register form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-page .register form .input-group {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-page .register form .input-group input,
+.register-page .register form .input-group select {
+    background: transparent;
+    border-radius: 40px;
+    border: 2px solid rgb(255, 255, 255);
+    margin: 3%;
+    margin-left: 17%;
+    margin-right: 17%;
+    color: rgb(255, 255, 255);
+    padding: 3%;
+    width: 60%;
+    font-size: 0.9em;
+}
+
+.register-page .register form .input-group select {
+    width: 66.5%;
+}
+
+.register-page .register form .input-group input::placeholder {
+    color: rgb(255, 255, 255);
+}
+
+.register-page .register form .input-group input:autofill {
+    color: rgb(255, 255, 255) !important;
+    background-color: transparent;
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.register-page .register form .input-group input:focus {
+    border: 2px solid rgb(255, 203, 203);
+    outline: none;
+    background-color: transparent;
+}
+
+.register-page .register form .input-group input[type=number]::-webkit-inner-spin-button, 
+.register-page .register form .input-group input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.register-page .register form select {
+  background-color: black;
+  color: white;
+  border: none;
+}
+
+.register-page .register form select option {
+  background-color: black;
+  color: white;
+}
+
+.register-page .register form .input-group .react-tel-input .flag-dropdown {
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+.register-page .register form .input-group .react-tel-input {
+    margin: 3%;
+}
+
+.register-page .register form .input-group .react-tel-input .form-control {
+    padding: 5%;
+}
+
+.register-page .register form .input-group .react-tel-input .flag-dropdown .selected-flag {
+    transition: background-color 0.2s ease-out;
+    border-radius: 10px;
+}
+
+.register-page .register form .input-group .react-tel-input .flag-dropdown .country-list {
+    color: black;
+}
+
+.register-page .register form .input-group 
+.react-tel-input .flag-dropdown .country-list::-webkit-scrollbar {
+  display: none;
+}
+
+.register-page .register form .input-group .react-tel-input .flag-dropdown .country-list .search {
+    background-color: black;
+}
+
+.register-page .register form .input-group .react-tel-input .flag-dropdown .country-list .search .search-emoji {
+    display: none;
+}
+
+.register-page .register form .input-group .react-tel-input .flag-dropdown .selected-flag:hover {
+    background-color: beige;
+    border-radius: 10px;
+}
+
+.register-page .register form button {
+    border-radius: 40px;
+    border: none;
+    margin: 3%;
+    padding: 2%;
+    width: 40%;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    transition:
+        background-color 0.2s ease-out,
+        color 0.2s ease-out,
+        width 0.2s ease-out;
+    box-shadow:
+        0 10px 15px rgba(0, 0, 0, 0.1),
+        0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.register-page .register form button:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    width: 50%;
+    cursor: pointer;
+}
+
+.register-page .register .error {
+    text-align: center;
+    color: yellow;
+    margin: 2%;
+}
+
+.register-page .register .register-directing {
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    padding-bottom: 20%;
+}
+
+.register-page .register .register-directing:hover {
+    text-decoration: underline;
+}
+
+.register-page .register .register-directing a{
+    color: rgb(255, 255, 255);
+}

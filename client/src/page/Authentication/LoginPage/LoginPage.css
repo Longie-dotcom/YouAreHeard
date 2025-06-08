@@ -1,0 +1,144 @@
+.login-page {
+    position: relative;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.login-page::-webkit-scrollbar {
+    display: none;
+}
+
+.login-page .background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../../uploads/login-bg.jpg');
+    background-size: cover;
+    background-position: center top;
+    z-index: -1;
+}
+
+.login-page .login {
+    width: 40%;
+    margin-top: 3vh;
+    margin-left: 27%;
+    margin-right: 27%;
+    height: 50vh;
+    padding: 3%;
+    padding-top: 7%;
+    position: relative;
+    z-index: 1;
+}
+
+.login-page .login .logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    overflow: hidden;
+    height: 40%;
+}
+
+.login-page .login .logo img {
+    height: 100%;
+}
+
+.login-page .login .logo a {
+    padding: 0;
+}
+
+.login-page .login form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-page .login form .input-group {
+    position: relative;
+    width: 100%;
+}
+
+.login-page .login form .input-group i {
+    position: absolute;
+    top: 38%;
+    right: 20%;
+    font-size: 1.2vw;
+    color: rgb(255, 255, 255);
+}
+
+.login-page .login form .input-group input {
+    background: transparent;
+    border-radius: 40px;
+    border: 2px solid rgb(255, 255, 255);
+    margin: 3%;
+    margin-left: 17%;
+    margin-right: 17%;
+    color: rgb(255, 255, 255);
+    padding: 3%;
+    width: 60%;
+    font-size: 0.9em;
+}
+
+.login-page .login form .input-group input::placeholder {
+    color: rgb(255, 255, 255);
+}
+
+.login-page .login form .input-group input:autofill {
+    color: rgb(255, 255, 255) !important;
+    background-color: transparent;
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.login-page .login form .input-group input:focus {
+    border: 2px solid rgb(255, 203, 203);
+    outline: none;
+    background-color: transparent;
+}
+
+.login-page .login form button {
+    border-radius: 40px;
+    border: none;
+    margin: 3%;
+    padding: 2%;
+    width: 40%;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    transition:
+        background-color 0.2s ease-out,
+        color 0.2s ease-out,
+        width 0.2s ease-out;
+    box-shadow:
+        0 10px 15px rgba(0, 0, 0, 0.1),
+        0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.login-page .login form button:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    width: 50%;
+    cursor: pointer;
+}
+
+.login-page .login .error {
+    text-align: center;
+    margin: 2%;
+    color: rgb(219, 219, 21);
+}
+
+.login-page .login .register-directing {
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.login-page .login .register-directing:hover {
+    text-decoration: underline;
+    color: rgb(255, 255, 255);
+}
+
+.login-page .login .register-directing a{
+    color: rgb(255, 255, 255);
+}
+

@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Nanum+Gothic+Coding&display=swap');
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+button {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+textarea {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+fieldset {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+option {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+select {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+div {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
