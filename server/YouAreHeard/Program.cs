@@ -1,5 +1,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.FileProviders;
+using YouAreHeard.Models;
 
 // Add services
 var builder = WebApplication.CreateBuilder(args);
@@ -24,11 +25,20 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/uploads"
 });
 
+// Email setting
+try
+{
+    var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
+    EmailSettingsContext.Initialize(emailSettings);
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Failed to initialize email!");
+}
 // Connect database
 try
 {
-    string connectionString = builder.
-        Configuration.GetConnectionString("DefaultConnection");
+    string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     DBContext.Initialize(connectionString);
     app.Logger.LogInformation("Database connected successfully!");
 }

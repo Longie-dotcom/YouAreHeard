@@ -22,7 +22,7 @@ function AppContent() {
 
   return (
     <>
-      <NavBar user={user} />
+      <NavBar user={user} setReloadCookies={setReloadCookies} />
       <Routes>
         <Route path='/' element={<HomePage user={user} />} />
 

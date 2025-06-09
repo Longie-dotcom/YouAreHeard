@@ -12,6 +12,9 @@ import EyeBlindIcon from '../../../uploads/icon/eye-blind.png';
 
 // Components
 import Icon from '../../../component/Icon/Icon';
+import OTPBox from '../../../component/OTPBox/OTPBox';
+import ErrorBox from '../../../component/ErrorBox/ErrorBox';
+import SkeletonUI from '../../../component/SkeletonUI/SkeletonUI';
 
 // Hooks
 import useRegister from '../../../hook/useRegister';
@@ -39,12 +42,23 @@ function RegisterPage() {
     const t18 = 'chính sách bảo mật';
     const t19 = 'Tạo tài khoản'
 
-    const navigate = useNavigate();
-
     // States
     const [seeConfirmedPassword, setSeeConfirmedPassword] = useState(false);
     const [seePassword, setSeePassword] = useState(false);
-    
+    const [openOTP, setOpenOTP] = useState(false);
+    const navigate = useNavigate();
+    const {
+        loading,
+        name, setName,
+        email, setEmail,
+        dob, setDob,
+        phone, setPhone,
+        password, setPassword,
+        confirmedPassword, setConfirmedPassword,
+        error, setError,
+        handleSubmit
+    } = useRegister({ setOpenOTP });
+
     // Functions
     const togglePasswordVisibility = (setSee) => {
         setSee(prev => !prev);
@@ -53,7 +67,10 @@ function RegisterPage() {
     return (
         <div id='register-page'>
             <div className='header'>
-                <div className='logo'>
+                <div
+                    onClick={() => navigate('/homePage')}
+                    className='logo'
+                >
                     <img src={LogoPicture} />
                 </div>
                 <div className='title'>
@@ -75,37 +92,55 @@ function RegisterPage() {
             <div className='body'>
                 <div className='input-group'>
                     <label for="username">{t4}</label>
-                    <input type="text" id="username" name="username" placeholder={t5} />
+                    <input
+                        value={name} onChange={(e) => setName(e.target.value)}
+                        type="text" id="username" name="username" placeholder={t5}
+                    />
                 </div>
                 <div className='input-group'>
                     <label for="email">{t6}</label>
-                    <input type="email" id="email" name="email" placeholder={t7} />
+                    <input
+                        value={email} onChange={(e) => setEmail(e.target.value)}
+                        type="email" id="email" name="email" placeholder={t7}
+                    />
                 </div>
                 <div className='input-group'>
                     <label for="password">{t8}</label>
                     <div className='password-input'>
-                        <input type={seePassword ? 'text' : 'password'} id="password" name="password" placeholder={t9} />
+                        <input
+                            value={password} onChange={(e) => setPassword(e.target.value)}
+                            type={seePassword ? 'text' : 'password'} id="password" name="password" placeholder={t9}
+                        />
                         <button onClick={() => togglePasswordVisibility(setSeePassword)}>
                             <Icon src={seePassword ? EyeIcon : EyeBlindIcon} alt={'eye-icon'} />
                         </button>
                     </div>
                 </div>
                 <div className='input-group'>
-                    <label for="phone">{t10}</label>
-                    <input type="number" id="phone" name="phone" placeholder={t11} />
-                </div>
-                <div className='input-group'>
-                    <label for="dob">{t12}</label>
-                    <input type="date" id="dob" name="dob" />
-                </div>
-                <div className='input-group'>
                     <label for="reConfirm-password">{t14m1}</label>
                     <div className='password-input'>
-                        <input type={seeConfirmedPassword ? 'text' : 'password'} id="reConfirm-password" name="reConfirm-password" placeholder={t14} />
+                        <input
+                            value={confirmedPassword} onChange={(e) => setConfirmedPassword(e.target.value)}
+                            type={seeConfirmedPassword ? 'text' : 'password'} id="reConfirm-password" name="reConfirm-password" placeholder={t14}
+                        />
                         <button onClick={() => togglePasswordVisibility(setSeeConfirmedPassword)}>
                             <Icon src={seeConfirmedPassword ? EyeIcon : EyeBlindIcon} alt={'eye-icon'} />
                         </button>
                     </div>
+                </div>
+                <div className='input-group'>
+                    <label for="phone">{t10}</label>
+                    <input
+                        value={phone} onChange={(e) => setPhone(e.target.value)}
+                        type="number" id="phone" name="phone" placeholder={t11}
+                    />
+                </div>
+                <div className='input-group'>
+                    <label for="dob">{t12}</label>
+                    <input
+                        value={dob} onChange={(e) => setDob(e.target.value)}
+                        type="date" id="dob" name="dob"
+                    />
                 </div>
             </div>
 
@@ -123,10 +158,22 @@ function RegisterPage() {
                         </span>
                     </div>
                 </div>
-                <button className='submit-button' >
+                <button onClick={() => handleSubmit()} className='submit-button' >
                     {t19}
                 </button>
             </div>
+
+            {openOTP && (
+                <OTPBox emailSentTo={email} setOpenOTP={setOpenOTP} />
+            )}
+
+            {error && (
+                <ErrorBox error={error} setError={setError} />
+            )}
+
+            {loading && (
+                <SkeletonUI />
+            )}
         </div>
     )
 }

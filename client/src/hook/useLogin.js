@@ -6,18 +6,19 @@ function useLogin({ setReloadCookies }) {
     const [error, setError] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const userControllerApi = process.env.REACT_APP_USER_CONTROLLER_API;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         const loginToken = {
             email: email,
             password: password,
         }
 
+        setLoading(true);
         await axios.post(
             `${serverApi}${userControllerApi}/login`,
             loginToken,
@@ -29,14 +30,17 @@ function useLogin({ setReloadCookies }) {
             .then((response) => {
                 setReloadCookies(prev => prev + 1);
                 console.log(response.data.message);
-                navigate('/userPage');
+                navigate('/home');
             }).catch((error) => {
                 console.log(error.response.data.message);
                 setError(error.response.data.message);
-            });
+            }). finally(() => {
+                setLoading(false);
+            })
     };
 
     return ({
+        loading,
         error, setError,
         email, setEmail,
         password, setPassword,

@@ -1,0 +1,119 @@
+.doctor-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 70vw;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    gap: 2vw;
+    margin-top: 3vh;
+    height: 70vh;
+    place-items: center;
+    margin-bottom: 20vw;
+}
+
+.doctor-list .doctor-card {
+    padding: 5%;
+    width: 90%;
+    border-radius: 10px;
+    height: 90%;
+    background-color: rgb(255, 255, 255);
+}
+
+.doctor-list .doctor-card .header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 35%;
+    margin: 0 !important;
+}
+
+.doctor-list .doctor-card .header .avatar {
+    width: 3vw;
+    height: 3vw;
+    overflow: hidden;
+    border-radius: 4vw;
+}
+
+.doctor-list .doctor-card .header .avatar img {
+    width: inherit;
+    height: inherit;
+}
+
+.doctor-list .doctor-card .header .detail {
+    margin-left: 5%;
+    width: 68%;
+}
+
+.doctor-list .doctor-card .header .detail h1 {
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    font-size: 0.8vw !important;
+}
+
+.doctor-list .doctor-card .header .detail p {
+    display: flex;
+    align-items: center;
+    font-size: 0.7vw !important;
+    margin: 0 !important;
+}
+
+.doctor-list .doctor-card .header .detail p .icon,
+.doctor-list .doctor-card .header .detail h1 .icon {
+    margin-right: 0.4vw;
+}
+
+.doctor-list .doctor-card .header .detail .specialties {
+    margin-top: 0.5vw !important;
+    margin-bottom: 0.5vw !important;
+    color: #0EA8EA !important;
+    font-weight: 400 !important;
+}
+
+.doctor-list .doctor-card .header .detail .experience {
+    color: #A1A1A1 !important;
+    font-weight: 400 !important;
+}
+
+.doctor-list .doctor-card .body {
+    height: 35%;
+}
+
+.doctor-list .doctor-card .body .rating,
+.doctor-list .doctor-card .body .available-days{
+    font-size: 0.9vw;
+    margin-top: 0.5vw !important;
+    margin-bottom: 0.5w !important;
+    color: #A1A1A1 !important;
+}
+
+.doctor-list .doctor-card .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.doctor-list .doctor-card .footer button {
+    padding: 3%;
+    width: 35%;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    font-size: 0.9vw;
+    font-weight: 550;
+    color: rgb(255, 255, 255);
+}
+
+.doctor-list .doctor-card .footer .book {
+    background-color: #2862E9;
+}
+
+.doctor-list .doctor-card .footer .view {
+    background-color: #8995b1;
+}
+
+.doctor-list .doctor-card .footer button:hover {
+    width: 45%;
+}

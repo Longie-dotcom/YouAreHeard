@@ -6,13 +6,13 @@ import './LoginPage.css';
 
 // Assets
 import LogoPicture from '../../../uploads/logo-picture.png';
-import EyeIcon from '../../../uploads/icon/eye.png';
-import EyeBlindIcon from '../../../uploads/icon/eye-blind.png';
 
 // Components
-import Icon from '../../../component/Icon/Icon';
+import SkeletonUI from '../../../component/SkeletonUI/SkeletonUI';
+import ErrorBox from '../../../component/ErrorBox/ErrorBox';
 
 // Hooks
+import useLogin from '../../../hook/useLogin';
 
 function LoginPage({ setReloadCookies }) {
 
@@ -29,11 +29,17 @@ function LoginPage({ setReloadCookies }) {
     const t10 = 'Đăng nhập';
 
     const navigate = useNavigate();
+    const {
+        handleSubmit, error, setEmail, setPassword, loading, setError
+    } = useLogin({ setReloadCookies });
 
     return (
         <div id='login-page'>
             <div className='header'>
-                <div className='logo'>
+                <div
+                    onClick={() => navigate('/homePage')}
+                    className='logo'
+                >
                     <img src={LogoPicture} />
                 </div>
                 <div className='title'>
@@ -54,12 +60,18 @@ function LoginPage({ setReloadCookies }) {
 
             <div className='body'>
                 <div className='input-group'>
-                    <label for="email">{t4}</label>
-                    <input type="email" id="email" name="email" placeholder={t5} />
+                    <label htmlFor="email">{t4}</label>
+                    <input
+                        onChange={(e) => setEmail(e.target.value)}
+                        type="email" id="email" name="email" placeholder={t5}
+                    />
                 </div>
                 <div className='input-group'>
-                    <label for="password">{t6}</label>
-                    <input type="password" id="password" name="password" placeholder={t7} />
+                    <label htmlFor="password">{t6}</label>
+                    <input
+                        onChange={(e) => setPassword(e.target.value)}
+                        type="password" id="password" name="password" placeholder={t7}
+                    />
                 </div>
             </div>
 
@@ -73,10 +85,25 @@ function LoginPage({ setReloadCookies }) {
                         {t9}
                     </div>
                 </div>
-                <button className='submit-button' >
+                <button
+                    onClick={() => handleSubmit()}
+                    className='submit-button'
+                >
                     {t10}
                 </button>
+
+                <div>
+                    {error}
+                </div>
             </div>
+
+            { loading && (
+                <SkeletonUI />
+            )}
+
+            { error && (
+                <ErrorBox error={error} setError={setError} />
+            )}
         </div>
     )
 }

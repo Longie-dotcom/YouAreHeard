@@ -1,57 +1,50 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { isValidPhoneNumber } from 'libphonenumber-js';
-
 import axios from 'axios';
 
-function useRegister() {
+function useRegister({ setOpenOTP }) {
+    const t1 = 'Mật khẩu xác nhận không trùng khớp!';
+    const t2 = 'Lỗi máy chủ không xác định được!';
+    const t3 = 'Hãy điền đầy đủ thông tin';
+
     const [error, setError] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [name, setName] = useState('');
-    const [age, setAge] = useState(1);
     const [phone, setPhone] = useState('');
-    const [sex, setSex] = useState('male');
-
-    const navigate = useNavigate();
+    const [dob, setDob] = useState('');
+    const [roleId, setRoleId] = useState('4')
+    const [loading, setLoading] = useState(false);
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const userControllerApi = process.env.REACT_APP_USER_CONTROLLER_API;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         if (password !== confirmedPassword) {
-            setError("Confirmed password does not matched");
+            setError(t1);
             return;
         }
 
-        if (!isValidPhoneNumber(phone)) {
-            console.log(phone);
-            setError("Invalid phone number");
+        if (!(email && password && name && phone && dob)) {
+            setError(t3);
             return;
         }
+
         const userData = {
             email,
             password,
             name,
-            age: Number(age),
-            gender: sex,
+            dob,
             phone,
+            roleId,
         };
 
         try {
+            setLoading(true);
+
             const response = await axios.post(
                 `${serverApi}${userControllerApi}/register`,
-                {
-                    email: email,
-                    password: password,
-                    name: name,
-                    age: age,
-                    gender: sex,
-                    phone: phone
-                },
+                userData,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -59,23 +52,30 @@ function useRegister() {
                 }
             );
 
-            console.log(response.data);
-            navigate('/login');
+            setOpenOTP(true);
         } catch (error) {
-            const errorMessage = error.response?.data?.message || "An unexpected error occurred";
-            console.error(errorMessage);
-            setError(errorMessage);
+            const response = error.response?.data;
+            const message = response?.message || t2;
+
+            const rawErrors = response?.errors || {};
+            const errorList = Array.isArray(rawErrors)
+                ? rawErrors
+                : Object.values(rawErrors).flat();
+
+            setError(errorList.join('') || message);
+        } finally {
+            setLoading(false);
         }
     };
 
     return ({
-        error,
+        loading,
+        error, setError,
         email, setEmail,
         password, setPassword,
         confirmedPassword, setConfirmedPassword,
         name, setName,
-        age, setAge,
-        sex, setSex,
+        dob, setDob,
         phone, setPhone,
         handleSubmit
     });

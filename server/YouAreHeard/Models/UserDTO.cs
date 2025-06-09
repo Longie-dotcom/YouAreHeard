@@ -8,7 +8,7 @@ namespace YouAreHeard.Models
 
         [Required(ErrorMessage = "Email không được để trống")]
         [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
-        public string UserEmail { get; set; }
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         [MinLength(6, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự")]
@@ -19,14 +19,11 @@ namespace YouAreHeard.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Ngày sinh không được để trống")]
-        public DateOnly Dob { get; set; }
-
-        [Required(ErrorMessage = "Giới tính không được để trống")]
-        public string Gender { get; set; }
+        public DateTime Dob { get; set; }
 
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
         public int RoleId { get; set; }
     }

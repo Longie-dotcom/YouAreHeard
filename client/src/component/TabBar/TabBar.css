@@ -1,0 +1,29 @@
+.tab-bar {
+    display: flex;
+    margin-left: 14vw;
+    flex-direction: row;
+}
+
+.tab-bar .tab-button {
+    border: none;
+    background-color: transparent;
+    font-size: 1vw;
+    margin: 0.5vw;
+    padding: 1.2vw;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.tab-bar .tab-button:hover {
+    color: #000DFF;
+    background-color: rgb(255, 255, 255);
+}
+
+.tab-bar .active {
+    color: #000DFF;
+    background-color: rgb(255, 255, 255);
+}
+
