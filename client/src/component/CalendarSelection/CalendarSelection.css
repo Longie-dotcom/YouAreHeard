@@ -1,0 +1,98 @@
+.calendar-selection {
+    width: 70vw;
+    margin: auto;
+    text-align: center;
+}
+
+.calendar-selection .calendar-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.calendar-selection .calendar-header .title {
+    width: 30%;
+    font-size: 0.9vw;
+    color: #3F4246;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.calendar-selection .calendar-header .selection {
+    width: 40%;
+    display: flex;
+    justify-content: right;
+}
+
+.calendar-selection .calendar-header .selection select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    width: 40%;
+    padding: 2%;
+    border: none;
+    border-radius: 40px;
+    margin-left: 4%;
+    transition: all 0.3s ease-in-out;
+}
+
+.calendar-selection .calendar-header .selection select:hover {
+    background-color: #4A67F3;
+    color: rgb(255, 255, 255);
+}
+ 
+.calendar-selection .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 9px;
+    margin-top: 10px;
+}
+
+.calendar-selection .calendar-grid .calendar-day-label {
+    background-color: #A7A7A7;
+    padding: 2vw;
+    padding-top: 1vw;
+    font-size: 1vw;
+    font-weight: bold;
+    padding-bottom: 1vw;
+    border-radius: 10px;
+}
+
+.calendar-selection .calendar-grid .calendar-day {
+    display: flex;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    height: 8vw;
+    padding: 1vw;
+    border-radius: 10px;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.calendar-selection .calendar-grid .calendar-day:hover {
+    background-color: rgb(207, 207, 207);
+}
+
+.calendar-selection .calendar-grid .calendar-day .date {
+    text-align: left;
+    width: 100%;
+    font-size: 0.7vw;
+    font-weight: bold;
+}
+
+.calendar-selection .calendar-grid .calendar-day .doctor {
+    height: 80%;
+    font-size: 1vw;
+    font-weight: 570;
+    display: flex;
+    align-items: center;
+}
+
+.calendar-selection .calendar-grid .calendar-day .doctor .schedule-item .slots {
+    font-size: 1vw;
+    color:rgb(42, 0, 229);
+    margin-top: 1vw;
+}

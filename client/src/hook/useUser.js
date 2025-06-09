@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react';
 
-const guest = { 
-  _id: '68282d903bfc920748af8058', 
-  name: 'Guest', 
-  profilePic: 'guest.png',
-  role: 'patient'
-};
-
 const getUserFromCookies = () => {
   const cookies = document.cookie.split(';').map(c => c.trim());
   const userCookie = cookies.find(c => c.startsWith('user='));
@@ -24,14 +17,14 @@ const getUserFromCookies = () => {
 
 const useUser = () => {
   const [reloadCookies, setReloadCookies] = useState(0);
-  const [user, setUser] = useState(guest);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const userData = getUserFromCookies();
     if (userData) {
       setUser(userData);
     } else {
-      setUser(guest);
+      setUser(null);
     }
   }, [reloadCookies]);
 
