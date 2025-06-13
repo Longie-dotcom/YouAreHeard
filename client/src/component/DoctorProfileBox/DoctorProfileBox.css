@@ -1,0 +1,160 @@
+.doctor-profile-box-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box{
+    position: fixed; 
+    display: flex;
+    height: 50vh;
+    margin-top: 25vh;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-image{
+    width: auto;
+    border-radius: 20px 0px 0px 20px;
+    height: 100%;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information{
+    width: 25vw;
+    height: 100%;
+    border-radius: 0px 20px 0px 0px;
+    background-color: #FFFFFF;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 4% !important;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .header .title {
+    display: flex;
+    font-size: 1.2vw;
+    font-weight: 550;
+    align-items: center;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .header .title .icon {
+    width: 2vw;
+    height: auto;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .header .exit {
+    background-color: transparent;
+    border: none;
+    border-radius: 2vw;
+    width: 2.5vw;
+    height: 2.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .header .exit .icon {
+    width: 2vw;
+    height: 2vw;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .header .exit:hover {
+    background-color: rgb(136, 136, 136);
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body {
+    margin: 5%;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .info{
+    font-size: 0.9vw;
+    display: flex;
+    flex-direction: row;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    align-items: center;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .info .detail {
+    font-weight: 420;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .info .icon {
+    height: 1.5vw;
+    width: auto;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .info .detail{
+    margin-left: 1vw;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .doctor .detail{
+    font-weight: 550;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .doctor .detail .gender {
+    font-size: 0.7vw;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .language .detail .language-title,
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .special .detail .specialties {
+    color: #4E3A9E;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .language .detail .languages,
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .special .detail .experience {
+    color: #767676;
+    font-size: 0.7vw;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .description .detail .descriptions {
+    font-size: 0.7vw;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .request {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 5%;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border-radius: 40px;
+    background-color: #2862E9;
+    color: #FFFFFF;
+    cursor: pointer;
+    border: none;
+    transition: all 0.1s ease-in-out;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .body .request:hover {
+    background-color: #1842a4;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .footer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 3%;
+    justify-content: center;
+}
+
+.doctor-profile-box-overlap .doctor-profile-box .doctor-information .footer .logo {
+    height: 3vh;
+    width: auto;
+}
