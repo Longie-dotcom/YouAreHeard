@@ -68,7 +68,7 @@ namespace YouAreHeard.Services.Implementation
 
             // Send the email
             _emailService.SendZoomLinkEmail(patientEmail, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
-            _emailService.SendZoomLinkEmail(doctor.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
+            _emailService.sendZoomLinkEmailToDoctor(doctor.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
 
             return zoomLink;
         }
