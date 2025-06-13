@@ -15,6 +15,8 @@ import CalendarSelection from '../CalendarSelection/CalendarSelection';
 
 // Hooks
 import useLoadAllDoctor from '../../hook/useLoadAllDoctor';
+import { useState } from 'react';
+import DoctorProfileBox from '../DoctorProfileBox/DoctorProfileBox';
 
 function DoctorList({ setChoosenDoctor }) {
     const t1 = 'Năm kinh nghiệm';
@@ -37,6 +39,7 @@ function DoctorList({ setChoosenDoctor }) {
     const serverApi = process.env.REACT_APP_SERVER_API;
     const doctorAvatarApi = process.env.REACT_APP_DOCTOR_AVATAR_ASSET_API;
 
+    const [viewDoctor, setViewDoctor] = useState(null);
     const {
         doctors, loading,
         error, setError,
@@ -77,7 +80,7 @@ function DoctorList({ setChoosenDoctor }) {
                         </p>
                     </div>
                     <div className='footer'>
-                        <button className='view'>
+                        <button onClick={() => setViewDoctor(doctor)} className='view'>
                             {t5}
                         </button>
 
@@ -94,6 +97,10 @@ function DoctorList({ setChoosenDoctor }) {
 
             {error && (
                 <ErrorBox error={error} setError={setError} />
+            )}
+
+            {viewDoctor && (
+                <DoctorProfileBox viewDoctor={viewDoctor} setViewDoctor={setViewDoctor} setChoosenDoctor={setChoosenDoctor}/>
             )}
         </div>
     )
