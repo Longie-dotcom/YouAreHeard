@@ -1,0 +1,73 @@
+.confirm-box-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+}
+
+.confirm-box-overlap .confirm-box {
+    position: fixed;
+    width: 25vw;
+    padding: 2.5vw;
+    height: auto;
+    margin-top: 30vh;
+    border-radius: 20px;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    font-size: 1.2vw;
+    font-weight: bold;
+}
+
+.confirm-box-overlap .confirm-box .icon {
+    margin-bottom: 2vw;
+    width: 4vw;
+    height: auto;
+}
+
+.confirm-box-overlap .confirm-box .confirm-buttons {
+    width: 100%;
+}
+
+.confirm-box-overlap .confirm-box .confirm-buttons button {
+    width: 45%;
+    padding: 2.5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 5%;
+    border-radius: 40px;
+    border: none;
+    font-size: 1vw;
+    font-weight: 550;
+}
+
+.confirm-box-overlap .confirm-box .confirm-buttons .accept {
+    background-color: #2862E9;
+    color: rgb(255, 255, 255);
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.confirm-box-overlap .confirm-box .confirm-buttons .accept:hover {
+    background-color: #214db5;
+}
+
+.confirm-box-overlap .confirm-box .confirm-buttons .cancel {
+    background-color: #a9a9a9;
+    color: rgb(255, 255, 255);
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.confirm-box-overlap .confirm-box .confirm-buttons .cancel:hover {
+    background-color: #6c6c6c;
+}

@@ -5,10 +5,10 @@ function useLogout({ setReloadCookies }) {
     const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
-    const userControllerApi = process.env.REACT_APP_USER_CONTROLLER_API;
+    const authenticationControllerApi = process.env.REACT_APP_AUTHENTICATION_CONTROLLER_API;
 
     const logout = () => {
-        axios.post(`${serverApi}${userControllerApi}/logout`,
+        axios.post(`${serverApi}${authenticationControllerApi}/logout`,
             {},
             {
                 headers: { 'Content-Type': 'application/json' },

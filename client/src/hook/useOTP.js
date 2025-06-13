@@ -15,7 +15,7 @@ function useOTP({ emailSentTo }) {
     const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
-    const userControllerApi = process.env.REACT_APP_USER_CONTROLLER_API;
+    const authenticationControllerApi = process.env.REACT_APP_AUTHENTICATION_CONTROLLER_API;
 
     const handleSubmit = async () => {
         if (!emailSentTo) {
@@ -36,7 +36,7 @@ function useOTP({ emailSentTo }) {
         setLoading(true);
         try {
             const response = await axios.post(
-                `${serverApi}${userControllerApi}/verify-otp`,
+                `${serverApi}${authenticationControllerApi}/verify-otp`,
                 userData,
                 {
                     headers: {
@@ -69,7 +69,7 @@ function useOTP({ emailSentTo }) {
 
         try {
             const response = await axios.post(
-                `${serverApi}${userControllerApi}/request-otp`,
+                `${serverApi}${authenticationControllerApi}/request-otp`,
                 emailSentTo,
                 {
                     headers: {

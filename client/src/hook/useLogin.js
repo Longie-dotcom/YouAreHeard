@@ -10,7 +10,7 @@ function useLogin({ setReloadCookies }) {
     const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
-    const userControllerApi = process.env.REACT_APP_USER_CONTROLLER_API;
+    const authenticationControllerApi = process.env.REACT_APP_AUTHENTICATION_CONTROLLER_API;
 
     const handleSubmit = async () => {
         const loginToken = {
@@ -20,7 +20,7 @@ function useLogin({ setReloadCookies }) {
 
         setLoading(true);
         await axios.post(
-            `${serverApi}${userControllerApi}/login`,
+            `${serverApi}${authenticationControllerApi}/login`,
             loginToken,
             {
                 headers: { 'Content-Type': 'application/json' },

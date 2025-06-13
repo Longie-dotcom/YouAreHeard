@@ -55,6 +55,7 @@ button {
 }
 
 textarea {
+    resize: none;
     font-family: 'Be Vietnam Pro', sans-serif;
 }
 

@@ -13,7 +13,7 @@ import SkeletonUI from '../SkeletonUI/SkeletonUI';
 // Hooks
 import useLoadDoctorSchedule from '../../hook/useLoadDoctorSchedule';
 
-function CalendarSelection({ doctor }) {
+function CalendarSelection({ doctor, setChoosenAppointment }) {
     const labels = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
     const t1 = 'Chọn ngày/tháng/năm cho cuộc hẹn';
     const t2 = '-';
@@ -103,7 +103,12 @@ function CalendarSelection({ doctor }) {
                             </div>
                             <div className='doctor'>
                                 {daySchedules?.map((s, i) => (
-                                    <div key={i} className="schedule-item">
+                                    <div
+                                        onClick={() => {
+                                            setChoosenAppointment({ doctor, schedule: s });
+                                        }}
+                                        key={i} className="schedule-item"
+                                    >
                                         {doctor.name}
                                         <div className='slots'>
                                             {s.startTime?.slice(0, 5)}&nbsp;{t2}&nbsp;{s.endTime?.slice(0, 5)}

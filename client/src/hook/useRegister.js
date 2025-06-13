@@ -17,7 +17,7 @@ function useRegister({ setOpenOTP }) {
     const [loading, setLoading] = useState(false);
 
     const serverApi = process.env.REACT_APP_SERVER_API;
-    const userControllerApi = process.env.REACT_APP_USER_CONTROLLER_API;
+    const authenticationControllerApi = process.env.REACT_APP_AUTHENTICATION_CONTROLLER_API;
 
     const handleSubmit = async () => {
         if (password !== confirmedPassword) {
@@ -43,7 +43,7 @@ function useRegister({ setOpenOTP }) {
             setLoading(true);
 
             const response = await axios.post(
-                `${serverApi}${userControllerApi}/register`,
+                `${serverApi}${authenticationControllerApi}/register`,
                 userData,
                 {
                     headers: {
