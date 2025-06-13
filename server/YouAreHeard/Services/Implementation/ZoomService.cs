@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using YouAreHeard.Helper;
 using YouAreHeard.Models;
 using YouAreHeard.Services.Interfaces;
 using YouAreHeard.Utilities;
@@ -11,13 +12,11 @@ namespace YouAreHeard.Services.Implementation
     {
         private readonly HttpClient _httpClient;
         private readonly IUserService _userService;
-        private readonly IEmailService _emailService;
 
-        public ZoomService(IHttpClientFactory httpClientFactory, IUserService userService, IEmailService emailService)
+        public ZoomService(IHttpClientFactory httpClientFactory, IUserService userService)
         {
             _httpClient = httpClientFactory.CreateClient();
             _userService = userService;
-            _emailService = emailService;
         }
 
         public async Task<string> GenerateZoomLink(MedicalHistoryDTO history, DoctorScheduleDTO doctorScheduleDTO)
@@ -67,8 +66,8 @@ namespace YouAreHeard.Services.Implementation
             var patientEmail = _userService.GetUserById(history.PatientID).Email;
 
             // Send the email
-            _emailService.SendZoomLinkEmail(patientEmail, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
-            _emailService.sendZoomLinkEmailToDoctor(doctor.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
+            EmailHelper.SendZoomLinkEmail(patientEmail, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
+            EmailHelper.sendZoomLinkEmailToDoctor(doctor.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
 
             return zoomLink;
         }

@@ -1,12 +1,11 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Mail;
-using YouAreHeard.Services.Interfaces;
 
-namespace YouAreHeard.Services.Implementation
+namespace YouAreHeard.Helper
 {
-  public class EmailService : IEmailService
+  public static class EmailHelper
   {
-    public void SendOtpEmail(string toEmail, string otp)
+    public static void SendOtpEmail(string toEmail, string otp)
     {
       var settings = EmailSettingsContext.Settings;
 
@@ -109,7 +108,7 @@ namespace YouAreHeard.Services.Implementation
     }
 
 
-    public void SendZoomLinkEmail(
+    public static void SendZoomLinkEmail(
         string toEmail,
         string doctorName,
         DateTime appointmentTime,
@@ -212,7 +211,7 @@ namespace YouAreHeard.Services.Implementation
       smtp.Send(message);
     }
 
-    public void sendZoomLinkEmailToDoctor(string toEmail, string patientName, DateTime appointmentTime, TimeSpan startTime, string zoomLink, string passcode)
+    public static void sendZoomLinkEmailToDoctor(string toEmail, string patientName, DateTime appointmentTime, TimeSpan startTime, string zoomLink, string passcode)
     {
       var settings = EmailSettingsContext.Settings;
 

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using YouAreHeard.Helper;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
 
@@ -44,27 +45,7 @@ namespace YouAreHeard.Services.Implementation
 
         private void SendOtpEmail(string toEmail, string otp)
         {
-            var settings = EmailSettingsContext.Settings;
-
-            var from = new MailAddress(settings.From, settings.DisplayName);
-            var to = new MailAddress(toEmail);
-            var smtp = new SmtpClient
-            {
-                Host = settings.SmtpHost,
-                Port = settings.SmtpPort,
-                EnableSsl = settings.EnableSSL,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(settings.Username, settings.Password),
-                DeliveryMethod = SmtpDeliveryMethod.Network
-            };
-
-            using var message = new MailMessage(from, to)
-            {
-                Subject = "Your OTP Code",
-                Body = $"Your OTP code is: {otp}. It expires in 5 minutes."
-            };
-
-            smtp.Send(message);
+            EmailHelper.SendOtpEmail(toEmail, otp);
         }
     }
 }

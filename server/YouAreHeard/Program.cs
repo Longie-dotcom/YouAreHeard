@@ -33,7 +33,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IZoomService, ZoomService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
