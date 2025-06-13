@@ -1,23 +1,65 @@
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.FileProviders;
 using YouAreHeard.Models;
+using YouAreHeard.Services.Interfaces;
+using YouAreHeard.Services.Implementation;
+using YouAreHeard.Repositories.Implementation;
+using YouAreHeard.Repositories.Interfaces;
+using YouAreHeard.Utilities;
+using YouAreHeard.Services;
 
-// Add services
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient();
+
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // React dev server
+        policy.WithOrigins("http://localhost:3000")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); // Needed if using cookies
+              .AllowCredentials();
     });
 });
+
+// Add Controllers
 builder.Services.AddControllers();
+
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Register Application Services
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IZoomService, ZoomService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+// Register Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOtpRepository, OtpRepository>();
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
 var app = builder.Build();
 
-app.UseStaticFiles(); // for wwwroot
+// Enable Swagger UI in Development
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "YouAreHeard API v1");
+        c.RoutePrefix = string.Empty; // Swagger UI at root "/"
+    });
+}
+
+// Serve static files
+app.UseStaticFiles(); // wwwroot
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -25,7 +67,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/uploads"
 });
 
-// Email setting
+// Email config
 try
 {
     var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
@@ -35,7 +77,19 @@ catch (Exception ex)
 {
     app.Logger.LogError(ex, "Failed to initialize email!");
 }
-// Connect database
+
+// Zoom config
+try
+{
+    var zoomSettings = builder.Configuration.GetSection("Zoom").Get<ZoomSettings>();
+    ZoomSettingContext.Initialize(zoomSettings);
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Failed to initialize zoom!");
+}
+
+// DB config
 try
 {
     string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

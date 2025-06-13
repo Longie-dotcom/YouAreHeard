@@ -105,7 +105,7 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
                     </div>
 
                     <div className='body'>
-                        <div class="otp-container">
+                        <div className="otp-container">
                             {inputs.current.map((ref, index) => (
                                 <input
                                     key={index}

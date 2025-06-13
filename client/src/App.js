@@ -16,6 +16,7 @@ import RegisterPage from './page/Authentication/RegisterPage/RegisterPage';
 // Pages
 import AppointmentPage from './page/PatientPage/AppointmentPage/AppointmentPage';
 import HomePage from './page/PatientPage/HomePage/HomePage';
+import InfoPage from './page/PatientPage/InfoPage/InfoPage';
 
 function AppContent() {
   const { user, setReloadCookies } = useUser();
@@ -31,6 +32,7 @@ function AppContent() {
 
         <Route path="/homePage" element={<HomePage user={user} />} />
         <Route path="/appointmentPage" element={<AppointmentPage user={user} />} />
+        <Route path="/infoPage" element={<InfoPage user={user} />} />
       </Routes>
     </>
   );

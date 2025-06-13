@@ -47,8 +47,8 @@ function NavBar({ user, setReloadCookies }) {
                 </div>
 
                 {user && (
-                    <div onClick={() => navigate('/appointmentPage')} className='appointment'>
-                        <Icon src={UserIcon} alt={'appointment-icon'} />
+                    <div onClick={() => navigate('/infoPage')} className='info'>
+                        <Icon src={UserIcon} alt={'info-icon'} />
                         &nbsp;&nbsp;&nbsp;{t6}
                     </div>
                 )}
@@ -58,10 +58,12 @@ function NavBar({ user, setReloadCookies }) {
                     &nbsp;&nbsp;&nbsp;{t2}
                 </div>
 
-                <div onClick={() => navigate('/appointmentPage')} className='appointment'>
-                    <Icon src={AppointmentIcon} alt={'appointment-icon'} />
-                    &nbsp;&nbsp;&nbsp;{t3}
-                </div>
+                {user && (
+                    <div onClick={() => navigate('/appointmentPage')} className='appointment'>
+                        <Icon src={AppointmentIcon} alt={'appointment-icon'} />
+                        &nbsp;&nbsp;&nbsp;{t3}
+                    </div>
+                )}
             </div>
 
             {user ? (
