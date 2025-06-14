@@ -1,15 +1,13 @@
 import { use, useState } from "react";
 import axios from "axios";
 
-function useRequestAppointment({ user, choosenAppointment, setOpenFinish, type }) {
+function useRequestAppointment({ user, choosenAppointment, setOpenFinish, type, setError, setLoading }) {
     const t1 = 'Vui lòng chọn loại cuộc hẹn';
     const t2 = 'Server xảy ra lỗi';
 
     const [reason, setReason] = useState(null);
     const [note, setNote] = useState(null);
     const [anonymous, setAnonymous] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const appointmentControllerApi = process.env.REACT_APP_APPOINTMENT_CONTROLLER_API;
@@ -48,7 +46,7 @@ function useRequestAppointment({ user, choosenAppointment, setOpenFinish, type }
                     }
                 }
             );
-
+            setOpenFinish(true);
         } catch (error) {
             const response = error.response?.data;
             const message = response?.message || t2;
@@ -61,13 +59,10 @@ function useRequestAppointment({ user, choosenAppointment, setOpenFinish, type }
             setError(errorList.join('') || message);
         } finally {
             setLoading(false);
-            setOpenFinish(true);
         }
     }
 
     return ({
-        loading, setLoading,
-        error, setError,
         reason, setReason,
         note, setNote,
         anonymous, setAnonymous,

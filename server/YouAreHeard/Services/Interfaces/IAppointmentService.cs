@@ -6,5 +6,7 @@ namespace YouAreHeard.Services.Interfaces
     {
         Task RequestAppointmentAsync(AppointmentDTO appointment, MedicalHistoryDTO medicalHistory);
         List<AppointmentDTO> GetAppointmentsByPatientId(int patientId);
+        void CancelAppointmentById(int appointmentId);
+
     }
 }

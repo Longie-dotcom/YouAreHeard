@@ -1,4 +1,5 @@
 ﻿using YouAreHeard.Models;
+using YouAreHeard.NewFolder;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
 
@@ -30,7 +31,12 @@ namespace YouAreHeard.Services
 
         public List<AppointmentDTO> GetAppointmentsByPatientId(int patientId)
         {
-            return _appointmentRepository.GetAppointmentsByPatientId(patientId);
+            return _appointmentRepository.GetAppointmentsByPatientId(patientId, AppointmentStatusEnum.Confirmed);
+        }
+
+        public void CancelAppointmentById(int appointmentId)
+        {
+            _appointmentRepository.UpdateAppointmentStatus(appointmentId, AppointmentStatusEnum.Cancelled);
         }
     }
 }

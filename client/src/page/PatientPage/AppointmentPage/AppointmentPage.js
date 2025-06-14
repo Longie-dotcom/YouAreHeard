@@ -189,7 +189,9 @@ function AppointmentPage({ user }) {
 
                         { type === 'online' && (
                             <div className='note'>
-                                {t17}&nbsp;{user.Email}
+                                <p>
+                                    <span>{t17}</span>&nbsp;<span className='email'>{user.Email}</span>
+                                </p>
                             </div>
                         )}
                     </div>

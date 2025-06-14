@@ -1,5 +1,5 @@
 // Modules
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 // Styling sheet
 import './OTPBox.css';
@@ -20,15 +20,18 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
     const t4 = 'Chưa nhận được mã ?';
     const t5 = 'Gửi lại';
 
-    const {
-        error, setOtp, handleSubmit, handleRequestOTP, loading
-    } = useOTP({ emailSentTo });
-
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null); 
     const inputs = useRef([]);
+
+    const {
+        setOtp, handleSubmit, handleRequestOTP
+    } = useOTP({ emailSentTo, setError, setLoading });
 
     if (inputs.current.length === 0) {
         inputs.current = Array(6).fill().map(() => React.createRef());
     }
+
     useEffect(() => {
         inputs.current[0].current.focus()
     }, []);

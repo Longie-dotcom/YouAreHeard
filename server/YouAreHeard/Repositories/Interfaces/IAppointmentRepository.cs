@@ -5,6 +5,9 @@ namespace YouAreHeard.Repositories.Interfaces
     public interface IAppointmentRepository
     {
         public void RequestAppointment(AppointmentDTO appointment, MedicalHistoryDTO medicalHistory);
-        public List<AppointmentDTO> GetAppointmentsByPatientId(int patientId);
+        public List<AppointmentDTO> GetAppointmentsByPatientId(int patientId, int statusId);
+        public List<AppointmentDTO> GetAppointmentsByDoctorId(int doctorId);
+        public void UpdateAppointmentStatus(int appointmentId, int newStatusId);
+
     }
 }

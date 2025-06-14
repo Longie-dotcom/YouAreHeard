@@ -2,11 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-function useLogin({ setReloadCookies }) {
-    const [error, setError] = useState('');
+function useLogin({ setReloadCookies, setError, setLoading }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
@@ -32,16 +30,13 @@ function useLogin({ setReloadCookies }) {
                 console.log(response.data.message);
                 navigate('/home');
             }).catch((error) => {
-                console.log(error.response.data.message);
-                setError(error.response.data.message);
-            }). finally(() => {
+                setError(error.response?.data?.message);
+            }).finally(() => {
                 setLoading(false);
             })
     };
 
     return ({
-        loading,
-        error, setError,
         email, setEmail,
         password, setPassword,
         handleSubmit

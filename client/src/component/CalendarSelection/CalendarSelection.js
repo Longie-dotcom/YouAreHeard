@@ -18,6 +18,8 @@ function CalendarSelection({ doctor, setChoosenAppointment }) {
     const t1 = 'Chọn ngày/tháng/năm cho cuộc hẹn';
     const t2 = '-';
 
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth());
     const [year, setYear] = useState(today.getFullYear());
@@ -25,10 +27,10 @@ function CalendarSelection({ doctor, setChoosenAppointment }) {
     const availableYears = [currentYear, currentYear + 1];
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
+
     const {
-        schedules, loading,
-        error, setError,
-    } = useLoadDoctorSchedule({ doctorId: doctor.userID });
+        schedules,
+    } = useLoadDoctorSchedule({ doctorId: doctor.userID, setError, setLoading });
 
     const calendarDays = [];
 

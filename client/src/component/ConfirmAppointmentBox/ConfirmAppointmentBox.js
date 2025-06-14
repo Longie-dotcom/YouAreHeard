@@ -39,6 +39,8 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setTyp
     const t17 = 'Xác nhận gửi yêu cầu';
     const t18 = 'Zoom meeting';
 
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);  
     const reasonRef = useRef(null);
     const noteRef = useRef(null);
     const [openConfirm, setOpenConfirm] = useState(false);
@@ -50,12 +52,10 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setTyp
     };
 
     const {
-        loading, setLoading,
-        error, setError,
         anonymous, setAnonymous,
         setNote, setReason,
         handleRequest
-    } = useRequestAppointment({ user, choosenAppointment, setOpenFinish, type });
+    } = useRequestAppointment({ user, choosenAppointment, setOpenFinish, type, setError, setLoading });
 
     return (
         <div className='confirm-appointment-box'>

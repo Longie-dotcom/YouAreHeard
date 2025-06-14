@@ -1,5 +1,6 @@
 // Modules
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 // Styling sheet
 import './NavBar.css';
@@ -14,6 +15,8 @@ import UserIcon from '../../uploads/icon/user.png';
 
 // Components
 import Icon from '../Icon/Icon';
+import SkeletonUI from '../SkeletonUI/SkeletonUI';
+import ErrorBox from '../ErrorBox/ErrorBox';
 
 // Hooks
 import useLogout from '../../hook/useLogout';
@@ -27,10 +30,13 @@ function NavBar({ user, setReloadCookies }) {
     const t6 = 'Thông tin người dùng';
     const t7 = 'Đăng xuất';
 
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);  
     const navigate = useNavigate();
+
     const {
         logout
-    } = useLogout({ setReloadCookies });
+    } = useLogout({ setReloadCookies, setError, setLoading });
 
 
     return (
@@ -83,6 +89,13 @@ function NavBar({ user, setReloadCookies }) {
                 </div>
             )}
 
+            {loading && (
+                <SkeletonUI />
+            )}
+
+            {error && (
+                <ErrorBox error={error} setError={setError} />
+            )}
         </div>
     )
 }
