@@ -43,21 +43,22 @@ function RegisterPage() {
     const t19 = 'Tạo tài khoản'
 
     // States
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);    
     const [seeConfirmedPassword, setSeeConfirmedPassword] = useState(false);
     const [seePassword, setSeePassword] = useState(false);
     const [openOTP, setOpenOTP] = useState(false);
     const navigate = useNavigate();
     const {
-        loading,
         name, setName,
         email, setEmail,
         dob, setDob,
         phone, setPhone,
         password, setPassword,
         confirmedPassword, setConfirmedPassword,
-        error, setError,
+        acceptPolicy, setAcceptPolicy,
         handleSubmit
-    } = useRegister({ setOpenOTP });
+    } = useRegister({ setOpenOTP, setError, setLoading });
 
     // Functions
     const togglePasswordVisibility = (setSee) => {
@@ -146,7 +147,7 @@ function RegisterPage() {
 
             <div className='footer'>
                 <div className='policy'>
-                    <input type='checkbox' />
+                    <input type='checkbox' onChange={(e) => setAcceptPolicy(e.target.checked)}/>
                     <div className='policy-detail'>
                         &nbsp;{t15}&nbsp;
                         <span className='usability'>

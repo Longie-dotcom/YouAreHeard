@@ -8,7 +8,7 @@ namespace YouAreHeard.Repositories.Implementation
 {
     public class DoctorRepository : IDoctorRepository
     {
-        public DoctorProfileDTO GetDoctorProfileByDoctorId(string userId)
+        public DoctorProfileDTO GetDoctorProfileByDoctorId(int userId)
         {
             using SqlConnection conn = DBContext.GetConnection();
             conn.Open();

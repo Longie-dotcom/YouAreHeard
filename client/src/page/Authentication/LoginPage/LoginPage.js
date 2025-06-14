@@ -1,5 +1,6 @@
 // Modules
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 // Styling sheet
 import './LoginPage.css';
@@ -28,10 +29,13 @@ function LoginPage({ setReloadCookies }) {
     const t9 = 'Quên mật khẩu?';
     const t10 = 'Đăng nhập';
 
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);   
     const navigate = useNavigate();
+
     const {
-        handleSubmit, error, setEmail, setPassword, loading, setError
-    } = useLogin({ setReloadCookies });
+        handleSubmit, setEmail, setPassword
+    } = useLogin({ setReloadCookies, setError, setLoading });
 
     return (
         <div id='login-page'>

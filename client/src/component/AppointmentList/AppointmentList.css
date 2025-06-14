@@ -1,0 +1,99 @@
+.appointment-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3vw;
+    margin: 5%;
+    width: 90%;
+    justify-content: center;
+}
+
+.appointment-list .appointment {
+    background-color: rgb(255, 255, 255);
+    padding: 1vw;
+    border-radius: 10px;
+}
+
+.appointment-list .appointment > div {
+    display: flex;
+    align-items: center;
+    margin: 1vw;
+}
+
+.appointment-list .appointment div .title {
+    font-size: 0.9vw;
+    width: 40%;
+    font-weight: 450;
+    color: #2c2e30;
+    display: flex;
+    align-items: center;
+}
+
+.appointment-list .appointment div .title .icon {
+    margin-right: 0.5vw;
+}
+
+.appointment-list .appointment div .detail {
+    font-size: 0.9vw;
+    width: 55%;
+    font-weight: 550;
+    margin-left: 5%;
+}
+
+.appointment-list .appointment div .detail .zoom-link {
+    display: flex;
+    align-items: center;
+}
+
+.appointment-list .appointment .reason .title button,
+.appointment-list .appointment .note .title button {
+    border: none;
+    background-color: rgb(236, 236, 0);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.appointment-list .appointment .reason .detail,
+.appointment-list .appointment .note .detail {
+    font-weight: 400;
+    color: #3F4246;
+}
+
+.appointment-list .appointment .note .title button:hover {
+    background-color: rgb(199, 199, 0);
+}
+
+.appointment-list .appointment .doctor .detail p,
+.appointment-list .appointment .patient .detail p {
+    margin: 0;
+}
+
+.appointment-list .appointment .footer button {
+    border: none;
+    font-size: 1vw;
+    cursor: pointer;
+    width: 45%;
+    padding: 2.5%;
+    border-radius: 40px;
+    margin: 2.5%;
+    font-weight: 550;
+    transition: all 0.1s ease-in-out;
+}
+
+.appointment-list .appointment .footer .view {
+    background-color: #6B6B6B;
+    color: rgb(255, 255, 255);
+}
+
+.appointment-list .appointment .footer .view:hover {
+    background-color: #434343;
+}
+
+.appointment-list .appointment .footer .cancel {
+    background-color: #5370A6;
+    color: rgb(255, 255, 255);
+}
+
+.appointment-list .appointment .footer .cancel:hover {
+    background-color: #36496c;
+}

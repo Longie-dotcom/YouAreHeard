@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useLoadAllDoctor({ setError, setLoading }) {
-    const [doctors, setDoctors] = useState(null);
+function useGetDoctorById({ setError, setLoading }) {
+    const [doctor, setDoctor] = useState(null);
     
     const serverApi = process.env.REACT_APP_SERVER_API;
     const doctorControllerApi = process.env.REACT_APP_DOCTOR_CONTROLLER_API;
 
-    const getAllDoctors = async () => {
+    const getDoctorById = async ({ doctorId }) => {
         setLoading(true);
         await axios.get(
-            `${serverApi}${doctorControllerApi}/all`
+            `${serverApi}${doctorControllerApi}/profile/${doctorId}`
         )
             .then((response) => {
-                setDoctors(response.data);
+                setDoctor(response.data);
             }).catch((error) => {
                 setError(error.response?.data?.message);
             }).finally(() => {
@@ -21,13 +21,10 @@ function useLoadAllDoctor({ setError, setLoading }) {
             })
     };
 
-    useEffect(() => {
-        getAllDoctors();
-    }, [])
-
     return ({
-        doctors
+        doctor, setDoctor,
+        getDoctorById
     })
 }
 
-export default useLoadAllDoctor;
+export default useGetDoctorById;

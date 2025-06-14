@@ -36,14 +36,16 @@ function DoctorList({ setChoosenDoctor }) {
         Sunday: "Chủ Nhật"
     };
 
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(null);  
+    const [viewDoctor, setViewDoctor] = useState(null);
+
     const serverApi = process.env.REACT_APP_SERVER_API;
     const doctorAvatarApi = process.env.REACT_APP_DOCTOR_AVATAR_ASSET_API;
-
-    const [viewDoctor, setViewDoctor] = useState(null);
+    
     const {
-        doctors, loading,
-        error, setError,
-    } = useLoadAllDoctor();
+        doctors
+    } = useLoadAllDoctor({ setError, setLoading });
 
     return (
         <div className="doctor-list">

@@ -110,6 +110,22 @@
     margin: 0;
 }
 
+#appointment-page .finish .body .note {
+    font-size: 0.9vw;
+    color: #3F4246;
+    margin-top: 0.9vw;
+}
+
+#appointment-page .finish .body .note p {
+    margin: 0;
+    text-align: center;
+}
+
+#appointment-page .finish .body .note .email {
+    color: #0040FF;
+    font-weight: 550;
+}
+
 #appointment-page .finish .footer {
     width: 100%;
     margin-top: 2vw;

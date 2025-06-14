@@ -15,7 +15,7 @@ namespace YouAreHeard.Services.Implementation
 
         public DoctorProfileDTO GetDoctorProfileByDoctorId(string userId)
         {
-            return _doctorRepository.GetDoctorProfileByDoctorId(userId);
+            return _doctorRepository.GetDoctorProfileByDoctorId(int.Parse(userId));
         }
 
         public List<DoctorScheduleDTO> GetDoctorScheduleByDoctorId(string userId)

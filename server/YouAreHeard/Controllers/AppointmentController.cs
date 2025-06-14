@@ -41,5 +41,19 @@ namespace YouAreHeard.Controllers
                 return StatusCode(500, new { message = "Failed to retrieve appointments.", error = ex.Message });
             }
         }
+
+        [HttpPut("cancel/{appointmentId}")]
+        public IActionResult CancelAppointmentById(int appointmentId)
+        {
+            try
+            {
+                _appointmentService.CancelAppointmentById(appointmentId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to retrieve appointments.", error = ex.Message });
+            }
+        }
     }
 }

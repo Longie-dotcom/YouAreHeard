@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function useLogout({ setReloadCookies }) {
+function useLogout({ setReloadCookies, setError, setLoading }) {
     const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const authenticationControllerApi = process.env.REACT_APP_AUTHENTICATION_CONTROLLER_API;
 
     const logout = () => {
+        setLoading(true);
         axios.post(`${serverApi}${authenticationControllerApi}/logout`,
             {},
             {
@@ -18,7 +19,9 @@ function useLogout({ setReloadCookies }) {
                 console.log(response.data.message);
                 navigate('/login');
             }).catch((error) => {
-                console.log(error.response?.data?.message || error.message);
+                setError(error.response?.data?.message);
+            }).finally(() => {
+                setLoading(false);
             })
     }
 

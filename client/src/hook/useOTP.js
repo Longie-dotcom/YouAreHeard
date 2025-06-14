@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function useOTP({ emailSentTo }) {
+function useOTP({ emailSentTo, setLoading, setError }) {
     const t1 = 'Không tìm thấy email!';
     const t2 = 'Không tìm thấy OTP!';
     const t3 = 'Lỗi máy chủ không xác định được!';
     const t4 = 'OTP mới vừa được gửi!';
 
-    const [error, setError] = useState('');
     const [otp, setOtp] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -68,6 +66,7 @@ function useOTP({ emailSentTo }) {
         }
 
         try {
+            setLoading(true);
             const response = await axios.post(
                 `${serverApi}${authenticationControllerApi}/request-otp`,
                 emailSentTo,
@@ -89,12 +88,13 @@ function useOTP({ emailSentTo }) {
                 : Object.values(rawErrors).flat();
 
             setError(errorList.join('') || message);
+        } finally {
+            setLoading(false);
         }
     };    
     
     return ({
-        error, setOtp, loading,
-        handleSubmit, handleRequestOTP
+        setOtp, handleSubmit, handleRequestOTP
     });
 }
 
