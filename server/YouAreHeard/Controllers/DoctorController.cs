@@ -15,7 +15,7 @@ public class DoctorController : ControllerBase
     [HttpGet("profile/{userId}")]
     public IActionResult GetDoctorProfile(string userId)
     {
-        var profile = _doctorService.GetDoctorProfileByDoctorId(userId);
+        var profile = _doctorService.GetDoctorProfileByDoctorId(int.Parse(userId));
         if (profile == null)
             return NotFound(new { message = "Không tìm thấy hồ sơ bác sĩ." });
 
@@ -25,8 +25,15 @@ public class DoctorController : ControllerBase
     [HttpGet("schedule/{userId}")]
     public IActionResult GetDoctorSchedule(string userId)
     {
-        var schedule = _doctorService.GetDoctorScheduleByDoctorId(userId);
+        var schedule = _doctorService.GetAllAvailableDoctorScheduleByDoctorId(int.Parse(userId));
         return Ok(schedule);
+    }
+
+    [HttpGet("schedule/all")]
+    public IActionResult GetAllDoctorSchedule()
+    {
+        var schedules = _doctorService.GetAvailableDoctorSchedules();
+        return Ok(schedules);
     }
 
     [HttpGet("all")]

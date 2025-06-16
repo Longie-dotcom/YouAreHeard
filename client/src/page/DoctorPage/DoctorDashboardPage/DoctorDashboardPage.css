@@ -1,0 +1,56 @@
+#doctor-dashboard-page {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    margin-bottom: 20vh;
+}
+
+#doctor-dashboard-page .header {
+    height: 5vh;
+    padding: 1.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#doctor-dashboard-page .header .logo {
+    height: 100%;
+}
+
+#doctor-dashboard-page .header .logo img {
+    height: 100%;
+}
+
+#doctor-dashboard-page .header button {
+    width: 10%;
+    border: none;
+    border-radius: 40px;
+    height: 100%;
+    background-color: #4A67F3;
+    color: rgb(255, 255, 255);
+    font-size: 1vw;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+#doctor-dashboard-page .header button:hover {
+    background-color: #202c6b;
+}
+
+#doctor-dashboard-page .body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#doctor-dashboard-page .body .menu {
+    width: 30%;
+}
+
+#doctor-dashboard-page .body .main {
+    width: 70%;
+}

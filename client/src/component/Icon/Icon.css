@@ -2,3 +2,10 @@
     width: auto;
     height: 1vw;
 }
+
+@media screen and (max-width: 768px) {
+  .icon {
+    width: auto;
+    height: 2vw;
+  }
+}

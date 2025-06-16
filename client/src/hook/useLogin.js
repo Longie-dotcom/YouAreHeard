@@ -28,7 +28,6 @@ function useLogin({ setReloadCookies, setError, setLoading }) {
             .then((response) => {
                 setReloadCookies(prev => prev + 1);
                 console.log(response.data.message);
-                navigate('/home');
             }).catch((error) => {
                 setError(error.response?.data?.message);
             }).finally(() => {

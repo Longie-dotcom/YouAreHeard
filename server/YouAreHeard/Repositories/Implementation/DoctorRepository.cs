@@ -1,24 +1,42 @@
 ﻿using YouAreHeard.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-
 using YouAreHeard.Repositories.Interfaces;
 
 namespace YouAreHeard.Repositories.Implementation
 {
     public class DoctorRepository : IDoctorRepository
     {
+        private readonly IScheduleRepository _scheduleRepository;
+
+        public DoctorRepository(IScheduleRepository scheduleRepository)
+        {
+            _scheduleRepository = scheduleRepository;
+        }
+
         public DoctorProfileDTO GetDoctorProfileByDoctorId(int userId)
         {
             using SqlConnection conn = DBContext.GetConnection();
             conn.Open();
+
             string query = @"
-                        SELECT userID, specialties, yearsOfExperience, image, gender, description, languagesSpoken
-                        FROM DoctorProfile
-                        WHERE userID = @UserID";
+            SELECT 
+                dp.userID, 
+                u.name AS doctorName, 
+                u.phone,
+                dp.specialties, 
+                dp.yearsOfExperience, 
+                dp.image, 
+                dp.gender, 
+                dp.description, 
+                dp.languagesSpoken
+            FROM DoctorProfile dp
+            JOIN [User] u ON dp.userID = u.userID
+            WHERE dp.userID = @UserID";
+
             using SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@UserID", userId);
-            var reader = cmd.ExecuteReader();
+
+            using var reader = cmd.ExecuteReader();
 
             if (!reader.Read())
             {
@@ -28,51 +46,23 @@ namespace YouAreHeard.Repositories.Implementation
             var profile = new DoctorProfileDTO
             {
                 UserID = reader.GetInt32(reader.GetOrdinal("userID")),
-                Specialties = reader["specialties"].ToString(),
+                Name = reader["doctorName"]?.ToString(),
+                Phone = reader["phone"]?.ToString(),
+                Specialties = reader["specialties"]?.ToString(),
                 YearsOfExperience = reader.GetInt32(reader.GetOrdinal("yearsOfExperience")),
-                Image = reader["image"].ToString(),
-                Gender = reader["gender"].ToString(),
-                Description = reader["description"].ToString(),
-                LanguagesSpoken = reader["languagesSpoken"].ToString()
+                Image = reader["image"]?.ToString(),
+                Gender = reader["gender"]?.ToString(),
+                Description = reader["description"]?.ToString(),
+                LanguagesSpoken = reader["languagesSpoken"]?.ToString(),
+                AvailableDays = "" // You can compute this later if needed
             };
+
             return profile;
         }
 
-        public List<DoctorScheduleDTO> GetDoctorScheduleByDoctorId(string userId)
+        public List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId)
         {
-            using SqlConnection conn = DBContext.GetConnection();
-            conn.Open();
-            string query = @"
-                        SELECT ds.doctorScheduleID, ds.userID, ds.location, ds.startTime, ds.endTime,
-                               ds.date, ds.isAvailable, ds.scheduleTypeID, st.scheduleTypeName
-                        FROM DoctorSchedule ds
-                        JOIN ScheduleType st ON ds.scheduleTypeID = st.scheduleTypeID
-                        WHERE ds.userID = @UserID";
-
-            using SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@UserID", userId);
-            using var reader = cmd.ExecuteReader();
-            {
-                var schedules = new List<DoctorScheduleDTO>();
-
-                while (reader.Read())
-                {
-                    schedules.Add(new DoctorScheduleDTO
-                    {
-                        DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
-                        UserID = reader.GetInt32(reader.GetOrdinal("userID")),
-                        Location = reader["location"].ToString(),
-                        StartTime = (TimeSpan)reader["startTime"],
-                        EndTime = (TimeSpan)reader["endTime"],
-                        Date = (DateTime)reader["date"],
-                        IsAvailable = (bool)reader["isAvailable"],
-                        ScheduleTypeID = reader.GetInt32(reader.GetOrdinal("scheduleTypeID")),
-                        ScheduleTypeName = reader["scheduleTypeName"].ToString()
-                    });
-                }
-
-                return schedules;
-            }
+            return _scheduleRepository.GetDoctorSchedules(userId, true, DateTime.Now);
         }
 
         public List<DoctorProfileDTO> GetAllDoctorProfiles()
@@ -120,6 +110,10 @@ namespace YouAreHeard.Repositories.Implementation
                 });
             }
             return doctors;
+        }
+        public List<DoctorScheduleDTO> GetAllAvailableDoctorSchedules()
+        {
+            return _scheduleRepository.GetAllSchedules(true, DateTime.Now);
         }
     }
 }

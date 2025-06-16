@@ -1,0 +1,151 @@
+.appointment-detail-box-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box {
+    position: fixed;
+    width: 50vw;
+    padding: 1.5vw;
+    height: auto;
+    margin-top: 15vh;
+    border-radius: 20px 20px 0px 20px;
+    margin-left: 25vw;
+    margin-right: 25vw;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .header {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .header .title {
+    display: flex;
+    align-items: center;
+    font-weight: 510;
+    font-size: 1.4vw;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .header .title .icon {
+    width: 2vw;
+    height: auto;
+    margin-right: 1vw;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .header .exit {
+    width: 3vw !important;
+    height: 3vw !important;
+    border-radius: 3vw !important;
+    display: flex;
+    background-color: transparent !important;
+    align-items: center;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .header .exit .icon {
+    width: 100%;
+    height: auto;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .header .exit:hover {
+    background-color: rgb(165, 165, 165) !important;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body {
+    margin: 2.5%;
+    width: 95% !important;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info {
+    display: flex;
+    width: 40%;
+    flex-direction: column !important;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .appointment-detail {
+    width: 60%;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1%;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info div .icon {
+    width: 2vw;
+    height: auto;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info div .detail {
+    display: flex;
+    margin-left: 1vw;
+    flex-direction: column !important;
+    text-align: left;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info div .detail div {
+    width: 100%;
+    font-size: 1vw;
+    font-weight: 450;
+    color: #4E3A9E;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info div .detail .sub-detail {
+    font-size: 0.8vw;
+    font-weight: 400;
+    color: #767676;
+}   
+
+.appointment-detail-box-overlap .appointment-detail-box .body .patient-info .hiv-status .detail div {
+    color: rgb(216, 21, 21);
+    font-weight: 550;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .appointment-detail div .title {
+    padding: 1%;
+    font-size: 0.8vw;
+    color: #767676;
+    margin: 1%;
+    font-weight: 550;
+    border-bottom: #767676 solid 2px;
+    width: 96%;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .body .appointment-detail div .content {
+    font-size: 0.9vw;
+    margin: 2%;
+    padding: 2%;
+    background-color: #e3e3e3;
+    border-radius: 10px;
+}
+
+.appointment-detail-box-overlap .appointment-detail-box .footer {
+    height: 4vh;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: right !important;
+} 
+
+.appointment-detail-box-overlap .appointment-detail-box .footer .logo {
+    height: 100%;
+} 
+
+.appointment-detail-box-overlap .appointment-detail-box .footer .logo img {
+    height: 100%;
+    width: auto;
+}

@@ -11,5 +11,6 @@
         public bool IsAvailable { get; set; }
         public int ScheduleTypeID { get; set; }
         public string ScheduleTypeName { get; set; }
+        public DoctorProfileDTO DoctorProfile { get; set; }
     }
 }

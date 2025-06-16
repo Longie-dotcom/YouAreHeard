@@ -37,13 +37,15 @@ function AppointmentPage({ user }) {
     const t15 = '-';
     const t16 = 'Trờ lại';
     const t17 = 'Đường dẫn của Zoom meeting đã được gửi tới';
+    const t18 = 'Số thứ tự: ';
 
     const [chooseByDoctor, setChooseByDoctor] = useState(true);
     const [chooseByDate, setChooseByDate] = useState(false);
+    const [choosenDate, setChoosenDate] = useState(null);
     const [choosenDoctor, setChoosenDoctor] = useState(null);
     const [choosenAppointment, setChoosenAppointment] = useState(null);
     const [type, setType] = useState(null);
-    const [openFinish, setOpenFinish] = useState(false);
+    const [result, setResult] = useState(null);
     const navigate = useNavigate();
     const calendarRef = useRef(null);
     const confirmRef = useRef(null);
@@ -88,13 +90,16 @@ function AppointmentPage({ user }) {
                 </p>
             </div>
 
-            {!openFinish && !choosenAppointment && (
+            {!result && !choosenAppointment && (
                 <TabBar tabs={tabs} />
             )}
 
-            {!openFinish && !choosenAppointment && chooseByDoctor && (
+            {!result && !choosenAppointment && chooseByDoctor && (
                 <>
-                    <DoctorList setChoosenDoctor={setChoosenDoctor} />
+                    <DoctorList
+                        choosenDate={null}
+                        setChoosenDoctor={setChoosenDoctor}
+                    />
 
                     {choosenDoctor && (
                         <div ref={calendarRef}>
@@ -107,7 +112,26 @@ function AppointmentPage({ user }) {
                 </>
             )}
 
-            {!openFinish && choosenAppointment && (
+            {!result && !choosenAppointment && chooseByDate && (
+                <>
+                    <CalendarSelection
+                        doctor={null}
+                        setChoosenDate={setChoosenDate}
+                    />
+
+                    {choosenDate && (
+                        <div ref={calendarRef}>
+                            <DoctorList
+                                choosenDate={choosenDate}
+                                setChoosenAppointment={setChoosenAppointment}
+                            />
+                        </div>
+                    )}
+                </>
+            )}
+
+
+            {!result && choosenAppointment && (
                 <div
                     className='confirm'
                     ref={confirmRef}>
@@ -124,14 +148,14 @@ function AppointmentPage({ user }) {
                     <ConfirmAppointmentBox
                         setChoosenAppointment={setChoosenAppointment}
                         choosenAppointment={choosenAppointment} user={user}
-                        setOpenFinish={setOpenFinish}
+                        setResult={setResult}
                         type={type}
                         setType={setType}
                     />
                 </div>
             )}
 
-            {openFinish && (
+            {result && (
                 <div className='finish'>
                     <div className='header'>
                         <div className='title'>
@@ -150,8 +174,7 @@ function AppointmentPage({ user }) {
                             </div>
 
                             <div className='detail'>
-                                <p className='name'>{t14}&nbsp;{choosenAppointment.doctor.name}</p>
-                                <p className='specialties'>{choosenAppointment.doctor.specialties}</p>
+                                <p className='name'>{t14}&nbsp;{result.doctorName}</p>
                             </div>
                         </div>
 
@@ -161,7 +184,7 @@ function AppointmentPage({ user }) {
                             </div>
 
                             <div className='detail'>
-                                {choosenAppointment.schedule.date}
+                                {result.date.split('T')[0]}
                             </div>
                         </div>
 
@@ -171,9 +194,9 @@ function AppointmentPage({ user }) {
                             </div>
 
                             <div className='detail'>
-                                {choosenAppointment.schedule.startTime}
+                                {result.startTime}
                                 &nbsp;{t15}&nbsp;
-                                {choosenAppointment.schedule.endTime}
+                                {result.endTime}
                             </div>
                         </div>
 
@@ -187,7 +210,17 @@ function AppointmentPage({ user }) {
                             </div>
                         </div>
 
-                        { type === 'online' && (
+                        <div className='queue-number'>
+                            <div className='title'>
+                                {t18}
+                            </div>
+
+                            <div className='detail'>
+                                {result.queueNumber}
+                            </div>
+                        </div>
+
+                        {type === 'online' && (
                             <div className='note'>
                                 <p>
                                     <span>{t17}</span>&nbsp;<span className='email'>{user.Email}</span>
@@ -199,7 +232,7 @@ function AppointmentPage({ user }) {
                     <div className='footer'>
                         <button
                             onClick={() => {
-                                setOpenFinish(false);
+                                setResult(null);
                                 setChoosenDoctor(null);
                                 setChoosenAppointment(null);
                                 navigate('/appointmentPage');

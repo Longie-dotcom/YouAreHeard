@@ -1,0 +1,87 @@
+.calendar-container {
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+    padding: 2%;
+    font-family: 'Segoe UI', sans-serif;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header span {
+    font-size: 1vw;
+    font-weight: bold;
+}
+
+.calendar-header span select {
+    font-size: 1vw;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+}
+
+.calendar-header button {
+    background-color: #f0f4f8;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5em 1em;
+    font-size: 1.1vw;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.calendar-header button:hover {
+    background-color: #d0e3f0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.calendar-day-name {
+    font-weight: bold;
+    font-size: 1vw;
+    color: #444;
+    text-align: center;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1vw;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-day.filled {
+    background-color: #f8fafc;
+    cursor: pointer;
+}
+
+.calendar-day.filled:hover {
+    background-color: #e0f2fe;
+    transform: scale(1.05);
+}
+
+.calendar-day.empty {
+    background-color: transparent;
+}
+
+.calendar-day.has-appointment {
+    background-color: #cce5ff;
+    color: #004085;
+    font-weight: bold;
+}

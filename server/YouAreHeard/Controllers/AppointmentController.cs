@@ -23,9 +23,15 @@ namespace YouAreHeard.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _appointmentService.RequestAppointmentAsync(request.Appointment, request.MedicalHistory);
-
-            return Ok(new { message = "Appointment requested successfully", zoomLink = request.Appointment.ZoomLink });
+            try
+            {
+                AppointmentDTO appointment = await _appointmentService.RequestAppointmentAsync(request.Appointment, request.MedicalHistory);
+                return Ok(appointment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
 
         [HttpGet("patient/{patientId}")]
@@ -42,6 +48,20 @@ namespace YouAreHeard.Controllers
             }
         }
 
+        [HttpGet("doctor/{doctorId}")]
+        public IActionResult GetAppointmentsByDoctorId(int doctorId)
+        {
+            try
+            {
+                var appointments = _appointmentService.GetAppointmentsByDoctorId(doctorId);
+                return Ok(appointments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to retrieve appointments.", error = ex.Message });
+            }
+        }
+
         [HttpPut("cancel/{appointmentId}")]
         public IActionResult CancelAppointmentById(int appointmentId)
         {
@@ -49,6 +69,20 @@ namespace YouAreHeard.Controllers
             {
                 _appointmentService.CancelAppointmentById(appointmentId);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to retrieve appointments.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("getDetail/{appointmentId}")]
+        public IActionResult GetPatientDetailByAppointmentId(int appointmentId)
+        {
+            try
+            {
+                var appointment = _appointmentService.GetAppointmentWithPatientDetailsById(appointmentId);
+                return Ok(appointment);
             }
             catch (Exception ex)
             {

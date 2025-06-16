@@ -21,7 +21,7 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
     const t5 = 'Gửi lại';
 
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null); 
+    const [loading, setLoading] = useState(null);
     const inputs = useRef([]);
 
     const {
@@ -69,6 +69,10 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
     const handleKeyDown = (e, index) => {
         if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
             inputs.current[index - 1].current.focus();
+        }
+
+        if (e.key === 'Enter') {
+            handleRequestOTP();
         }
 
         const otpValue = inputs.current.map(ref => ref.current.value).join('');
@@ -129,7 +133,7 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
                             className='submit-otp'>
                             {t3}
                         </button>
-                        
+
                         <p className='error'>
                             {error}
                         </p>
@@ -138,7 +142,7 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
                             <span>
                                 {t4}
                             </span>
-                            <span 
+                            <span
                                 onClick={() => handleRequestOTP()}
                                 className='resend'
                             >
@@ -148,8 +152,8 @@ function OTPBox({ emailSentTo, setOpenOTP }) {
                     </div>
                 </div>
             </div>
-            
-            { loading && (
+
+            {loading && (
                 <SkeletonUI />
             )}
         </div>

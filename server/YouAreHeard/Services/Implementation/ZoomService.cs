@@ -62,12 +62,12 @@ namespace YouAreHeard.Services.Implementation
             using var doc = JsonDocument.Parse(result);
             var zoomLink = doc.RootElement.GetProperty("join_url").GetString();
 
-            // Get patient email
-            var patientEmail = _userService.GetUserById(history.PatientID).Email;
+            // Get patient info
+            var patient = _userService.GetUserById(history.PatientID);
 
             // Send the email
-            EmailHelper.SendZoomLinkEmail(patientEmail, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
-            EmailHelper.sendZoomLinkEmailToDoctor(doctor.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
+            EmailHelper.SendZoomLinkEmail(patient.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
+            EmailHelper.sendZoomLinkEmailToDoctor(doctor.Email, patient.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
 
             return zoomLink;
         }

@@ -31,7 +31,8 @@ function NavBar({ user, setReloadCookies }) {
     const t7 = 'Đăng xuất';
 
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null);  
+    const [loading, setLoading] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(true);
     const navigate = useNavigate();
 
     const {
@@ -41,60 +42,68 @@ function NavBar({ user, setReloadCookies }) {
 
     return (
         <div className='nav-bar'>
-            <div className='logo'>
-                <img src={LogoPicture} alt='logo-picture' />
-                <img src={LogoText} alt='logo-text' />
-            </div>
+            <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+                ☰
+            </button>
 
-            <div className='navigation'>
-                <div onClick={() => navigate('/homePage')} className='home'>
-                    <Icon src={HomeIcon} alt={'home-icon'} />
-                    &nbsp;&nbsp;&nbsp;{t1}
-                </div>
-
-                {user && (
-                    <div onClick={() => navigate('/infoPage')} className='info'>
-                        <Icon src={UserIcon} alt={'info-icon'} />
-                        &nbsp;&nbsp;&nbsp;{t6}
+            {menuOpen && (
+                <div className='nav-bar-detail'>
+                    <div className='logo'>
+                        <img src={LogoPicture} alt='logo-picture' />
+                        <img src={LogoText} alt='logo-text' />
                     </div>
-                )}
 
-                <div onClick={() => navigate('/blogPage')} className='blog'>
-                    <Icon src={BookIcon} alt={'blog-icon'} />
-                    &nbsp;&nbsp;&nbsp;{t2}
-                </div>
+                    <div className='navigation'>
+                        <div onClick={() => navigate('/homePage')} className='home'>
+                            <Icon src={HomeIcon} alt={'home-icon'} />
+                            &nbsp;&nbsp;&nbsp;{t1}
+                        </div>
 
-                {user && (
-                    <div onClick={() => navigate('/appointmentPage')} className='appointment'>
-                        <Icon src={AppointmentIcon} alt={'appointment-icon'} />
-                        &nbsp;&nbsp;&nbsp;{t3}
+                        {user && (
+                            <div onClick={() => navigate('/infoPage')} className='info'>
+                                <Icon src={UserIcon} alt={'info-icon'} />
+                                &nbsp;&nbsp;&nbsp;{t6}
+                            </div>
+                        )}
+
+                        <div onClick={() => navigate('/blogPage')} className='blog'>
+                            <Icon src={BookIcon} alt={'blog-icon'} />
+                            &nbsp;&nbsp;&nbsp;{t2}
+                        </div>
+
+                        {user && (
+                            <div onClick={() => navigate('/appointmentPage')} className='appointment'>
+                                <Icon src={AppointmentIcon} alt={'appointment-icon'} />
+                                &nbsp;&nbsp;&nbsp;{t3}
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
 
-            {user ? (
-                <div className='authentication'>
-                    <button onClick={() => logout()} className='logout'>
-                        {t7}
-                    </button>
+                    {user ? (
+                        <div className='authentication'>
+                            <button onClick={() => logout()} className='logout'>
+                                {t7}
+                            </button>
+                        </div>
+                    ) : (
+                        <div className='authentication'>
+                            <button onClick={() => navigate('/login')} className='login'>
+                                {t4}
+                            </button>
+                            <button onClick={() => navigate('/register')} className='register'>
+                                {t5}
+                            </button>
+                        </div>
+                    )}
+
+                    {loading && (
+                        <SkeletonUI />
+                    )}
+
+                    {error && (
+                        <ErrorBox error={error} setError={setError} />
+                    )}
                 </div>
-            ) : (
-                <div className='authentication'>
-                    <button onClick={() => navigate('/login')} className='login'>
-                        {t4}
-                    </button>
-                    <button onClick={() => navigate('/register')} className='register'>
-                        {t5}
-                    </button>
-                </div>
-            )}
-
-            {loading && (
-                <SkeletonUI />
-            )}
-
-            {error && (
-                <ErrorBox error={error} setError={setError} />
             )}
         </div>
     )

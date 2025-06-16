@@ -1,4 +1,4 @@
-.nav-bar {
+.nav-bar-detail {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -18,18 +18,18 @@
     left: 0;
 }
 
-.nav-bar .logo {
+.nav-bar-detail .logo {
     display: flex;
     flex-direction: row;
     width: 20%;
 }
 
-.nav-bar .logo img {
+.nav-bar-detail .logo img {
     height: 2.4vw;
     width: auto;
 }
 
-.nav-bar .navigation {
+.nav-bar-detail .navigation {
     width: 60%;
     display: flex;
     flex-direction: row;
@@ -38,16 +38,17 @@
     font-size: 0.9vw;
 }
 
-.nav-bar .navigation div {
-    position: relative; /* Needed for ::after positioning */
+.nav-bar-detail .navigation div {
+    position: relative;
     display: flex;
-    justify-content: center; /* use justify-content instead of justify-items */
+    justify-content: center;
+    align-items: center;
     padding: 10px 20px;
     cursor: pointer;
     width: 25%;
 }
- 
-.nav-bar .navigation div::after {
+
+.nav-bar-detail .navigation div::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -60,18 +61,18 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.nav-bar .navigation div:hover::after {
+.nav-bar-detail .navigation div:hover::after {
     transform: scaleX(1);
 }
 
-.nav-bar .authentication {
+.nav-bar-detail .authentication {
     display: flex;
     flex-direction: row;
     width: 20%;
     justify-content: center;
 }
 
-.nav-bar .authentication button {
+.nav-bar-detail .authentication button {
     width: 45%;
     font-weight: 540;
     background-color: transparent;
@@ -82,26 +83,168 @@
     transition: width 0.3s ease;
 }
 
-.nav-bar .authentication .register {
+.nav-bar-detail .authentication .register {
     border-radius: 40px;
     background-color: #4A67F3;
     color: rgb(255, 255, 255);
 }
 
-.nav-bar .authentication button:hover {
+.nav-bar-detail .authentication button:hover {
     width: 50%;
 }
 
-.nav-bar .authentication .login:hover {
+.nav-bar-detail .authentication .login:hover {
     color: #4A67F3;
-} 
+}
 
-.nav-bar .authentication .logout {
+.nav-bar-detail .authentication .logout {
     border-radius: 40px;
     background-color: #4A67F3;
     color: rgb(255, 255, 255);
 }
 
-.nav-bar .authentication .logout:hover {
+.nav-bar-detail .authentication .logout:hover {
     width: 60%;
+}
+
+/* Hamburger menu button */
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 5vh;
+        width: 50vw;
+        margin: 25vw;
+        margin-top: 2vh;
+        justify-content: center;
+        background-color: #7285e1;
+        box-shadow: 0px 4px 20px rgb(0, 0, 0, 0.1);
+        border-radius: 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        color: rgb(255, 255, 255);
+        transition: all 0.1s ease-in-out;
+    }
+
+    .menu-toggle:active {
+        background-color: rgb(195, 196, 197);
+    }
+
+    .nav-bar-detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        width: 50vw !important;
+        margin: 25vw !important;
+        padding: 0;
+        margin-top: 10vh !important;
+        background-color: transparent;
+        justify-content: center;
+        box-shadow: none;
+        border-radius: 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .nav-bar-detail .logo {
+        display: none;
+    }
+
+    .nav-bar-detail .navigation {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: left;
+        font-size: 1.5vw;
+        font-weight: 550;
+    }
+
+    .nav-bar-detail .navigation div {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        padding-bottom: 2vw !important;
+        padding-top: 2vw !important;
+        background-color: #b0bcfa;
+        cursor: pointer;
+        margin: 1vw;
+        width: 100%;
+        border-radius: 40px;
+    }
+
+    .nav-bar-detail .navigation div::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: transparent;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-bar-detail .navigation div:active {
+        background-color: rgb(194, 199, 203);
+    }
+
+    .nav-bar-detail .authentication {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-bar-detail .authentication button {
+        width: 100%;
+        font-weight: 540;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 4%;
+        margin-top: 1vw;
+        font-size: 1.5vw;
+        transition: width 0.3s ease;
+    }
+
+    .nav-bar-detail .authentication .register {
+        border-radius: 40px;
+        background-color: #4A67F3;
+        color: rgb(255, 255, 255);
+    }
+
+    .nav-bar-detail .authentication button:hover {
+        width: 100%;
+    }
+
+    .nav-bar-detail .authentication .login:hover {
+        color: #4A67F3;
+    }
+
+    .nav-bar-detail .authentication .logout {
+        border-radius: 40px;
+        background-color: #4A67F3;
+        color: rgb(255, 255, 255);
+    }
+
+    .nav-bar-detail .authentication .logout:hover {
+        background-color: #394eba;
+        width: 100%;
+    }
 }

@@ -4,8 +4,9 @@ namespace YouAreHeard.Services.Interfaces
 {
     public interface IDoctorService
     {
-        DoctorProfileDTO GetDoctorProfileByDoctorId(string userId);
-        List<DoctorScheduleDTO> GetDoctorScheduleByDoctorId(string userId);
+        DoctorProfileDTO GetDoctorProfileByDoctorId(int userId);
+        List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId);
         List<DoctorProfileDTO> GetAllDoctorProfiles();
+        List<DoctorScheduleDTO> GetAvailableDoctorSchedules();
     }
 }

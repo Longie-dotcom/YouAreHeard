@@ -11,9 +11,16 @@
         public string? Reason { get; set; }
         public bool IsAnonymous { get; set; }
         public string? AppointmentStatusName { get; set; }
+        public int? QueueNumber { get; set; }
 
         public string? PatientName { get; set; }
+        public string? PatientPhone { get; set; }
+        public DateTime? PatientDob { get; set; }
+        public PatientProfileDTO? PatientProfile { get; set; }
+
         public string? DoctorName { get; set; }
+        public string? DoctorSpecialties { get; set; }
+
         public DateTime? Date { get; set; }
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }

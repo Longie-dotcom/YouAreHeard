@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useLoadAppointments({ user, setError, setLoading }) {
+function useLoadAppointments({ user, setError, setLoading, reload }) {
     const [appointments, setAppointments] = useState(null);
     
     const serverApi = process.env.REACT_APP_SERVER_API;
@@ -23,7 +23,7 @@ function useLoadAppointments({ user, setError, setLoading }) {
 
     useEffect(() => {
         getAllAppointments();
-    }, [user])
+    }, [user, reload])
 
     return ({
         appointments

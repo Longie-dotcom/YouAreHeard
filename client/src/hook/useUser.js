@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const getUserFromCookies = () => {
   const cookies = document.cookie.split(';').map(c => c.trim());
@@ -18,11 +19,17 @@ const getUserFromCookies = () => {
 const useUser = () => {
   const [reloadCookies, setReloadCookies] = useState(0);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userData = getUserFromCookies();
     if (userData) {
       setUser(userData);
+      if (userData.RoleId === Number(process.env.REACT_APP_ROLE_PATIENT_ID)) {
+        navigate('/homePage')
+      } else if (userData.RoleId === Number(process.env.REACT_APP_ROLE_DOCTOR_ID)) {
+        navigate('/doctorDashboardPage');
+      }
     } else {
       setUser(null);
     }

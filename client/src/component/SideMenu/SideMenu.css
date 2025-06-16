@@ -1,0 +1,58 @@
+.doctor-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.doctor-menu .menu {
+    display: flex;
+    flex-direction: column;
+    width: 90% !important;
+    margin: 5%;
+    background-color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 0;
+}
+
+.doctor-menu .menu .title {
+    padding: 1.2vw;
+    font-size: 1.2vw;
+    color: #797979;
+    font-weight: 550;
+}
+
+.doctor-menu .menu button {
+    padding: 1.1vw;
+    border: none;
+    background-color: transparent;
+    font-size: 1vw;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    font-weight: 500;
+    align-items: center;
+    transition: all 0.1s ease-in-out;
+}
+
+.doctor-menu .menu button .icon {
+    height: 1.5vw;
+}
+
+.doctor-menu .menu button .detail {
+    margin-left: 0.7vw;
+}
+
+.doctor-menu .menu button:hover {
+    background-color: #dbdbdb;
+}
+
+.doctor-menu .calendar {
+    display: flex;
+    flex-direction: column;
+    width: 90% !important;
+    margin: 5%;
+    border-radius: 20px;
+    margin-top: 0;
+}

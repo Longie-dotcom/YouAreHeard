@@ -1,6 +1,6 @@
 // Modules
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 // Styling sheet
 import './LoginPage.css';
@@ -30,8 +30,9 @@ function LoginPage({ setReloadCookies }) {
     const t10 = 'Đăng nhập';
 
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null);   
+    const [loading, setLoading] = useState(null);
     const navigate = useNavigate();
+    const passwordRef = useRef(null);
 
     const {
         handleSubmit, setEmail, setPassword
@@ -66,6 +67,12 @@ function LoginPage({ setReloadCookies }) {
                 <div className='input-group'>
                     <label htmlFor="email">{t4}</label>
                     <input
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                passwordRef.current?.focus();
+                            }
+                        }}
                         onChange={(e) => setEmail(e.target.value)}
                         type="email" id="email" name="email" placeholder={t5}
                     />
@@ -73,6 +80,12 @@ function LoginPage({ setReloadCookies }) {
                 <div className='input-group'>
                     <label htmlFor="password">{t6}</label>
                     <input
+                        ref={passwordRef}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSubmit();
+                            }
+                        }}
                         onChange={(e) => setPassword(e.target.value)}
                         type="password" id="password" name="password" placeholder={t7}
                     />
@@ -80,32 +93,19 @@ function LoginPage({ setReloadCookies }) {
             </div>
 
             <div className='footer'>
-                <div className='password-setting'>
-                    <div className='remember'>
-                        <input type='checkbox' />
-                        &nbsp;{t8}
-                    </div>
-                    <div className='forgot'>
-                        {t9}
-                    </div>
-                </div>
                 <button
                     onClick={() => handleSubmit()}
                     className='submit-button'
                 >
                     {t10}
                 </button>
-
-                <div>
-                    {error}
-                </div>
             </div>
 
-            { loading && (
+            {loading && (
                 <SkeletonUI />
             )}
 
-            { error && (
+            {error && (
                 <ErrorBox error={error} setError={setError} />
             )}
         </div>

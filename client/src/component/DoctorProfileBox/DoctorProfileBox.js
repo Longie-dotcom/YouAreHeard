@@ -110,15 +110,17 @@ function DoctorProfileBox({ viewDoctor, setViewDoctor, setChoosenDoctor }) {
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => {
-                                setViewDoctor(null);
-                                setChoosenDoctor(viewDoctor);
-                            }}
-                            className='request'
-                        >
-                            {t6}
-                        </button>
+                        {setChoosenDoctor && (
+                            <button
+                                onClick={() => {
+                                    setViewDoctor(null);
+                                    setChoosenDoctor(viewDoctor);
+                                }}
+                                className='request'
+                            >
+                                {t6}
+                            </button>
+                        )}
                     </div>
 
                     <div className='footer'>

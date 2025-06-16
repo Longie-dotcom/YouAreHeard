@@ -19,7 +19,7 @@ import ConfirmBox from '../ConfirmBox/ConfirmBox';
 // Hooks
 import useRequestAppointment from '../../hook/useRequestAppointment';
 
-function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setType, type }) {
+function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, type }) {
     const t1 = 'Chi tiết cuộc hẹn';
     const t2 = 'Chọn loại cuộc hẹn';
     const t3 = 'Lý do cho cuộc hẹn (thêm)';
@@ -33,7 +33,6 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setTyp
     const t11 = 'Offline';
     const t12 = 'Online';
     const t14m1 = 'Xác nhận thông tin';
-    const t14 = 'Trở lại';
     const t15 = 'BS.';
     const t16 = '-';
     const t17 = 'Xác nhận gửi yêu cầu';
@@ -55,7 +54,7 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setTyp
         anonymous, setAnonymous,
         setNote, setReason,
         handleRequest
-    } = useRequestAppointment({ user, choosenAppointment, setOpenFinish, type, setError, setLoading });
+    } = useRequestAppointment({ user, choosenAppointment, setResult, type, setError, setLoading });
 
     return (
         <div className='confirm-appointment-box'>
@@ -98,6 +97,7 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setTyp
                     <div className='reason'>
                         <label>{t3}</label>
                         <textarea
+                            maxLength={250}
                             onChange={(e) => setReason(e.target.value)}
                             ref={reasonRef}
                             onInput={(e) => autoGrow(e.target)}
@@ -109,6 +109,7 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setOpenFinish, setTyp
                     <div className='note'>
                         <label>{t4}</label>
                         <textarea
+                            maxLength={250}
                             onChange={(e) => setNote(e.target.value)}
                             ref={noteRef}
                             onInput={(e) => autoGrow(e.target)}

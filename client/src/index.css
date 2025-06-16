@@ -22,7 +22,7 @@ body {
 }
 
 input {
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 input:-webkit-autofill,
@@ -51,31 +51,31 @@ select:focus {
 }
 
 button {
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 textarea {
     resize: none;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 a {
     text-decoration: none;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 fieldset {
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 option {
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 select {
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }
 
 div {
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
 }

@@ -13,7 +13,7 @@ import SkeletonUI from '../SkeletonUI/SkeletonUI';
 // Hooks
 import useLoadDoctorSchedule from '../../hook/useLoadDoctorSchedule';
 
-function CalendarSelection({ doctor, setChoosenAppointment }) {
+function CalendarSelection({ doctor, setChoosenAppointment, setChoosenDate }) {
     const labels = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
     const t1 = 'Chọn ngày/tháng/năm cho cuộc hẹn';
     const t2 = '-';
@@ -28,9 +28,10 @@ function CalendarSelection({ doctor, setChoosenAppointment }) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
 
+    const doctorId = doctor ? doctor.userID : null;
     const {
         schedules,
-    } = useLoadDoctorSchedule({ doctorId: doctor.userID, setError, setLoading });
+    } = useLoadDoctorSchedule({ doctorId, setError, setLoading });
 
     const calendarDays = [];
 
@@ -103,19 +104,32 @@ function CalendarSelection({ doctor, setChoosenAppointment }) {
                             <div className='date'>
                                 {day || ''}
                             </div>
-                            <div className='doctor'>
+                            <div className={doctor ? 'doctor' : 'doctors'}>
                                 {daySchedules?.map((s, i) => (
-                                    <div
-                                        onClick={() => {
-                                            setChoosenAppointment({ doctor, schedule: s });
-                                        }}
-                                        key={i} className="schedule-item"
-                                    >
-                                        {doctor.name}
-                                        <div className='slots'>
-                                            {s.startTime?.slice(0, 5)}&nbsp;{t2}&nbsp;{s.endTime?.slice(0, 5)}
+                                    doctor ? (
+                                        <div
+                                            onClick={() => {
+                                                setChoosenAppointment({ doctor, schedule: s });
+                                            }}
+                                            key={i}
+                                            className="schedule-item"
+                                        >
+                                            {doctor.name}
+                                            <div className='slots'>
+                                                {s.startTime?.slice(0, 5)}&nbsp;{t2}&nbsp;{s.endTime?.slice(0, 5)}
+                                            </div>
                                         </div>
-                                    </div>
+                                    ) : (
+                                        <div
+                                            onClick={() => {
+                                                setChoosenDate(daySchedules);
+                                            }}
+                                            key={i}
+                                            className="schedule-item-doctor-list"
+                                        >
+                                            {s.doctorProfile.name}
+                                        </div>
+                                    )
                                 ))}
                             </div>
                         </div>

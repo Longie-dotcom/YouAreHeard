@@ -13,19 +13,24 @@ namespace YouAreHeard.Services.Implementation
             _doctorRepository = doctorRepository;
         }
 
-        public DoctorProfileDTO GetDoctorProfileByDoctorId(string userId)
+        public DoctorProfileDTO GetDoctorProfileByDoctorId(int userId)
         {
-            return _doctorRepository.GetDoctorProfileByDoctorId(int.Parse(userId));
+            return _doctorRepository.GetDoctorProfileByDoctorId(userId);
         }
 
-        public List<DoctorScheduleDTO> GetDoctorScheduleByDoctorId(string userId)
+        public List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId)
         {
-            return _doctorRepository.GetDoctorScheduleByDoctorId(userId);
+            return _doctorRepository.GetAllAvailableDoctorScheduleByDoctorId(userId);
         }
 
         public List<DoctorProfileDTO> GetAllDoctorProfiles()
         {
             return _doctorRepository.GetAllDoctorProfiles();
+        }
+
+        public List<DoctorScheduleDTO> GetAvailableDoctorSchedules()
+        {
+            return _doctorRepository.GetAllAvailableDoctorSchedules();
         }
     }
 }

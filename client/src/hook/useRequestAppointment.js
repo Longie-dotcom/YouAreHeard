@@ -1,7 +1,7 @@
 import { use, useState } from "react";
 import axios from "axios";
 
-function useRequestAppointment({ user, choosenAppointment, setOpenFinish, type, setError, setLoading }) {
+function useRequestAppointment({ user, choosenAppointment, setResult, type, setError, setLoading }) {
     const t1 = 'Vui lòng chọn loại cuộc hẹn';
     const t2 = 'Server xảy ra lỗi';
 
@@ -46,7 +46,8 @@ function useRequestAppointment({ user, choosenAppointment, setOpenFinish, type, 
                     }
                 }
             );
-            setOpenFinish(true);
+
+            setResult(response.data);
         } catch (error) {
             const response = error.response?.data;
             const message = response?.message || t2;

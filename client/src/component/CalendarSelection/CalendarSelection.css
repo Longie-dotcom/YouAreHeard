@@ -96,3 +96,14 @@
     color:rgb(42, 0, 229);
     margin-top: 1vw;
 }
+
+.calendar-selection .calendar-grid .calendar-day .doctors {
+    display: flex;
+    font-size: 0.7vw;
+    flex-direction: column;
+}
+
+.calendar-selection .calendar-grid .calendar-day .doctors .schedule-item-doctor-list {
+    margin-top: 0.5vw !important;
+    font-weight: 550;
+}

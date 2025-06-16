@@ -9,16 +9,30 @@ function useLoadDoctorSchedule({ doctorId, setError, setLoading }) {
 
     const getDoctorSchedule = async () => {
         setLoading(true);
-        await axios.get(
-            `${serverApi}${doctorControllerApi}/schedule/${doctorId}`
-        )
-            .then((response) => {
-                setSchedules(response.data);
-            }).catch((error) => {
-                setError(error.response?.data?.message);
-            }).finally(() => {
-                setLoading(false);
-            })
+
+        if (doctorId) {
+            await axios.get(
+                `${serverApi}${doctorControllerApi}/schedule/${doctorId}`
+            )
+                .then((response) => {
+                    setSchedules(response.data);
+                }).catch((error) => {
+                    setError(error.response?.data?.message);
+                }).finally(() => {
+                    setLoading(false);
+                })
+        } else {
+            await axios.get(
+                `${serverApi}${doctorControllerApi}/schedule/all`
+            )
+                .then((response) => {
+                    setSchedules(response.data);
+                }).catch((error) => {
+                    setError(error.response?.data?.message);
+                }).finally(() => {
+                    setLoading(false);
+                })
+        }
     }
 
     useEffect(() => {

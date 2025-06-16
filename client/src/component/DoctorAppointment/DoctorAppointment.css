@@ -1,0 +1,182 @@
+.doctor-appointment {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin-right: 5%;
+}
+
+.doctor-appointment .main-title {
+    padding: 1%;
+    margin-bottom: 3%;
+    width: 98%;
+    font-size: 1vw;
+    color: #616161;
+    border-bottom: #b0b0b0 solid 2px;
+}
+
+.doctor-appointment .today {
+    width: 95%;
+    border-radius: 20px;
+    padding: 2.5%;
+    background-color: #ffffff;
+}
+
+.doctor-appointment .today div{
+    display: flex;
+    margin: 0.2vw;
+    align-items: center;
+}
+
+.doctor-appointment .today div .title {
+    width: 40%;
+    font-size: 1vw;
+    font-weight: 550;
+}
+
+.doctor-appointment .today div .title .icon {
+    margin-right: 1vw;
+    height: 1.2vw;
+}
+
+.doctor-appointment .today div .detail {
+    font-size: 0.9vw;
+}
+
+.doctor-appointment .today .patient .detail {
+    font-size: 1.2vw;
+    font-weight: 550;
+}
+
+.doctor-appointment .today .zoom .detail a {
+    display: flex;
+    align-items: center;
+    font-weight: 550;
+    color: #4A67F3;
+}
+
+.doctor-appointment .today .zoom .detail a:hover {
+    border-bottom: #4A67F3 2px solid;
+}
+
+.doctor-appointment .category {
+    width: 100%;
+    margin-top: 2%;
+}
+
+.doctor-appointment .category button {
+    width: 48%;
+    border-radius: 20px;
+    padding: 2%;
+    border: none;
+    color: rgb(255, 255, 255);
+    font-size: 0.9vw;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.doctor-appointment .category .online {
+    margin-right: 2%;
+    background-color: #4d597b;
+}
+
+.doctor-appointment .category .online:hover {
+    background-color: #323a50;
+}
+
+.doctor-appointment .category .offline {
+    margin-left: 2%;
+    background-color: #4d7b66;
+}
+
+.doctor-appointment .category .offline:hover {
+    background-color: #2e4b3e;
+}
+
+.doctor-appointment .category .active {
+    background-color: #000000;
+    font-weight: 550;
+}
+
+.doctor-appointment .appointment {
+    width: 100%;
+    margin-top: 2%;
+    height: 25vh;
+    overflow-y: auto;
+    overflow-x: hidden;  
+}
+
+.doctor-appointment .appointment::-webkit-scrollbar {
+    width: 8px;
+}
+
+.doctor-appointment .appointment::-webkit-scrollbar-thumb {
+    background-color: #b4c1ff;
+    border-radius: 4px;
+}
+
+.doctor-appointment .appointment::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.doctor-appointment .appointment .appointment-later {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.9vw;
+    padding: 0.9vw;
+    padding-left: 0.7vw;
+    padding-right: 0.4vw;
+    border-radius: 40px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+.doctor-appointment .appointment .appointment-later div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.doctor-appointment .appointment .appointment-later .name {
+    font-size: 0.8vw;
+    width: 20%;
+    font-weight: 550;
+}
+
+.doctor-appointment .appointment .appointment-later .date {
+    width: 15%;
+}
+
+.doctor-appointment .appointment .appointment-later .time {
+    width: 15%;
+}
+
+.doctor-appointment .appointment .appointment-later .location {
+    width: 17.5%;
+}
+
+.doctor-appointment .appointment .appointment-later .queue-number {
+    width: 15%;
+}
+
+.doctor-appointment .appointment .appointment-later .patient-detail {
+    width: 17.5%;
+}
+
+.doctor-appointment .appointment .appointment-later .patient-detail button {
+    width: 90%;
+    border: none;
+    border-radius: 20px;
+    background-color: #4A67F3;
+    color: rgb(255, 255, 255);
+    font-size: 0.8vw;
+    cursor: pointer;
+    padding: 0.2vw;
+    transition: all 0.1s ease-in-out;
+}
+
+.doctor-appointment .appointment .appointment-later .patient-detail button:hover {
+    background-color: #3348ad;
+}

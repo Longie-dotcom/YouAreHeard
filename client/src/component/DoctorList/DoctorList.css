@@ -4,7 +4,7 @@
     width: 70vw;
     margin-left: 15vw;
     margin-right: 15vw;
-    gap: 2vw;
+    gap: 30px;
     margin-top: 3vh;
     height: 70vh;
     place-items: center;
@@ -81,7 +81,7 @@
 }
 
 .doctor-list .doctor-card .body .rating,
-.doctor-list .doctor-card .body .available-days{
+.doctor-list .doctor-card .body .available-days {
     font-size: 0.9vw;
     margin-top: 0.5vw !important;
     margin-bottom: 0.5w !important;
@@ -116,4 +116,96 @@
 
 .doctor-list .doctor-card .footer button:hover {
     width: 45%;
+}
+
+@media screen and (max-width: 768px) {
+    .doctor-list {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        width: 80vw;
+        margin-left: 10vw;
+        margin-right: 10vw;
+        gap: 50px;
+        margin-top: 3vh;
+        height: 70vh;
+        place-items: center;
+        margin-bottom: 20vw;
+    }
+
+    .doctor-list .doctor-card {
+        padding: 5%;
+        width: 90%;
+        border-radius: 10px;
+        height: 90%;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .doctor-list .doctor-card .header {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 35%;
+        margin: 0 !important;
+    }
+
+    .doctor-list .doctor-card .header .avatar {
+        width: 6vw;
+        height: 6vw;
+        overflow: hidden;
+        border-radius: 4vw;
+    }
+
+    .doctor-list .doctor-card .header .avatar img {
+        width: inherit;
+        height: inherit;
+    }
+
+    .doctor-list .doctor-card .header .detail {
+        margin-left: 5%;
+        width: 68%;
+    }
+
+    .doctor-list .doctor-card .header .detail h1 {
+        margin: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        font-size: 2vw !important;
+    }
+
+    .doctor-list .doctor-card .header .detail p {
+        display: flex;
+        align-items: center;
+        font-size: 2vw !important;
+        margin: 0 !important;
+    }
+
+    .doctor-list .doctor-card .header .detail p .icon,
+    .doctor-list .doctor-card .header .detail h1 .icon {
+        margin-right: 0.4vw;
+    }
+
+    .doctor-list .doctor-card .header .detail .specialties {
+        font-size: 1.7vw !important;
+    }
+
+    .doctor-list .doctor-card .header .detail .experience {
+        font-size: 1.7vw !important;
+    }
+
+    .doctor-list .doctor-card .body {
+        height: 33%;
+    }
+
+    .doctor-list .doctor-card .body .rating,
+    .doctor-list .doctor-card .body .available-days {
+        font-size: 1.9vw;
+        margin-top: 2% !important;
+        margin-bottom: 0.5w !important;
+    }
+
+    .doctor-list .doctor-card .footer button {
+        border-radius: 40px;
+        font-size: 1.9vw;
+    }
 }

@@ -1,0 +1,388 @@
+// Modules
+import { useState, useEffect } from 'react';
+
+// Styling sheet
+import './TreatmentBox.css';
+
+// Assets
+import ZoomIcon from '../../uploads/icon/zoom.png';
+import BigPillIcon from '../../uploads/icon/big-pill.png';
+
+// Components
+import Icon from '../Icon/Icon';
+import ErrorBox from '../ErrorBox/ErrorBox';
+import SkeletonUI from '../SkeletonUI/SkeletonUI';
+
+// Hooks
+import useLoadAllRegimens from '../../hook/useLoadAllRegimens';
+import useLoadAllPatientGroups from '../../hook/useLoadAllPatientGroups';
+import useLoadAllMedications from '../../hook/useLoadAllMedications';
+
+function TreatmentBox({ appointments }) {
+    const t1 = 'Danh sách bệnh nhân';
+    const t2 = 'Kết quả xét nghiệm gần nhất của bệnh nhân';
+    const t3 = 'Tạo kế hoạch điều trị';
+    const t4 = 'Lựa chọn phác đồ';
+    const t5 = 'Tùy chỉnh phác đồ';
+    const t6 = 'Loại phác đồ';
+    const t7 = 'Thời gian';
+    const t8 = 'Liều lượng';
+    const t9 = 'Tần suất';
+    const t10 = 'Chỉ định';
+    const t11 = 'Chống chỉ định';
+    const t12 = 'Tác dụng phụ';
+    const t14m1 = 'Thuốc';
+    const t14 = 'Nhóm bệnh nhân';
+    const t15 = 'Chọn nhóm bệnh nhân';
+    const t16 = 'Tùy chỉnh thông tin phác đồ';
+    const t17 = 'Chọn loại phác đồ';
+    const t18 = 'Liều lượng điều chỉnh';
+    const t19 = 'Tần suất điều chỉnh';
+    const t20 = 'Chọn thuốc thay thế (sẵn có)';
+    const t21 = 'Độ tuổi áp dụng';
+    const t26 = 'Ghi chú';
+    const t27 = 'Các loại thuốc thay thế đã chọn (Click vào thuốc đã chọn bên dưới để loại bỏ)';
+
+    const t22 = '-';
+    const t23 = 'Trực tuyến';
+    const t24 = 'Tạo kế hoạch';
+    const t25 = 'Số thứ tự: ';
+
+    const [error, setError] = useState();
+    const [loading, setLoading] = useState();
+    const [upcomingAppointments, setUpcomingAppointments] = useState(null);
+    const [selectedRegimenId, setSelectedRegimenId] = useState(null);
+    const [isCustomizing, setIsCustomizing] = useState(false);
+    const [selectedTreatmentOf, setSelectedTreatmentOF] = useState(null);
+    const [customData, setCustomData] = useState({
+        adjustedDosage: '',
+        adjustedFrequency: '',
+        alternativeMedications: [],
+        ageRange: '',
+        notes: '',
+        patientGroupID: ''
+    });
+
+    const {
+        medications
+    } = useLoadAllMedications({ setError, setLoading });
+    const {
+        regimens
+    } = useLoadAllRegimens({ setError, setLoading });
+    const {
+        patientGroups
+    } = useLoadAllPatientGroups({ setError, setLoading });
+
+    const formatTime = (timeStr) => {
+        const [hours, minutes] = timeStr.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    };
+    const handleCustomChange = (e) => {
+        const { name, value } = e.target;
+        setCustomData(prev => ({ ...prev, [name]: value }));
+    };
+
+    useEffect(() => {
+        if (!appointments) return;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const upcomingAppointments = appointments
+            .map(app => {
+                const dateStr = app.date.split('T')[0];
+                const dateTime = new Date(`${dateStr}T${app.startTime}`);
+                return {
+                    ...app,
+                    dateTime,
+                };
+            })
+            .filter(app => {
+                const appointmentDate = new Date(app.dateTime);
+                appointmentDate.setHours(0, 0, 0, 0);
+                return appointmentDate >= today && !app.zoomLink;
+            });
+
+        setUpcomingAppointments(upcomingAppointments || []);
+    }, [appointments]);
+
+    return (
+        <div className='treatment-box'>
+            <div className='title'>
+                {t1}
+            </div>
+
+            {upcomingAppointments && (
+                <div className='patient-list'>
+                    {upcomingAppointments.map((appointment) => (
+                        <div className='appointment-later'>
+                            <div className='name'>
+                                {appointment.patientName}
+                            </div>
+                            <div className='date'>
+                                {appointment.date?.split("T")[0]}
+                            </div>
+                            <div className='time'>
+                                {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
+                            </div>
+                            <div className='location'>
+                                {appointment.zoomLink ? (
+                                    <div>
+                                        <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
+                                    </div>
+                                ) : appointment.location}
+                            </div>
+                            <div className='queue-number'>
+                                {t25}{appointment.queueNumber}
+                            </div>
+                            <div className='patient-detail'>
+                                <button
+                                    onClick={() => setSelectedTreatmentOF(appointment)}
+                                >
+                                    {t24}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {selectedTreatmentOf && (
+                <>
+                    <div className='title'>
+                        {t2}
+                    </div>
+                    <div className='test-result'>
+                        Kết quả xết nghiệm của {selectedTreatmentOf.patientName} sẽ nằm ở đây
+                    </div>
+
+                    <div className='title'>
+                        {t3}
+                    </div>
+                    <div className='treatment-form'>
+                        <div className='header'>
+                            <div className='regimen'>
+                                <label htmlFor="regimen-select">{t4}</label>
+                                <select
+                                    id="regimen-select"
+                                    value={selectedRegimenId || ''}
+                                    onChange={(e) => setSelectedRegimenId(Number(e.target.value))}
+                                >
+                                    <option value={null} className='empty'>{t17}</option>
+                                    {regimens?.map(regimen => (
+                                        <option key={regimen.regimenID} value={regimen.regimenID}>
+                                            {regimen.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {selectedRegimenId && (
+                                <div className='customize-toggle'>
+                                    <input
+                                        type="checkbox"
+                                        checked={isCustomizing}
+                                        onChange={(e) => setIsCustomizing(e.target.checked)}
+                                    />
+                                    <div>{t5}</div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className='body'>
+                            {selectedRegimenId && (() => {
+                                const selected = regimens.find(r => r.regimenID === selectedRegimenId);
+                                if (!selected) return null;
+                                return (
+                                    <>
+                                        <div className="regimen-detail">
+                                            <div>
+                                                <div className='title'>
+                                                    {t6}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.type}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t7}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.duration}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t8}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.dosage}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t9}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.frequency}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t10}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.indications}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t11}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.contraindications}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t12}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.sideEffects}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t14m1}
+                                                </div>
+                                                <div className='detail'>
+                                                    {selected.medications?.map(m => m.medicationName).join(', ')}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className='title'>
+                                                    {t14}
+                                                </div>
+                                                <div className='detail'>
+                                                    <select
+                                                        name="patientGroupID"
+                                                        value={customData.patientGroupID}
+                                                        onChange={handleCustomChange}>
+                                                        <option className='empty' value={null}>{t15}</option>
+                                                        {patientGroups?.map(group => (
+                                                            <option key={group.patientGroupID} value={group.patientGroupID}>
+                                                                {group.patientGroupName}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {isCustomizing && (
+                                            <div className='customized-fields'>
+                                                <div className='title'>
+                                                    {t16}
+                                                </div>
+                                                <div className='input-group'>
+                                                    <label>{t18}</label>
+                                                    <input type="text" name="adjustedDosage" value={customData.adjustedDosage} onChange={handleCustomChange} />
+                                                </div>
+
+                                                <div className='input-group'>
+                                                    <label>{t19}</label>
+                                                    <input type="text" name="adjustedFrequency" value={customData.adjustedFrequency} onChange={handleCustomChange} />
+                                                </div>
+
+                                                <div className='input-group'>
+                                                    <label>{t20}</label>
+                                                    <div className="medication-list">
+                                                        {medications.map(med => {
+                                                            const isSelected = customData.alternativeMedications.includes(med.medicationID);
+
+                                                            return (
+                                                                <button
+                                                                    key={med.medicationID}
+                                                                    type="button"
+                                                                    className={`med-pill ${isSelected ? 'selected' : ''}`}
+                                                                    disabled={isSelected}
+                                                                    onClick={() => {
+                                                                        if (!isSelected) {
+                                                                            setCustomData(prev => ({
+                                                                                ...prev,
+                                                                                alternativeMedications: [...prev.alternativeMedications, med.medicationID]
+                                                                            }));
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <Icon src={BigPillIcon} alt={'big-pill-icon'} />
+                                                                    {med.medicationName}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+
+                                                    <div className='medication-title'>
+                                                        {t27}
+                                                    </div>
+                                                    {customData.alternativeMedications.length > 0 && (
+                                                        <div className="selected-meds-list">
+                                                            {customData.alternativeMedications.map(id => {
+                                                                const med = medications.find(m => m.medicationID === id);
+                                                                return (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() =>
+                                                                            setCustomData(prev => ({
+                                                                                ...prev,
+                                                                                alternativeMedications: prev.alternativeMedications.filter(medId => medId !== id)
+                                                                            }))
+                                                                        }
+                                                                    >
+                                                                        {med?.medicationName}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                <div className='input-group'>
+                                                    <label>{t21}</label>
+                                                    <input type="text" name="ageRange" value={customData.ageRange} onChange={handleCustomChange} />
+                                                </div>
+
+                                                <div className='input-group'>
+                                                    <label>{t26}</label>
+                                                    <textarea name="notes" value={customData.notes} onChange={handleCustomChange}></textarea>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </>
+                                );
+                            })()}
+                        </div>
+
+                    </div>
+                </>
+            )}
+            {loading && (
+                <SkeletonUI />
+            )}
+
+            {error && (
+                <ErrorBox error={error} setError={setError} />
+            )}
+        </div>
+    )
+}
+
+export default TreatmentBox;

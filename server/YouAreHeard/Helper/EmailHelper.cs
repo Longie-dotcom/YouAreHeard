@@ -278,7 +278,7 @@ namespace YouAreHeard.Helper
                       <!-- Lưu ý -->
                       <tr>
                         <td align='center' style='font-size: 14px; color: #888;'>
-                          Vui lòng tham gia đúng giờ. Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi.
+                          Vui lòng tham gia đúng giờ. Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi. Cảm ơn các y bác sĩ đã tận tâm với công việc
                         </td>
                       </tr>
 
