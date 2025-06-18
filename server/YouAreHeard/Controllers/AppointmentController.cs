@@ -16,7 +16,7 @@ namespace YouAreHeard.Controllers
         }
 
         [HttpPost("request")]
-        public async Task<IActionResult> RequestAppointment([FromBody] AppointmentRequestDTO request)
+        public async Task<IActionResult> RequestAppointment([FromBody] RequestAppointmentDTO requestAppointment)
         {
             if (!ModelState.IsValid)
             {
@@ -25,7 +25,7 @@ namespace YouAreHeard.Controllers
 
             try
             {
-                AppointmentDTO appointment = await _appointmentService.RequestAppointmentAsync(request.Appointment, request.MedicalHistory);
+                AppointmentDTO appointment = await _appointmentService.RequestAppointmentAsync(requestAppointment);
                 return Ok(appointment);
             }
             catch (Exception ex)

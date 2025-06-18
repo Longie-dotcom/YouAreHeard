@@ -15,12 +15,12 @@ function Calendar({ appointments }) {
     const appointmentDays = useMemo(() => {
         return appointments
             ?.filter(app => {
-                const date = new Date(app.date);
+                const date = new Date(app.scheduleDate);
                 return date.getFullYear() === year && date.getMonth() === month;
             })
-            .map(app => new Date(app.date).getDate());
+            .map(app => new Date(app.scheduleDate).getDate());
     }, [appointments, year, month]);
-    
+
     const prevMonth = () => {
         if (year === currentYear && month === 0) return;
         setCurrentDate(new Date(year, month - 1, 1));

@@ -196,6 +196,7 @@
     background-color: #f2f2f2;
     margin: 1%;
     padding: 2%;
+    font-size: 1vw;
     margin-bottom: 4%;
     margin-top: 4%;
     border-radius: 10px;
@@ -232,6 +233,7 @@
     background-color: #82ff9b;
     display: flex;
     align-items: center;
+    font-size: 1vw;
     transition: all 0.1s ease-in-out;
 }
 
@@ -269,4 +271,100 @@
 .treatment-box .treatment-form .body .customized-fields .input-group .medication-title {
     margin: 2%;
     font-size: 0.8vw;
+}
+
+.treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input {
+    margin: 2%;
+    display: flex;
+    width: 60%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input input {
+    width: 50%;
+}
+
+.treatment-box .treatment-form .body .pill-remind {
+    margin: 2%;
+}
+
+.treatment-box .treatment-form .body .pill-remind .header {
+    font-size: 0.9vw;
+    font-weight: 550;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill {
+    display: flex;
+    flex-direction: column;
+    margin: 1%;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill div {
+    width: 70%;
+    font-size: 1vw;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill div input {
+    border: none;
+    background-color: #97ffac;
+    padding: 0.4vw;
+    border-radius: 40px;
+    width: 100%;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name  button {
+    border: none;
+    padding: 0.6vw;
+    background-color: #6e86ff;
+    color: rgb(255, 255, 255);
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.8vw;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name  button:hover {
+    background-color: #4A67F3;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name  button:active {
+    background-color: #25399c;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    margin: 2%;
+    margin-bottom: 5%;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot input {
+    width: 30%;
+    font-size: 1vw;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot button {
+    background-color: rgb(255, 121, 121);
+    border: none;
+    border-radius: 40px;
+    width: 25%;
+    margin-left: 5%;
+    font-size: 0.8vw;
+    color: white;
+    font-weight: 550;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot button:hover {
+    background-color: rgb(211, 78, 78);
 }

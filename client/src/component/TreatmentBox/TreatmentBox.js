@@ -25,7 +25,7 @@ function TreatmentBox({ appointments }) {
     const t4 = 'Lựa chọn phác đồ';
     const t5 = 'Tùy chỉnh phác đồ';
     const t6 = 'Loại phác đồ';
-    const t7 = 'Thời gian';
+    const t7 = 'Thời gian sử dụng';
     const t8 = 'Liều lượng';
     const t9 = 'Tần suất';
     const t10 = 'Chỉ định';
@@ -36,12 +36,17 @@ function TreatmentBox({ appointments }) {
     const t15 = 'Chọn nhóm bệnh nhân';
     const t16 = 'Tùy chỉnh thông tin phác đồ';
     const t17 = 'Chọn loại phác đồ';
-    const t18 = 'Liều lượng điều chỉnh';
-    const t19 = 'Tần suất điều chỉnh';
+    const t18 = 'Liều lượng điều chỉnh (đơn vị: viên)';
+    const t19 = 'Tần suất điều chỉnh (đơn vị: lần/ngày)';
     const t20 = 'Chọn thuốc thay thế (sẵn có)';
     const t21 = 'Độ tuổi áp dụng';
     const t26 = 'Ghi chú';
     const t27 = 'Các loại thuốc thay thế đã chọn (Click vào thuốc đã chọn bên dưới để loại bỏ)';
+    const t28 = 'Lịch nhắc nhở uống thuốc';
+    const t29 = 'lần/ngày';
+    const t30 = '- uống';
+    const t31 = 'Thêm giờ';
+    const t32 = 'Xóa lịch';
 
     const t22 = '-';
     const t23 = 'Trực tuyến';
@@ -54,8 +59,10 @@ function TreatmentBox({ appointments }) {
     const [selectedRegimenId, setSelectedRegimenId] = useState(null);
     const [isCustomizing, setIsCustomizing] = useState(false);
     const [selectedTreatmentOf, setSelectedTreatmentOF] = useState(null);
+    const [pillRemindTimes, setPillRemindTimes] = useState({});
+    const [selectedMedications, setSelectedMedications] = useState(null);
     const [customData, setCustomData] = useState({
-        adjustedDosage: '',
+        adjustedDosage: {},
         adjustedFrequency: '',
         alternativeMedications: [],
         ageRange: '',
@@ -82,6 +89,8 @@ function TreatmentBox({ appointments }) {
         setCustomData(prev => ({ ...prev, [name]: value }));
     };
 
+    
+
     useEffect(() => {
         if (!appointments) return;
 
@@ -90,7 +99,7 @@ function TreatmentBox({ appointments }) {
 
         const upcomingAppointments = appointments
             .map(app => {
-                const dateStr = app.date.split('T')[0];
+                const dateStr = app.scheduleDate.split('T')[0];
                 const dateTime = new Date(`${dateStr}T${app.startTime}`);
                 return {
                     ...app,
@@ -120,7 +129,7 @@ function TreatmentBox({ appointments }) {
                                 {appointment.patientName}
                             </div>
                             <div className='date'>
-                                {appointment.date?.split("T")[0]}
+                                {appointment.scheduleDate?.split("T")[0]}
                             </div>
                             <div className='time'>
                                 {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
@@ -165,7 +174,12 @@ function TreatmentBox({ appointments }) {
                                 <select
                                     id="regimen-select"
                                     value={selectedRegimenId || ''}
-                                    onChange={(e) => setSelectedRegimenId(Number(e.target.value))}
+                                    onChange={(e) => {
+                                        const id = Number(e.target.value);
+                                        const selected = regimens.find(r => r.regimenID === id);
+                                        setSelectedRegimenId(id);
+                                        setSelectedMedications(selected?.medications || []);
+                                    }}
                                 >
                                     <option value={null} className='empty'>{t17}</option>
                                     {regimens?.map(regimen => (
@@ -292,67 +306,80 @@ function TreatmentBox({ appointments }) {
                                                 <div className='title'>
                                                     {t16}
                                                 </div>
-                                                <div className='input-group'>
-                                                    <label>{t18}</label>
-                                                    <input type="text" name="adjustedDosage" value={customData.adjustedDosage} onChange={handleCustomChange} />
-                                                </div>
-
-                                                <div className='input-group'>
-                                                    <label>{t19}</label>
-                                                    <input type="text" name="adjustedFrequency" value={customData.adjustedFrequency} onChange={handleCustomChange} />
-                                                </div>
 
                                                 <div className='input-group'>
                                                     <label>{t20}</label>
                                                     <div className="medication-list">
                                                         {medications.map(med => {
-                                                            const isSelected = customData.alternativeMedications.includes(med.medicationID);
+                                                            const isSelected = selectedMedications.some(m => m.medicationID === med.medicationID);
 
                                                             return (
                                                                 <button
                                                                     key={med.medicationID}
                                                                     type="button"
                                                                     className={`med-pill ${isSelected ? 'selected' : ''}`}
-                                                                    disabled={isSelected}
                                                                     onClick={() => {
-                                                                        if (!isSelected) {
-                                                                            setCustomData(prev => ({
-                                                                                ...prev,
-                                                                                alternativeMedications: [...prev.alternativeMedications, med.medicationID]
-                                                                            }));
-                                                                        }
+                                                                        setSelectedMedications(prev => {
+                                                                            if (isSelected) {
+                                                                                // Remove it
+                                                                                return prev.filter(m => m.medicationID !== med.medicationID);
+                                                                            } else {
+                                                                                // Add it
+                                                                                return [...prev, med];
+                                                                            }
+                                                                        });
                                                                     }}
                                                                 >
-                                                                    <Icon src={BigPillIcon} alt={'big-pill-icon'} />
+                                                                    <Icon src={BigPillIcon} alt="big-pill-icon" />
                                                                     {med.medicationName}
                                                                 </button>
                                                             );
                                                         })}
                                                     </div>
 
-                                                    <div className='medication-title'>
-                                                        {t27}
-                                                    </div>
-                                                    {customData.alternativeMedications.length > 0 && (
-                                                        <div className="selected-meds-list">
-                                                            {customData.alternativeMedications.map(id => {
-                                                                const med = medications.find(m => m.medicationID === id);
-                                                                return (
+                                                    {selectedMedications.length > 0 && (
+                                                        <>
+                                                            <div className='medication-title'>{t27}</div>
+                                                            <div className="selected-meds-list">
+                                                                {selectedMedications.map(med => (
                                                                     <button
+                                                                        key={med.medicationID}
                                                                         type="button"
                                                                         onClick={() =>
-                                                                            setCustomData(prev => ({
-                                                                                ...prev,
-                                                                                alternativeMedications: prev.alternativeMedications.filter(medId => medId !== id)
-                                                                            }))
+                                                                            setSelectedMedications(prev =>
+                                                                                prev.filter(m => m.medicationID !== med.medicationID)
+                                                                            )
                                                                         }
                                                                     >
-                                                                        {med?.medicationName}
+                                                                        {med.medicationName}
                                                                     </button>
-                                                                );
-                                                            })}
-                                                        </div>
+                                                                ))}
+                                                            </div>
+                                                        </>
                                                     )}
+                                                </div>
+
+                                                <div className='input-group'>
+                                                    <label>{t18}</label>
+                                                    {selectedMedications?.map(m => (
+                                                        <div key={m.medicationID} className='med-dosage-input'>
+                                                            <span>{m.medicationName}</span>
+                                                            <input
+                                                                type="text"
+                                                                value={customData.adjustedDosage[m.medicationID] ? customData.adjustedDosage[m.medicationID] : m.dosage}
+                                                                onChange={(e) =>
+                                                                    setCustomData(prev => ({
+                                                                        ...prev,
+                                                                        adjustedDosage: {
+                                                                            ...prev.adjustedDosage,
+                                                                            [m.medicationID]: e.target.value
+                                                                        }
+                                                                    }))
+                                                                }
+                                                            />
+                                                            <span>{m.dosageMetric}</span>
+                                                        </div>
+                                                    ))}
                                                 </div>
 
                                                 <div className='input-group'>
@@ -366,6 +393,65 @@ function TreatmentBox({ appointments }) {
                                                 </div>
                                             </div>
                                         )}
+
+                                        <div className='pill-remind'>
+                                            <div className='header'>
+                                                {t28}
+                                            </div>
+                                            {selectedMedications?.map(m => (
+                                                <div className='pill' key={m.medicationID}>
+                                                    <div className='pill-name'>
+                                                        <div>
+                                                            {m.medicationName}
+                                                            <span className='pill-frequency'>
+                                                                &nbsp;{t30}&nbsp;{(pillRemindTimes[m.medicationID]?.length || 0)}&nbsp;{t29}
+                                                            </span>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            className="add-time-button"
+                                                            onClick={() => {
+                                                                setPillRemindTimes(prev => ({
+                                                                    ...prev,
+                                                                    [m.medicationID]: [...(prev[m.medicationID] || []), '']
+                                                                }));
+                                                            }}
+                                                        >
+                                                            {t31}
+                                                        </button>
+                                                    </div>
+                                                    <div className='drink-time'>
+                                                        {(pillRemindTimes[m.medicationID] || []).map((time, idx) => (
+                                                            <div key={idx} className="pill-time-slot">
+                                                                <input
+                                                                    type='time'
+                                                                    value={time}
+                                                                    onChange={(e) => {
+                                                                        const newTimes = [...(pillRemindTimes[m.medicationID] || [])];
+                                                                        newTimes[idx] = e.target.value;
+                                                                        setPillRemindTimes(prev => ({
+                                                                            ...prev,
+                                                                            [m.medicationID]: newTimes
+                                                                        }));
+                                                                    }}
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        const newTimes = [...(pillRemindTimes[m.medicationID] || [])];
+                                                                        newTimes.splice(idx, 1);
+                                                                        setPillRemindTimes(prev => ({
+                                                                            ...prev,
+                                                                            [m.medicationID]: newTimes
+                                                                        }));
+                                                                    }}
+                                                                >{t32}</button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </>
                                 );
                             })()}

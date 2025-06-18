@@ -12,22 +12,26 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-                SELECT 
-                    r.regimenID,
-                    r.name,
-                    r.type,
-                    r.duration,
-                    r.sideEffects,
-                    r.dosage,
-                    r.frequency,
-                    r.indications,
-                    r.contraindications,
-                    m.medicationID,
-                    m.medicationName
-                FROM ARVRegimen r
-                LEFT JOIN MedicationCombination mc ON r.regimenID = mc.regimenID
-                LEFT JOIN Medication m ON mc.medicationID = m.medicationID
-                ORDER BY r.regimenID";
+            SELECT 
+                r.regimenID,
+                r.name,
+                r.type,
+                r.duration,
+                r.regimenSideEffects,
+                r.regimenIndications,
+                r.regimenContraindications,
+                mc.dosage AS medDosage,
+                mc.frequency AS medFrequency,
+                m.medicationID,
+                m.medicationName,
+                m.dosageMetric,
+                m.sideEffect,
+                m.contraindications,
+                m.indications
+            FROM ARVRegimen r
+            LEFT JOIN MedicationCombination mc ON r.regimenID = mc.regimenID
+            LEFT JOIN Medication m ON mc.medicationID = m.medicationID
+            ORDER BY r.regimenID";
 
             using var cmd = new SqlCommand(query, conn);
             using var reader = cmd.ExecuteReader();
@@ -48,11 +52,12 @@ namespace YouAreHeard.Repositories.Implementation
                         Name = reader.GetString(reader.GetOrdinal("name")),
                         Type = reader.GetString(reader.GetOrdinal("type")),
                         Duration = reader.IsDBNull(reader.GetOrdinal("duration")) ? "" : reader.GetString(reader.GetOrdinal("duration")),
-                        SideEffects = reader.IsDBNull(reader.GetOrdinal("sideEffects")) ? "" : reader.GetString(reader.GetOrdinal("sideEffects")),
-                        Dosage = reader.IsDBNull(reader.GetOrdinal("dosage")) ? "" : reader.GetString(reader.GetOrdinal("dosage")),
-                        Frequency = reader.IsDBNull(reader.GetOrdinal("frequency")) ? "" : reader.GetString(reader.GetOrdinal("frequency")),
-                        Indications = reader.IsDBNull(reader.GetOrdinal("indications")) ? "" : reader.GetString(reader.GetOrdinal("indications")),
-                        Contraindications = reader.IsDBNull(reader.GetOrdinal("contraindications")) ? "" : reader.GetString(reader.GetOrdinal("contraindications")),
+                        RegimenSideEffects = reader.IsDBNull(reader.GetOrdinal("regimenSideEffects"))
+                        ? "" : reader.GetString(reader.GetOrdinal("regimenSideEffects")),
+                                            RegimenIndications = reader.IsDBNull(reader.GetOrdinal("regimenIndications"))
+                        ? "" : reader.GetString(reader.GetOrdinal("regimenIndications")),
+                                            RegimenContraindications = reader.IsDBNull(reader.GetOrdinal("regimenContraindications"))
+                        ? "" : reader.GetString(reader.GetOrdinal("regimenContraindications")),
                         Medications = new List<MedicationDTO>()
                     };
 
@@ -65,7 +70,13 @@ namespace YouAreHeard.Repositories.Implementation
                     var medication = new MedicationDTO
                     {
                         MedicationID = reader.GetInt32(reader.GetOrdinal("medicationID")),
-                        MedicationName = reader.GetString(reader.GetOrdinal("medicationName"))
+                        MedicationName = reader.GetString(reader.GetOrdinal("medicationName")),
+                        DosageMetric = reader.IsDBNull(reader.GetOrdinal("dosageMetric")) ? "" : reader.GetString(reader.GetOrdinal("dosageMetric")),
+                        SideEffect = reader.IsDBNull(reader.GetOrdinal("sideEffect")) ? "" : reader.GetString(reader.GetOrdinal("sideEffect")),
+                        Contraindications = reader.IsDBNull(reader.GetOrdinal("contraindications")) ? "" : reader.GetString(reader.GetOrdinal("contraindications")),
+                        Indications = reader.IsDBNull(reader.GetOrdinal("indications")) ? "" : reader.GetString(reader.GetOrdinal("indications")),
+                        Dosage = reader.IsDBNull(reader.GetOrdinal("medDosage")) ? 0 : reader.GetInt32(reader.GetOrdinal("medDosage")),
+                        Frequency = reader.IsDBNull(reader.GetOrdinal("medFrequency")) ? 0 : reader.GetInt32(reader.GetOrdinal("medFrequency"))
                     };
 
                     current?.Medications.Add(medication);
@@ -74,5 +85,6 @@ namespace YouAreHeard.Repositories.Implementation
 
             return regimens;
         }
+
     }
 }

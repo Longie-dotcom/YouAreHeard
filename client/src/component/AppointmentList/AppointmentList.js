@@ -110,7 +110,7 @@ function AppointmentList({ user }) {
                         {appointments?.map(appointment => (
                             <tr key={appointment.appointmentID}>
                                 <td>{t9} {appointment.doctorName}</td>
-                                <td>{appointment.date?.split("T")[0]}</td>
+                                <td>{appointment.scheduleDate?.split("T")[0]}</td>
                                 <td>{appointment.startTime} {t7} {appointment.endTime}</td>
                                 <td>{appointment.queueNumber}</td>
                                 <td>{appointment.zoomLink ? t14m1 : appointment.location}</td>

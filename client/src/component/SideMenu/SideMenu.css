@@ -44,6 +44,10 @@
     margin-left: 0.7vw;
 }
 
+.doctor-menu .menu .active {
+    background-color: #dbdbdb;
+}
+
 .doctor-menu .menu button:hover {
     background-color: #dbdbdb;
 }

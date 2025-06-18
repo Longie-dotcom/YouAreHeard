@@ -19,14 +19,14 @@ namespace YouAreHeard.Services.Implementation
             _userService = userService;
         }
 
-        public async Task<string> GenerateZoomLink(MedicalHistoryDTO history, DoctorScheduleDTO doctorScheduleDTO)
+        public async Task<string> GenerateZoomLink(AppointmentDTO appointment)
         {
             var token = await GetZoomAccessTokenAsync();
             var passcode = GeneratePasscode();
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var startTime = history.DateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+            var startTime = appointment.ScheduleDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
 
             var body = new
             {
@@ -48,7 +48,7 @@ namespace YouAreHeard.Services.Implementation
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Map DoctorID to Zoom Email - placeholder for now
-            UserDTO doctor = MapDoctorIdToZoomEmail(history.DoctorID);
+            UserDTO doctor = MapDoctorIdToZoomEmail(appointment.DoctorID);
 
             var response = await _httpClient.PostAsync($"https://api.zoom.us/v2/users/{ZoomSettingContext.Settings.DoctorDefaultEmail}/meetings", content);
 
@@ -63,11 +63,11 @@ namespace YouAreHeard.Services.Implementation
             var zoomLink = doc.RootElement.GetProperty("join_url").GetString();
 
             // Get patient info
-            var patient = _userService.GetUserById(history.PatientID);
+            var patient = _userService.GetUserById(appointment.PatientID);
 
             // Send the email
-            EmailHelper.SendZoomLinkEmail(patient.Email, doctor.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
-            EmailHelper.sendZoomLinkEmailToDoctor(doctor.Email, patient.Name, doctorScheduleDTO.Date, doctorScheduleDTO.StartTime, zoomLink, passcode);
+            EmailHelper.SendZoomLinkEmail(patient.Email, doctor.Name, appointment.ScheduleDate, appointment.StartTime, zoomLink, passcode);
+            EmailHelper.sendZoomLinkEmailToDoctor(doctor.Email, patient.Name, appointment.ScheduleDate, appointment.StartTime, zoomLink, passcode);
 
             return zoomLink;
         }

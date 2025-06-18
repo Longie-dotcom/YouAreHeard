@@ -25,15 +25,15 @@ namespace YouAreHeard.Services
             _doctorRepository = doctorRepository;
         }
 
-        public async Task<AppointmentDTO> RequestAppointmentAsync(AppointmentDTO appointment, MedicalHistoryDTO medicalHistory)
+        public async Task<AppointmentDTO> RequestAppointmentAsync(RequestAppointmentDTO requestAppointment)
         {
-            if (!string.IsNullOrEmpty(appointment.ZoomLink) && appointment.ZoomLink.Trim().ToLower() == "yes")
+            var schedule = _scheduleRepository.GetScheduleById(requestAppointment.DoctorScheduleID, true, DateTime.Now);
+            if (schedule == null)
             {
-                var doctorScheduleDTO = _scheduleRepository.GetScheduleById(appointment.DoctorScheduleID, true, DateTime.Now);
-                appointment.ZoomLink = await _zoomService.GenerateZoomLink(medicalHistory, doctorScheduleDTO);
+                throw new Exception("Schedule not found.");
             }
 
-            int currentQueue = _appointmentRepository.GetQueueCountByScheduleId(appointment.DoctorScheduleID, AppointmentStatusEnum.Confirmed);
+            int currentQueue = _appointmentRepository.GetQueueCountByScheduleId(requestAppointment.DoctorScheduleID, AppointmentStatusEnum.Confirmed);
             if (currentQueue >= Constraint.AmountOfPersonPerSchedule)
             {
                 throw new Exception("Maximum number of appointments reached.");
@@ -41,26 +41,40 @@ namespace YouAreHeard.Services
 
             int queueNumber = currentQueue + 1;
 
-            int medicalHistoryID = _appointmentRepository.InsertMedicalHistory(medicalHistory);
-            appointment.MedicalHistoryID = medicalHistoryID;
-            appointment.AppointmentStatusID = AppointmentStatusEnum.Confirmed;
-            appointment.QueueNumber = queueNumber;
+            var appointmentDTO = new AppointmentDTO
+            {
+                IsOnline = requestAppointment.IsOnline,
+                DoctorScheduleID = requestAppointment.DoctorScheduleID,
+                IsAnonymous = requestAppointment.IsAnonymous,
+                PatientID = requestAppointment.PatientID,
+                DoctorID = requestAppointment.DoctorID,
+                Notes = requestAppointment.Notes,
+                Reason = requestAppointment.Reason,
+                QueueNumber = queueNumber,
+                StartTime = schedule.StartTime,
+                EndTime = schedule.EndTime,
+                ScheduleDate = schedule.Date,
+                AppointmentStatusID = AppointmentStatusEnum.Confirmed,
+                CreatedDate = DateTime.Now
+            };
 
-            int appointmentId = _appointmentRepository.InsertAppointment(appointment);
+            if (appointmentDTO.IsOnline)
+            {
+                appointmentDTO.ZoomLink = await _zoomService.GenerateZoomLink(appointmentDTO);
+            }
 
+            int appointmentId = _appointmentRepository.InsertAppointment(appointmentDTO);
             if (queueNumber >= Constraint.AmountOfPersonPerSchedule)
             {
-                _scheduleRepository.UpdateScheduleAvailability(appointment.DoctorScheduleID, false);
+                _scheduleRepository.UpdateScheduleAvailability(appointmentDTO.DoctorScheduleID, false);
             }
 
             var fullAppointment = _appointmentRepository.GetAppointmentById(appointmentId);
-
-            var schedule = _scheduleRepository.GetScheduleById(fullAppointment.DoctorScheduleID, DateTime.Now);
-            var doctorProfile = _doctorRepository.GetDoctorProfileByDoctorId(medicalHistory.DoctorID);
+            var doctorProfile = _doctorRepository.GetDoctorProfileByDoctorId(appointmentDTO.DoctorID);
 
             fullAppointment.StartTime = schedule.StartTime;
             fullAppointment.EndTime = schedule.EndTime;
-            fullAppointment.Date = schedule.Date;
+            fullAppointment.ScheduleDate = schedule.Date;
             fullAppointment.Location = schedule.Location;
             fullAppointment.DoctorName = doctorProfile.Name;
 

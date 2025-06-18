@@ -3,6 +3,6 @@ namespace YouAreHeard.Services.Interfaces
 {
     public interface IZoomService
     {
-        public Task<string> GenerateZoomLink(MedicalHistoryDTO history, DoctorScheduleDTO doctorScheduleDTO);
+        public Task<string> GenerateZoomLink(AppointmentDTO appointment);
     }
 }

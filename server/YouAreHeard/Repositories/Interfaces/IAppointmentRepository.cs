@@ -9,7 +9,6 @@ namespace YouAreHeard.Repositories.Interfaces
         public List<AppointmentDTO> GetAppointmentsByDoctorId(int doctorId, int statusId);
         public void UpdateAppointmentStatus(int appointmentId, int newStatusId);
         public int GetQueueCountByScheduleId(int scheduleId, int statusId);
-        public int InsertMedicalHistory(MedicalHistoryDTO medicalHistory);
         public AppointmentDTO GetAppointmentById(int appointmentId);
         public List<AppointmentDTO> GetConfirmedAppointmentsByScheduleId(int scheduleId);
         public void UpdateQueueNumber(int appointmentId, int? newQueueNumber);

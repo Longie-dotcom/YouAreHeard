@@ -9,8 +9,6 @@
         public TimeSpan EndTime { get; set; }
         public DateTime Date { get; set; }
         public bool IsAvailable { get; set; }
-        public int ScheduleTypeID { get; set; }
-        public string ScheduleTypeName { get; set; }
         public DoctorProfileDTO DoctorProfile { get; set; }
     }
 }

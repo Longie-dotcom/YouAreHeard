@@ -69,7 +69,7 @@ function DoctorAppointment({ user, appointments }) {
 
         let upcomingAppointments = appointments
             .map(app => {
-                const dateStr = app.date.split('T')[0];
+                const dateStr = app.scheduleDate.split('T')[0];
                 const dateTime = new Date(`${dateStr}T${app.startTime}`);
                 return {
                     ...app,
@@ -94,7 +94,7 @@ function DoctorAppointment({ user, appointments }) {
 
     return (
         <div className='doctor-appointment'>
-            {appointments && nextAppointment && (
+            {nextAppointment && (
                 <>
                     <div className='main-title'>
                         {t21}
@@ -116,7 +116,7 @@ function DoctorAppointment({ user, appointments }) {
                                 {t3}
                             </div>
                             <div className="detail">
-                                {nextAppointment.date?.split("T")[0]}
+                                {nextAppointment.scheduleDate?.split("T")[0]}
                             </div>
                         </div>
 
@@ -201,25 +201,29 @@ function DoctorAppointment({ user, appointments }) {
                             </div>
                         )}
                     </div>
+                </>
+            )}
 
-                    <div className='category'>
-                        <button
-                            className={`online ${filterType === 'online' ? 'active' : ''}`}
-                            onClick={() => setFilterType(prev => prev === 'online' ? 'all' : 'online')}
-                        >
-                            <Icon src={VideoWhiteIcon} alt={'video-white-icon'} />
-                            <div>{t19}</div>
-                        </button>
+            <div className='category'>
+                <button
+                    className={`online ${filterType === 'online' ? 'active' : ''}`}
+                    onClick={() => setFilterType(prev => prev === 'online' ? 'all' : 'online')}
+                >
+                    <Icon src={VideoWhiteIcon} alt={'video-white-icon'} />
+                    <div>{t19}</div>
+                </button>
 
-                        <button
-                            className={`offline ${filterType === 'offline' ? 'active' : ''}`}
-                            onClick={() => setFilterType(prev => prev === 'offline' ? 'all' : 'offline')}
-                        >
-                            <Icon src={HospitalWhiteIcon} alt={'hospital-white-icon'} />
-                            <div>{t20}</div>
-                        </button>
-                    </div>
+                <button
+                    className={`offline ${filterType === 'offline' ? 'active' : ''}`}
+                    onClick={() => setFilterType(prev => prev === 'offline' ? 'all' : 'offline')}
+                >
+                    <Icon src={HospitalWhiteIcon} alt={'hospital-white-icon'} />
+                    <div>{t20}</div>
+                </button>
+            </div>
 
+            {appointments && upcomingAppointments && (
+                <>
                     <div className='appointment'>
                         {upcomingAppointments.map((appointment) => (
                             <div className='appointment-later'>
@@ -227,7 +231,7 @@ function DoctorAppointment({ user, appointments }) {
                                     {appointment.patientName}
                                 </div>
                                 <div className='date'>
-                                    {appointment.date?.split("T")[0]}
+                                    {appointment.scheduleDate?.split("T")[0]}
                                 </div>
                                 <div className='time'>
                                     {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}

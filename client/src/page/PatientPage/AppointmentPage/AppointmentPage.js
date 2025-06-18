@@ -184,7 +184,7 @@ function AppointmentPage({ user }) {
                             </div>
 
                             <div className='detail'>
-                                {result.date.split('T')[0]}
+                                {result.scheduleDate.split('T')[0]}
                             </div>
                         </div>
 

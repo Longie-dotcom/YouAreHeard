@@ -19,19 +19,13 @@ function useRequestAppointment({ user, choosenAppointment, setResult, type, setE
         }
 
         const appointmentDetail = {
-            appointment: {
-                doctorScheduleID: choosenAppointment.schedule.doctorScheduleID,
-                appointmentStatusID: null,
-                zoomLink: type === 'online' ? 'yes' : null,
-                notes: note,
-                reason: reason,
-                isAnonymous: anonymous
-            },
-            medicalHistory: {
-                dateTime: new Date().toISOString(),
-                patientID: user.UserId,
-                doctorID: choosenAppointment.doctor.userID,
-            }
+            doctorScheduleID: choosenAppointment.schedule.doctorScheduleID,
+            isOnline: type === 'online' ? true : false,
+            notes: note,
+            reason: reason,
+            isAnonymous: anonymous,
+            patientID: user.UserId,
+            doctorID: choosenAppointment.doctor.userID
         }
 
         try {

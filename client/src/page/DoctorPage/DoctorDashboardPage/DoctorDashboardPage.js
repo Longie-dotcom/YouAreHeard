@@ -36,11 +36,7 @@ function DoctorDashboardPage({ user, setReloadCookies }) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const [openAppointment, setOpenAppointment] = useState(false);
-    const [openTreatment, setOpenTreatment] = useState(false);
-    const [openTest, setOpenTest] = useState(false);
-    const [openHistory, setOpenHistory] = useState(false);
-    const [openSection, setOpenSection] = useState(null);
+    const [openSection, setOpenSection] = useState('appointment');
 
     const { appointments } = useLoadDoctorAppointments({ doctorId: user?.UserId, setError, setLoading });
     const { logout } = useLogout({ setReloadCookies, setError, setLoading });

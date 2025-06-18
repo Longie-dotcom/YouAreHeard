@@ -18,7 +18,7 @@ function SideMenu({ openSection, setOpenSection, appointments, menuItems }) {
                 <div className='title'>{title}</div>
 
                 {menuItems.map((item) => (
-                    <button key={item.id} onClick={() => toggle(item.id)}>
+                    <button className={openSection === item.id ? 'active' : ''} key={item.id} onClick={() => toggle(item.id)}>
                         <Icon src={item.icon} alt={`${item.id}-icon`} />
                         <div className='detail'>{item.label}</div>
                     </button>

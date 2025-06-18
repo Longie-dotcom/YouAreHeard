@@ -19,14 +19,11 @@ namespace YouAreHeard.Repositories.Implementation
                 ds.startTime,
                 ds.endTime,
                 ds.date,
-                ds.isAvailable,
-                ds.scheduleTypeID,
-                st.scheduleTypeName
+                ds.isAvailable
             FROM DoctorSchedule ds
-            LEFT JOIN ScheduleType st ON ds.scheduleTypeID = st.scheduleTypeID
             WHERE ds.userID = @DoctorId 
               AND ds.isAvailable = @IsAvailable
-              AND ds.date > @Date"; // Filter for future schedules
+              AND ds.date > @Date";
 
             using var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@DoctorId", doctorId);
@@ -46,9 +43,7 @@ namespace YouAreHeard.Repositories.Implementation
                     StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
                     EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
                     Date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    IsAvailable = reader.GetBoolean(reader.GetOrdinal("isAvailable")),
-                    ScheduleTypeID = reader.GetInt32(reader.GetOrdinal("scheduleTypeID")),
-                    ScheduleTypeName = reader["scheduleTypeName"]?.ToString()
+                    IsAvailable = reader.GetBoolean(reader.GetOrdinal("isAvailable"))
                 });
             }
 
@@ -68,11 +63,8 @@ namespace YouAreHeard.Repositories.Implementation
                 ds.startTime,
                 ds.endTime,
                 ds.date,
-                ds.isAvailable,
-                ds.scheduleTypeID,
-                st.scheduleTypeName
+                ds.isAvailable
             FROM DoctorSchedule ds
-            LEFT JOIN ScheduleType st ON ds.scheduleTypeID = st.scheduleTypeID
             WHERE ds.doctorScheduleID = @ScheduleId 
               AND ds.isAvailable = @IsAvailable
               AND ds.date > @Date"; // Filter by date
@@ -94,9 +86,7 @@ namespace YouAreHeard.Repositories.Implementation
                     StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
                     EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
                     Date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    IsAvailable = reader.GetBoolean(reader.GetOrdinal("isAvailable")),
-                    ScheduleTypeID = reader.GetInt32(reader.GetOrdinal("scheduleTypeID")),
-                    ScheduleTypeName = reader["scheduleTypeName"]?.ToString()
+                    IsAvailable = reader.GetBoolean(reader.GetOrdinal("isAvailable"))
                 };
             }
 
@@ -116,11 +106,8 @@ namespace YouAreHeard.Repositories.Implementation
                 ds.startTime,
                 ds.endTime,
                 ds.date,
-                ds.isAvailable,
-                ds.scheduleTypeID,
-                st.scheduleTypeName
+                ds.isAvailable
             FROM DoctorSchedule ds
-            LEFT JOIN ScheduleType st ON ds.scheduleTypeID = st.scheduleTypeID
             WHERE ds.doctorScheduleID = @ScheduleId 
               AND ds.date > @Date";
 
@@ -140,9 +127,7 @@ namespace YouAreHeard.Repositories.Implementation
                     StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
                     EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
                     Date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    IsAvailable = reader.GetBoolean(reader.GetOrdinal("isAvailable")),
-                    ScheduleTypeID = reader.GetInt32(reader.GetOrdinal("scheduleTypeID")),
-                    ScheduleTypeName = reader["scheduleTypeName"]?.ToString()
+                    IsAvailable = reader.GetBoolean(reader.GetOrdinal("isAvailable"))
                 };
             }
 
@@ -181,9 +166,7 @@ namespace YouAreHeard.Repositories.Implementation
                     ds.StartTime,
                     ds.EndTime,
                     ds.Date,
-                    ds.IsAvailable,
-                    ds.ScheduleTypeID,
-                    st.ScheduleTypeName,
+                    ds.IsAvailable
 
                     u.Name AS DoctorName,
                     u.Phone,
@@ -196,7 +179,6 @@ namespace YouAreHeard.Repositories.Implementation
                     dp.LanguagesSpoken
 
                 FROM DoctorSchedule ds
-                INNER JOIN ScheduleType st ON ds.ScheduleTypeID = st.ScheduleTypeID
                 INNER JOIN [User] u ON ds.UserID = u.UserID
                 INNER JOIN DoctorProfile dp ON ds.UserID = dp.UserID
                 WHERE ds.IsAvailable = @IsAvailable AND ds.Date > @Date
@@ -231,8 +213,6 @@ namespace YouAreHeard.Repositories.Implementation
                     EndTime = reader.GetTimeSpan(reader.GetOrdinal("EndTime")),
                     Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                     IsAvailable = reader.GetBoolean(reader.GetOrdinal("IsAvailable")),
-                    ScheduleTypeID = reader.GetInt32(reader.GetOrdinal("ScheduleTypeID")),
-                    ScheduleTypeName = reader.GetString(reader.GetOrdinal("ScheduleTypeName")),
                     DoctorProfile = doctorProfile
                 });
             }
