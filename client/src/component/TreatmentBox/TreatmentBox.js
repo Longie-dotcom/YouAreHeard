@@ -1,5 +1,5 @@
 // Modules
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Styling sheet
 import './TreatmentBox.css';
@@ -17,6 +17,7 @@ import SkeletonUI from '../SkeletonUI/SkeletonUI';
 import useLoadAllRegimens from '../../hook/useLoadAllRegimens';
 import useLoadAllPatientGroups from '../../hook/useLoadAllPatientGroups';
 import useLoadAllMedications from '../../hook/useLoadAllMedications';
+import useCreateTreatmentPlan from '../../hook/useCreateTreatmentPlan';
 
 function TreatmentBox({ appointments }) {
     const t1 = 'Danh sách bệnh nhân';
@@ -37,14 +38,13 @@ function TreatmentBox({ appointments }) {
     const t16 = 'Tùy chỉnh thông tin phác đồ';
     const t17 = 'Chọn loại phác đồ';
     const t18 = 'Liều lượng điều chỉnh';
-    const t19 = 'Liều lượng ban đầu:';
+    const t19 = '/1 lần uống';
     const t20 = 'Chọn thuốc thay thế (sẵn có)';
-    const t21 = 'Độ tuổi áp dụng';
+    const t21 = 'Tạo kế hoạch điều trị';
     const t26 = 'Ghi chú';
     const t27 = 'Các loại thuốc thay thế đã chọn (Click vào thuốc đã chọn bên dưới để loại bỏ)';
     const t28 = 'Lịch nhắc nhở uống thuốc';
     const t29 = 'lần/ngày';
-    const t30 = '- uống';
     const t31 = 'Thêm giờ';
     const t32 = 'Xóa lịch';
 
@@ -55,6 +55,7 @@ function TreatmentBox({ appointments }) {
 
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
+    const textareaRef = useRef(null);
 
     const [upcomingAppointments, setUpcomingAppointments] = useState(null);
     const [selectedTreatmentOf, setSelectedTreatmentOF] = useState(null);
@@ -62,8 +63,9 @@ function TreatmentBox({ appointments }) {
     const [isCustomizing, setIsCustomizing] = useState(false);
 
     const [selectedRegimen, setSelectedRegimen] = useState(null);
-    const [pillRemindTimes, setPillRemindTimes] = useState({});
     const [selectedMedications, setSelectedMedications] = useState(null);
+    const [notes, setNotes] = useState('');
+    const [patientGroupID, setPatientGroupID] = useState(null);
 
     const {
         medications
@@ -74,6 +76,9 @@ function TreatmentBox({ appointments }) {
     const {
         patientGroups
     } = useLoadAllPatientGroups({ setError, setLoading });
+    const {
+        createTreatmentPlan
+    } = useCreateTreatmentPlan({ setError, setLoading });
 
     const formatTime = (timeStr) => {
         const [hours, minutes] = timeStr.split(':');
@@ -83,16 +88,12 @@ function TreatmentBox({ appointments }) {
     useEffect(() => {
         if (!selectedRegimen) return;
 
-        const updatedMeds = selectedRegimen.medications.map(med => ({ ...med }));
+        const updatedMeds = selectedRegimen.medications.map(med => ({
+            ...med,
+            remindTimes: Array(med.frequency).fill('')
+        }));
+
         setSelectedMedications(updatedMeds);
-
-        const initialTimes = {};
-        updatedMeds.forEach(med => {
-            // Create an array with `frequency` number of empty strings
-            initialTimes[med.medicationID] = Array(med.frequency).fill('');
-        });
-
-        setPillRemindTimes(initialTimes);
     }, [selectedRegimen]);
 
     useEffect(() => {
@@ -264,23 +265,28 @@ function TreatmentBox({ appointments }) {
                                                     {selectedRegimen.medications?.map(m => m.medicationName).join(', ')}
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div>
-                                                <div className='title'>
-                                                    {t14}
-                                                </div>
-                                                <div className='detail'>
-                                                    <select
-                                                        name="patientGroupID"
-                                                    >
-                                                        <option className='empty' value={null}>{t15}</option>
-                                                        {patientGroups?.map(group => (
-                                                            <option key={group.patientGroupID} value={group.patientGroupID}>
-                                                                {group.patientGroupName}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
+                                        <div className='patient-group'>
+                                            <div className='title'>
+                                                {t14}
+                                            </div>
+                                            <div className='detail'>
+                                                <select
+                                                    name="patientGroupID"
+                                                    value={patientGroupID || ''}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value === 'null' ? null : parseInt(e.target.value, 10);
+                                                        setPatientGroupID(value);
+                                                    }}
+                                                >
+                                                    <option className='empty' value='null'>{t15}</option>
+                                                    {patientGroups?.map(group => (
+                                                        <option key={group.patientGroupID} value={group.patientGroupID}>
+                                                            {group.patientGroupName}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
 
@@ -360,76 +366,104 @@ function TreatmentBox({ appointments }) {
                                                                     );
                                                                 }}
                                                             />
-                                                            <span>{m.dosageMetric}</span>
+                                                            <span>{m.dosageMetric}{t19}</span>
                                                         </div>
                                                     ))}
-                                                </div>
-
-                                                <div className='input-group'>
-                                                    <label>{t26}</label>
-                                                    <textarea name="notes"></textarea>
                                                 </div>
                                             </div>
                                         )}
 
                                         <div className='pill-remind'>
-                                            <div className='header'>
-                                                {t28}
-                                            </div>
-                                            {selectedMedications?.map(m => (
+                                            <div className='header'>{t28}</div>
+                                            {selectedMedications?.map((m, medIdx) => (
                                                 <div className='pill' key={m.medicationID}>
                                                     <div className='pill-name'>
                                                         <div>
-                                                            {m.medicationName}
-                                                            <span className='pill-frequency'>
-                                                                &nbsp;{t30}&nbsp;{(pillRemindTimes[m.medicationID]?.length || 0)}&nbsp;{t29}
-                                                            </span>
+                                                            <div className='pill-detail'>
+                                                                {m.medicationName}
+                                                            </div>
+                                                            <div className='pill-frequency'>
+                                                                {(m.remindTimes?.length || 0)}&nbsp;{t29}
+                                                            </div>
+                                                            <div className='pill-dosage'>
+                                                                {m.dosage}&nbsp;{m.dosageMetric}
+                                                            </div>
                                                         </div>
                                                         <button
                                                             type="button"
                                                             className="add-time-button"
                                                             onClick={() => {
-                                                                setPillRemindTimes(prev => ({
-                                                                    ...prev,
-                                                                    [m.medicationID]: [...(prev[m.medicationID] || []), '']
-                                                                }));
+                                                                const newMeds = [...selectedMedications];
+                                                                newMeds[medIdx].remindTimes = [...(newMeds[medIdx].remindTimes || []), ''];
+                                                                setSelectedMedications(newMeds);
                                                             }}
                                                         >
                                                             {t31}
                                                         </button>
                                                     </div>
                                                     <div className='drink-time'>
-                                                        {(pillRemindTimes[m.medicationID] || []).map((time, idx) => (
+                                                        {(m.remindTimes || []).map((time, idx) => (
                                                             <div key={idx} className="pill-time-slot">
                                                                 <input
                                                                     type='time'
                                                                     value={time}
                                                                     onChange={(e) => {
-                                                                        const newTimes = [...(pillRemindTimes[m.medicationID] || [])];
-                                                                        newTimes[idx] = e.target.value;
-                                                                        setPillRemindTimes(prev => ({
-                                                                            ...prev,
-                                                                            [m.medicationID]: newTimes
-                                                                        }));
+                                                                        const newMeds = [...selectedMedications];
+                                                                        newMeds[medIdx].remindTimes[idx] = e.target.value;
+                                                                        setSelectedMedications(newMeds);
                                                                     }}
                                                                 />
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => {
-                                                                        const newTimes = [...(pillRemindTimes[m.medicationID] || [])];
-                                                                        newTimes.splice(idx, 1);
-                                                                        setPillRemindTimes(prev => ({
-                                                                            ...prev,
-                                                                            [m.medicationID]: newTimes
-                                                                        }));
+                                                                        const newMeds = [...selectedMedications];
+                                                                        newMeds[medIdx].remindTimes.splice(idx, 1);
+                                                                        setSelectedMedications(newMeds);
                                                                     }}
-                                                                >{t32}</button>
+                                                                >
+                                                                    {t32}
+                                                                </button>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
+
+                                        <div className='note-form'>
+                                            <div className='title'>
+                                                {t26}
+                                            </div>
+                                            <div className='detail'>
+                                                <textarea
+                                                    ref={textareaRef}
+                                                    value={notes}
+                                                    onInput={(e) => {
+                                                        const textarea = textareaRef.current;
+                                                        textarea.style.height = 'auto';
+                                                        textarea.style.height = `${textarea.scrollHeight}px`;
+                                                        setNotes(e.target.value);
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            onClick={() => {
+                                                createTreatmentPlan({
+                                                    pillRemindTime: selectedMedications, treatmentDetail: {
+                                                        patientID: selectedTreatmentOf.patientID,
+                                                        doctorID: selectedTreatmentOf.doctorID,
+                                                        patientGroupID: patientGroupID,
+                                                        regimenID: selectedRegimen.regimenID,
+                                                        date: new Date().toISOString(),
+                                                        notes: notes
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            {t21}
+                                        </button>
                                     </>
                                 );
                             })()}
