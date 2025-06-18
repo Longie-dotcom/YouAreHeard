@@ -12,7 +12,16 @@ namespace YouAreHeard.Repositories.Implementation
             using var conn = DBContext.GetConnection();
             conn.Open();
 
-            string query = "SELECT medicationID, medicationName FROM Medication";
+            string query = @"
+            SELECT 
+                medicationID, 
+                medicationName, 
+                dosageMetric, 
+                sideEffect, 
+                contraindications, 
+                indications
+            FROM Medication";
+
             using var cmd = new SqlCommand(query, conn);
             using var reader = cmd.ExecuteReader();
 
@@ -21,11 +30,19 @@ namespace YouAreHeard.Repositories.Implementation
                 medications.Add(new MedicationDTO
                 {
                     MedicationID = reader.GetInt32(0),
-                    MedicationName = reader.GetString(1)
+                    MedicationName = reader.GetString(1),
+                    DosageMetric = reader.IsDBNull(2) ? null : reader.GetString(2),
+                    SideEffect = reader.IsDBNull(3) ? null : reader.GetString(3),
+                    Contraindications = reader.IsDBNull(4) ? null : reader.GetString(4),
+                    Indications = reader.IsDBNull(5) ? null : reader.GetString(5),
+
+                    Dosage = 0,
+                    Frequency = 0
                 });
             }
 
             return medications;
         }
+
     }
 }

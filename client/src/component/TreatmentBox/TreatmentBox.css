@@ -276,13 +276,19 @@
 .treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input {
     margin: 2%;
     display: flex;
-    width: 60%;
+    width: 80%;
     align-items: center;
     justify-content: space-between;
 }
 
 .treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input input {
     width: 50%;
+}
+
+.treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input span {
+    width: 20%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
 }
 
 .treatment-box .treatment-form .body .pill-remind {
