@@ -304,17 +304,30 @@
     display: flex;
     flex-direction: column;
     margin: 1%;
+    background-color: #f2f2f2;
+    padding: 2%;
+    border-radius: 10px;
+    
 }
 
-.treatment-box .treatment-form .body .pill-remind .pill div {
-    width: 70%;
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name {
+    width: 100%;
     font-size: 1vw;
+    margin-bottom: 3%;
+}
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name div {
+    width: 80%;
+    font-weight: 550;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name button {
+    width: 20%;
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill div input {
-    border: none;
-    background-color: #97ffac;
+    border: black dashed 1.9px;
     padding: 0.4vw;
+    background-color: transparent;
     border-radius: 40px;
     width: 100%;
 }
@@ -323,6 +336,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill .pill-name  button {
@@ -348,13 +362,14 @@
 .treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot {
     display: flex;
     flex-direction: row;
-    width: 70%;
-    margin: 2%;
-    margin-bottom: 5%;
+    width: 100%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    justify-content: space-between;
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot input {
-    width: 30%;
+    width: 40%;
     font-size: 1vw;
 }
 
@@ -362,7 +377,7 @@
     background-color: rgb(255, 121, 121);
     border: none;
     border-radius: 40px;
-    width: 25%;
+    width: 20%;
     margin-left: 5%;
     font-size: 0.8vw;
     color: white;
