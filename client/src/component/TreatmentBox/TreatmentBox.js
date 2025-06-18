@@ -36,8 +36,8 @@ function TreatmentBox({ appointments }) {
     const t15 = 'Chọn nhóm bệnh nhân';
     const t16 = 'Tùy chỉnh thông tin phác đồ';
     const t17 = 'Chọn loại phác đồ';
-    const t18 = 'Liều lượng điều chỉnh (đơn vị: viên)';
-    const t19 = 'Tần suất điều chỉnh (đơn vị: lần/ngày)';
+    const t18 = 'Liều lượng điều chỉnh';
+    const t19 = 'Liều lượng ban đầu:';
     const t20 = 'Chọn thuốc thay thế (sẵn có)';
     const t21 = 'Độ tuổi áp dụng';
     const t26 = 'Ghi chú';
@@ -55,20 +55,15 @@ function TreatmentBox({ appointments }) {
 
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
+
     const [upcomingAppointments, setUpcomingAppointments] = useState(null);
-    const [selectedRegimenId, setSelectedRegimenId] = useState(null);
-    const [isCustomizing, setIsCustomizing] = useState(false);
     const [selectedTreatmentOf, setSelectedTreatmentOF] = useState(null);
+
+    const [isCustomizing, setIsCustomizing] = useState(false);
+
+    const [selectedRegimen, setSelectedRegimen] = useState(null);
     const [pillRemindTimes, setPillRemindTimes] = useState({});
     const [selectedMedications, setSelectedMedications] = useState(null);
-    const [customData, setCustomData] = useState({
-        adjustedDosage: {},
-        adjustedFrequency: '',
-        alternativeMedications: [],
-        ageRange: '',
-        notes: '',
-        patientGroupID: ''
-    });
 
     const {
         medications
@@ -84,12 +79,21 @@ function TreatmentBox({ appointments }) {
         const [hours, minutes] = timeStr.split(':');
         return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
     };
-    const handleCustomChange = (e) => {
-        const { name, value } = e.target;
-        setCustomData(prev => ({ ...prev, [name]: value }));
-    };
 
-    
+    useEffect(() => {
+        if (!selectedRegimen) return;
+
+        const updatedMeds = selectedRegimen.medications.map(med => ({ ...med }));
+        setSelectedMedications(updatedMeds);
+
+        const initialTimes = {};
+        updatedMeds.forEach(med => {
+            // Create an array with `frequency` number of empty strings
+            initialTimes[med.medicationID] = Array(med.frequency).fill('');
+        });
+
+        setPillRemindTimes(initialTimes);
+    }, [selectedRegimen]);
 
     useEffect(() => {
         if (!appointments) return;
@@ -173,15 +177,15 @@ function TreatmentBox({ appointments }) {
                                 <label htmlFor="regimen-select">{t4}</label>
                                 <select
                                     id="regimen-select"
-                                    value={selectedRegimenId || ''}
+                                    value={selectedRegimen?.regimenID || ''}
                                     onChange={(e) => {
-                                        const id = Number(e.target.value);
-                                        const selected = regimens.find(r => r.regimenID === id);
-                                        setSelectedRegimenId(id);
-                                        setSelectedMedications(selected?.medications || []);
+                                        const selectedID = parseInt(e.target.value);
+                                        const regimen = regimens.find(r => r.regimenID === selectedID);
+                                        setSelectedRegimen(regimen);
+                                        setSelectedMedications(regimen?.medications || []);
                                     }}
                                 >
-                                    <option value={null} className='empty'>{t17}</option>
+                                    <option value="" className='empty'>{t17}</option>
                                     {regimens?.map(regimen => (
                                         <option key={regimen.regimenID} value={regimen.regimenID}>
                                             {regimen.name}
@@ -190,7 +194,7 @@ function TreatmentBox({ appointments }) {
                                 </select>
                             </div>
 
-                            {selectedRegimenId && (
+                            {selectedRegimen && (
                                 <div className='customize-toggle'>
                                     <input
                                         type="checkbox"
@@ -203,9 +207,7 @@ function TreatmentBox({ appointments }) {
                         </div>
 
                         <div className='body'>
-                            {selectedRegimenId && (() => {
-                                const selected = regimens.find(r => r.regimenID === selectedRegimenId);
-                                if (!selected) return null;
+                            {selectedRegimen && (() => {
                                 return (
                                     <>
                                         <div className="regimen-detail">
@@ -214,7 +216,7 @@ function TreatmentBox({ appointments }) {
                                                     {t6}
                                                 </div>
                                                 <div className='detail'>
-                                                    {selected.type}
+                                                    {selectedRegimen.type}
                                                 </div>
                                             </div>
 
@@ -223,25 +225,7 @@ function TreatmentBox({ appointments }) {
                                                     {t7}
                                                 </div>
                                                 <div className='detail'>
-                                                    {selected.duration}
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <div className='title'>
-                                                    {t8}
-                                                </div>
-                                                <div className='detail'>
-                                                    {selected.dosage}
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <div className='title'>
-                                                    {t9}
-                                                </div>
-                                                <div className='detail'>
-                                                    {selected.frequency}
+                                                    {selectedRegimen.duration}
                                                 </div>
                                             </div>
 
@@ -250,7 +234,7 @@ function TreatmentBox({ appointments }) {
                                                     {t10}
                                                 </div>
                                                 <div className='detail'>
-                                                    {selected.indications}
+                                                    {selectedRegimen.regimenIndications}
                                                 </div>
                                             </div>
 
@@ -259,7 +243,7 @@ function TreatmentBox({ appointments }) {
                                                     {t11}
                                                 </div>
                                                 <div className='detail'>
-                                                    {selected.contraindications}
+                                                    {selectedRegimen.regimenContraindications}
                                                 </div>
                                             </div>
 
@@ -268,7 +252,7 @@ function TreatmentBox({ appointments }) {
                                                     {t12}
                                                 </div>
                                                 <div className='detail'>
-                                                    {selected.sideEffects}
+                                                    {selectedRegimen.regimenSideEffects}
                                                 </div>
                                             </div>
 
@@ -277,7 +261,7 @@ function TreatmentBox({ appointments }) {
                                                     {t14m1}
                                                 </div>
                                                 <div className='detail'>
-                                                    {selected.medications?.map(m => m.medicationName).join(', ')}
+                                                    {selectedRegimen.medications?.map(m => m.medicationName).join(', ')}
                                                 </div>
                                             </div>
 
@@ -288,8 +272,7 @@ function TreatmentBox({ appointments }) {
                                                 <div className='detail'>
                                                     <select
                                                         name="patientGroupID"
-                                                        value={customData.patientGroupID}
-                                                        onChange={handleCustomChange}>
+                                                    >
                                                         <option className='empty' value={null}>{t15}</option>
                                                         {patientGroups?.map(group => (
                                                             <option key={group.patientGroupID} value={group.patientGroupID}>
@@ -321,10 +304,8 @@ function TreatmentBox({ appointments }) {
                                                                     onClick={() => {
                                                                         setSelectedMedications(prev => {
                                                                             if (isSelected) {
-                                                                                // Remove it
                                                                                 return prev.filter(m => m.medicationID !== med.medicationID);
                                                                             } else {
-                                                                                // Add it
                                                                                 return [...prev, med];
                                                                             }
                                                                         });
@@ -361,21 +342,23 @@ function TreatmentBox({ appointments }) {
 
                                                 <div className='input-group'>
                                                     <label>{t18}</label>
-                                                    {selectedMedications?.map(m => (
+                                                    {selectedMedications?.map((m, idx) => (
                                                         <div key={m.medicationID} className='med-dosage-input'>
                                                             <span>{m.medicationName}</span>
                                                             <input
-                                                                type="text"
-                                                                value={customData.adjustedDosage[m.medicationID] ? customData.adjustedDosage[m.medicationID] : m.dosage}
-                                                                onChange={(e) =>
-                                                                    setCustomData(prev => ({
-                                                                        ...prev,
-                                                                        adjustedDosage: {
-                                                                            ...prev.adjustedDosage,
-                                                                            [m.medicationID]: e.target.value
-                                                                        }
-                                                                    }))
-                                                                }
+                                                                type="number"
+                                                                min={1}
+                                                                value={m.dosage}
+                                                                onChange={(e) => {
+                                                                    const value = parseInt(e.target.value) || 0;
+                                                                    setSelectedMedications(prev =>
+                                                                        prev.map((med, i) =>
+                                                                            med.medicationID === m.medicationID
+                                                                                ? { ...med, dosage: value }
+                                                                                : med
+                                                                        )
+                                                                    );
+                                                                }}
                                                             />
                                                             <span>{m.dosageMetric}</span>
                                                         </div>
@@ -383,13 +366,8 @@ function TreatmentBox({ appointments }) {
                                                 </div>
 
                                                 <div className='input-group'>
-                                                    <label>{t21}</label>
-                                                    <input type="text" name="ageRange" value={customData.ageRange} onChange={handleCustomChange} />
-                                                </div>
-
-                                                <div className='input-group'>
                                                     <label>{t26}</label>
-                                                    <textarea name="notes" value={customData.notes} onChange={handleCustomChange}></textarea>
+                                                    <textarea name="notes"></textarea>
                                                 </div>
                                             </div>
                                         )}
