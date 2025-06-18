@@ -9,15 +9,21 @@ namespace YouAreHeard.Services.Implementation
         private readonly IARVRegimenRepository _ARVRegimenRepository;
         private readonly IPatientGroupRepository _patientGroupRepository;
         private readonly IMedicationRepository _medicationRepository;
+        private readonly IPillRemindTimesRepository _pillRemindTimesRepository;
+        private readonly ITreatmentPlanRepository _treatmentPlanRepository;
 
         public TreatmentPlanService(
-            IARVRegimenRepository ARVRegimenRepository, 
+            IARVRegimenRepository ARVRegimenRepository,
             IPatientGroupRepository patientGroupRepository,
-            IMedicationRepository medicationRepository)
+            IMedicationRepository medicationRepository,
+            IPillRemindTimesRepository pillRemindTimesRepository,
+            ITreatmentPlanRepository treatmentPlanRepository)
         {
             _ARVRegimenRepository = ARVRegimenRepository;
             _patientGroupRepository = patientGroupRepository;
             _medicationRepository = medicationRepository;
+            _pillRemindTimesRepository = pillRemindTimesRepository;
+            _treatmentPlanRepository = treatmentPlanRepository;
         }
 
         public List<ARVRegimenDTO> GetARVRegimens()
@@ -33,6 +39,23 @@ namespace YouAreHeard.Services.Implementation
         public List<MedicationDTO> GetMedications()
         {
             return _medicationRepository.GetAllMedications();
+        }
+
+        public void CreateTreatmentPlan(RequestTreatmentPlanDTO requestTreatmentPlan)
+        {
+            int treatmentPlanId = _treatmentPlanRepository.insertTreatmentPlan(requestTreatmentPlan.TreatmentPlan);
+            if (treatmentPlanId > 0)
+            {
+                foreach (var pillRemindTime in requestTreatmentPlan.PillRemindTimes)
+                {
+                    pillRemindTime.TreatmentPlanID = treatmentPlanId;
+                    _pillRemindTimesRepository.insertPillRemindTimes(pillRemindTime);
+                }
+            }
+            else
+            {
+                throw new Exception("Failed to create treatment plan.");
+            }
         }
     }
 }

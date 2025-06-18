@@ -7,5 +7,6 @@ namespace YouAreHeard.Services.Interfaces
         List<ARVRegimenDTO> GetARVRegimens();
         List<PatientGroupDTO> GetPatientGroups();
         List<MedicationDTO> GetMedications();
+        void CreateTreatmentPlan(RequestTreatmentPlanDTO requestTreatmentPlan);
     }
 }
