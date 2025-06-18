@@ -96,17 +96,6 @@ function TreatmentBox({ appointments }) {
     }, [selectedRegimen]);
 
     useEffect(() => {
-        if (!pillRemindTimes || !Array.isArray(selectedMedications) || selectedMedications.length === 0) return;
-
-        const filteredMeds = selectedMedications.filter(med => {
-            const times = pillRemindTimes[med.medicationID];
-            return Array.isArray(times) && times.some(time => time && time.trim() !== '');
-        });
-
-        setSelectedMedications(filteredMeds);
-    }, [pillRemindTimes]);
-
-    useEffect(() => {
         if (!appointments) return;
 
         const today = new Date();
