@@ -8,5 +8,6 @@ namespace YouAreHeard.Services.Interfaces
         List<PatientGroupDTO> GetPatientGroups();
         List<MedicationDTO> GetMedications();
         void CreateTreatmentPlan(RequestTreatmentPlanDTO requestTreatmentPlan);
+        TreatmentPlanDetailsDTO? GetLatestTreatmentPlanByPatientID(int patientId);
     }
 }

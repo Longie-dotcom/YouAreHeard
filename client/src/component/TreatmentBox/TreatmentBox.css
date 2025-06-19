@@ -340,7 +340,7 @@
     margin: 2%;
     padding: 1%;
     border-radius: 40px;
-    background-color: #4A67F3;
+    background-color: #a3a3a3;
     color: white;
     font-size: 0.8vw;
     width: 20%;
@@ -401,9 +401,24 @@
     justify-content: space-between;
 }
 
-.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot input {
-    width: 40%;
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot div {
+    width: 38%;
     font-size: 1vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot div input {
+    font-size: 1vw;
+    width: 50%;
+    margin-left: 6%;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot div .pill-title {
+    width: auto;
+    font-size: 0.9vw;
+    display: flex;
+    align-items: center;
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot button {
@@ -454,4 +469,23 @@
     border: #000000 dashed 2px;
     overflow: hidden;
     resize: none;
+}
+
+.treatment-box .treatment-form .body .submit {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 2%;
+    border: none;
+    border-radius: 40px;
+    background-color: #6e86ff;
+    font-size: 1vw;
+    font-weight: 550;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    transition: all 0.1s ease-in-out;
+}
+
+.treatment-box .treatment-form .body .submit:hover {
+    background-color: #3b4991;
 }

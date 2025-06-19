@@ -1,0 +1,13 @@
+.pill-grid-header,
+.pill-grid-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 12px;
+    padding: 6px 0;
+}
+
+.pill-grid-header {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 6px;
+}

@@ -12,12 +12,12 @@ import BigPillIcon from '../../uploads/icon/big-pill.png';
 import Icon from '../Icon/Icon';
 import ErrorBox from '../ErrorBox/ErrorBox';
 import SkeletonUI from '../SkeletonUI/SkeletonUI';
+import ConfirmTreatmentPlan from '../ConfirmTreatmentPlan/ConfirmTreatmentPlan';
 
 // Hooks
 import useLoadAllRegimens from '../../hook/useLoadAllRegimens';
 import useLoadAllPatientGroups from '../../hook/useLoadAllPatientGroups';
 import useLoadAllMedications from '../../hook/useLoadAllMedications';
-import useCreateTreatmentPlan from '../../hook/useCreateTreatmentPlan';
 
 function TreatmentBox({ appointments }) {
     const t1 = 'Danh sách bệnh nhân';
@@ -41,17 +41,18 @@ function TreatmentBox({ appointments }) {
     const t19 = '/1 lần uống';
     const t20 = 'Chọn thuốc thay thế (sẵn có)';
     const t21 = 'Tạo kế hoạch điều trị';
-    const t26 = 'Ghi chú';
-    const t27 = 'Các loại thuốc thay thế đã chọn (Click vào thuốc đã chọn bên dưới để loại bỏ)';
-    const t28 = 'Lịch nhắc nhở uống thuốc';
-    const t29 = 'lần/ngày';
-    const t31 = 'Thêm giờ';
-    const t32 = 'Xóa lịch';
-
     const t22 = '-';
     const t23 = 'Trực tuyến';
     const t24 = 'Tạo kế hoạch';
     const t25 = 'Số thứ tự: ';
+    const t26 = 'Ghi chú';
+    const t27 = 'Các loại thuốc thay thế đã chọn (Click vào thuốc đã chọn bên dưới để loại bỏ)';
+    const t28 = 'Lịch nhắc nhở uống thuốc (trong 1 ngày)';
+    const t29 = 'lần/ngày';
+    const t31 = 'Thêm giờ';
+    const t32 = 'Xóa lịch';
+    const t33 = 'Thời gian';
+    const t34 = 'Liều lượng';
 
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
@@ -61,6 +62,7 @@ function TreatmentBox({ appointments }) {
     const [selectedTreatmentOf, setSelectedTreatmentOF] = useState(null);
 
     const [isCustomizing, setIsCustomizing] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(false);
 
     const [selectedRegimen, setSelectedRegimen] = useState(null);
     const [selectedMedications, setSelectedMedications] = useState(null);
@@ -76,9 +78,7 @@ function TreatmentBox({ appointments }) {
     const {
         patientGroups
     } = useLoadAllPatientGroups({ setError, setLoading });
-    const {
-        createTreatmentPlan
-    } = useCreateTreatmentPlan({ setError, setLoading });
+
 
     const formatTime = (timeStr) => {
         const [hours, minutes] = timeStr.split(':');
@@ -90,11 +90,16 @@ function TreatmentBox({ appointments }) {
 
         const updatedMeds = selectedRegimen.medications.map(med => ({
             ...med,
-            remindTimes: Array(med.frequency).fill('')
+            remindTimes: Array(med.frequency).fill(null).map(() => ({
+                time: '',
+                dosage: med.dosage || 1,
+                medicationName: med.medicationName
+            }))
         }));
 
         setSelectedMedications(updatedMeds);
-    }, [selectedRegimen]);
+    }, [selectedRegimen, isCustomizing]);
+
 
     useEffect(() => {
         if (!appointments) return;
@@ -345,31 +350,6 @@ function TreatmentBox({ appointments }) {
                                                         </>
                                                     )}
                                                 </div>
-
-                                                <div className='input-group'>
-                                                    <label>{t18}</label>
-                                                    {selectedMedications?.map((m, idx) => (
-                                                        <div key={m.medicationID} className='med-dosage-input'>
-                                                            <span>{m.medicationName}</span>
-                                                            <input
-                                                                type="number"
-                                                                min={1}
-                                                                value={m.dosage}
-                                                                onChange={(e) => {
-                                                                    const value = parseInt(e.target.value) || 0;
-                                                                    setSelectedMedications(prev =>
-                                                                        prev.map((med, i) =>
-                                                                            med.medicationID === m.medicationID
-                                                                                ? { ...med, dosage: value }
-                                                                                : med
-                                                                        )
-                                                                    );
-                                                                }}
-                                                            />
-                                                            <span>{m.dosageMetric}{t19}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
                                             </div>
                                         )}
 
@@ -385,16 +365,16 @@ function TreatmentBox({ appointments }) {
                                                             <div className='pill-frequency'>
                                                                 {(m.remindTimes?.length || 0)}&nbsp;{t29}
                                                             </div>
-                                                            <div className='pill-dosage'>
-                                                                {m.dosage}&nbsp;{m.dosageMetric}
-                                                            </div>
                                                         </div>
                                                         <button
                                                             type="button"
                                                             className="add-time-button"
                                                             onClick={() => {
                                                                 const newMeds = [...selectedMedications];
-                                                                newMeds[medIdx].remindTimes = [...(newMeds[medIdx].remindTimes || []), ''];
+                                                                newMeds[medIdx].remindTimes = [
+                                                                    ...(newMeds[medIdx].remindTimes || []),
+                                                                    { time: '', dosage: newMeds[medIdx].dosage || 1, medicationName: m.medicationName }
+                                                                ];
                                                                 setSelectedMedications(newMeds);
                                                             }}
                                                         >
@@ -404,15 +384,39 @@ function TreatmentBox({ appointments }) {
                                                     <div className='drink-time'>
                                                         {(m.remindTimes || []).map((time, idx) => (
                                                             <div key={idx} className="pill-time-slot">
-                                                                <input
-                                                                    type='time'
-                                                                    value={time}
-                                                                    onChange={(e) => {
-                                                                        const newMeds = [...selectedMedications];
-                                                                        newMeds[medIdx].remindTimes[idx] = e.target.value;
-                                                                        setSelectedMedications(newMeds);
-                                                                    }}
-                                                                />
+                                                                <div>
+                                                                    <div className='pill-title'>
+                                                                        {t33}
+                                                                    </div>
+                                                                    <input
+                                                                        className='time-input'
+                                                                        type='time'
+                                                                        value={time.time}
+                                                                        onChange={(e) => {
+                                                                            const newMeds = [...selectedMedications];
+                                                                            newMeds[medIdx].remindTimes[idx].time = e.target.value;
+                                                                            setSelectedMedications(newMeds);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <div className='pill-title'>
+                                                                        {t34}
+                                                                    </div>
+                                                                    <input
+                                                                        className='dosage-input'
+                                                                        type='number'
+                                                                        min={1}
+                                                                        defaultValue={1}
+                                                                        value={time.dosage}
+                                                                        onChange={(e) => {
+                                                                            const newMeds = [...selectedMedications];
+                                                                            newMeds[medIdx].remindTimes[idx].dosage = parseInt(e.target.value) || 1;
+                                                                            setSelectedMedications(newMeds);
+                                                                        }}
+                                                                    />
+                                                                </div>
+
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => {
@@ -449,18 +453,8 @@ function TreatmentBox({ appointments }) {
                                         </div>
 
                                         <button
-                                            onClick={() => {
-                                                createTreatmentPlan({
-                                                    pillRemindTime: selectedMedications, treatmentDetail: {
-                                                        patientID: selectedTreatmentOf.patientID,
-                                                        doctorID: selectedTreatmentOf.doctorID,
-                                                        patientGroupID: patientGroupID,
-                                                        regimenID: selectedRegimen.regimenID,
-                                                        date: new Date().toISOString(),
-                                                        notes: notes
-                                                    }
-                                                });
-                                            }}
+                                            className='submit'
+                                            onClick={() => setIsSubmit(true)}
                                         >
                                             {t21}
                                         </button>
@@ -472,6 +466,27 @@ function TreatmentBox({ appointments }) {
                     </div>
                 </>
             )}
+
+
+            {isSubmit && (
+                <ConfirmTreatmentPlan
+                    confirmTreatmentPlan={{
+                        pillRemindTime: selectedMedications, treatmentDetail: {
+                            patientID: selectedTreatmentOf.patientID,
+                            doctorID: selectedTreatmentOf.doctorID,
+                            patientGroupID: patientGroupID,
+                            regimenID: selectedRegimen.regimenID,
+                            date: new Date().toISOString(),
+                            notes: notes
+                        }
+                    }} setIsSubmit={setIsSubmit}
+                    setError={setError}
+                    setLoading={setLoading}
+                    selectedRegimen={selectedRegimen}
+                    isAdjusted={isCustomizing}
+                />
+            )}
+
             {loading && (
                 <SkeletonUI />
             )}

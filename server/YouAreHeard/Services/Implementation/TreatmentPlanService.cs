@@ -57,5 +57,10 @@ namespace YouAreHeard.Services.Implementation
                 throw new Exception("Failed to create treatment plan.");
             }
         }
+
+        public TreatmentPlanDetailsDTO? GetLatestTreatmentPlanByPatientID(int patientId)
+        {
+            return _treatmentPlanRepository.GetLatestTreatmentPlanByPatientID(patientId);
+        }
     }
 }

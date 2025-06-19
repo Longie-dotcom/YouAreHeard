@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useCreateTreatmentPlan({ setError, setLoading }) {
+function useCreateTreatmentPlan({ setError, setLoading, setIsSubmit }) {
     const t1 = "Bác sĩ chưa nhập ít nhất một thời gian uống thuốc.";
     const t2 = "Bác sĩ chưa chọn nhóm bệnh nhân";
 
@@ -9,18 +9,7 @@ function useCreateTreatmentPlan({ setError, setLoading }) {
     const treatmentPlanControllerApi = process.env.REACT_APP_TREATMENT_PLAN_CONTROLLER_API;
 
     const createTreatmentPlan = async ({ pillRemindTime, treatmentDetail }) => {
-        const transformedPillRemindTimes = pillRemindTime.flatMap(med =>
-            Array.isArray(med.remindTimes) && med.dosage > 0
-                ? med.remindTimes
-                    .filter(time => time && time.trim() !== "")
-                    .map(time => ({
-                        time: time,
-                        medicationID: med.medicationID,
-                        drinkDosage: med.dosage
-                    }))
-                : []
-        );
-        if (transformedPillRemindTimes.length === 0) {
+        if (pillRemindTime.length === 0) {
             setError(t1);
             return;
         }
@@ -33,10 +22,9 @@ function useCreateTreatmentPlan({ setError, setLoading }) {
         setLoading(true);
         const requestTreatmentPlan = {
             treatmentPlan: treatmentDetail,
-            pillRemindTimes: transformedPillRemindTimes
+            pillRemindTimes: pillRemindTime
         }
 
-        console.log(requestTreatmentPlan);
         await axios.post(
             `${serverApi}${treatmentPlanControllerApi}/treatmentPlan/create`,
             requestTreatmentPlan,
@@ -51,6 +39,7 @@ function useCreateTreatmentPlan({ setError, setLoading }) {
                 setError(error.response?.data?.message);
             }).finally(() => {
                 setLoading(false);
+                setIsSubmit(false);
             })
     };
 
