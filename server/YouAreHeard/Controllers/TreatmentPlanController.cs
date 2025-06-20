@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using YouAreHeard.Models;
 using YouAreHeard.Services.Interfaces;
 
 namespace YouAreHeard.Controllers
@@ -53,6 +54,39 @@ namespace YouAreHeard.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Failed to retrieve medications.", error = ex.Message });
+            }
+        }
+
+        [HttpPost("treatmentPlan/create")]
+        public IActionResult CreateTreatmentPlan([FromBody] RequestTreatmentPlanDTO createTreatmentPlan)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _treatmentPlanService.CreateTreatmentPlan(createTreatmentPlan);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to create treatment plan.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("patient/{patientId}")]
+        public IActionResult GetAllPatientTreatment(int patientId)
+        {
+            try
+            {
+                var treatmentPlans = _treatmentPlanService.GetLatestTreatmentPlanByPatientID(patientId);
+                return Ok(treatmentPlans);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to retrieve patient treatment plan.", error = ex.Message });
             }
         }
     }

@@ -238,8 +238,10 @@ function DoctorAppointment({ user, appointments }) {
                                 </div>
                                 <div className='location'>
                                     {appointment.zoomLink ? (
-                                        <div>
-                                            <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
+                                        <div className='zoom-link'>
+                                            <a href={appointment.zoomLink}>
+                                                <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
+                                            </a>
                                         </div>
                                     ) : appointment.location}
                                 </div>

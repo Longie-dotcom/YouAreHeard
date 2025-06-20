@@ -163,18 +163,35 @@
     font-size: 1vw;
 }
 
-.treatment-box .treatment-form .body .regimen-detail div select {
+.treatment-box .treatment-form .body .patient-group {
+    margin: 2%;
+}
+
+.treatment-box .treatment-form .body .patient-group .title {
     border: none;
+    font-size: 0.9vw;
+    font-weight: 550;
+    color: rgb(0, 0, 0);
+    margin: 0;
+    padding: 0;
+    margin-bottom: 2%;
+}
+
+.treatment-box .treatment-form .body .patient-group .detail {
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.treatment-box .treatment-form .body .patient-group .detail select {
     font-size: 1vw;
-    background-color: #dadada;
+    border: 1.9px dashed rgb(0, 0, 0);
+    font-size: 1vw;
+    background-color: transparent;
     padding: 1vw;
     cursor: pointer;
     border-radius: 10px;
     transition: background-color 0.1s ease-in-out;
-}
-
-.treatment-box .treatment-form .body .regimen-detail div select:hover {
-    background-color: #cdcdcd;
 }
 
 .treatment-box .treatment-form .body .customized-fields {
@@ -206,7 +223,6 @@
     margin: 1vw;
 }
 
-.treatment-box .treatment-form .body .customized-fields .input-group textarea,
 .treatment-box .treatment-form .body .customized-fields .input-group input {
     border: none;
     outline: none;
@@ -282,11 +298,11 @@
 }
 
 .treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input input {
-    width: 50%;
+    width: 45%;
 }
 
 .treatment-box .treatment-form .body .customized-fields .input-group .med-dosage-input span {
-    width: 20%;
+    width: 25%;
     margin-left: 2.5%;
     margin-right: 2.5%;
 }
@@ -304,17 +320,47 @@
     display: flex;
     flex-direction: column;
     margin: 1%;
+    background-color: #f2f2f2;
+    padding: 2%;
+    border-radius: 10px;
+    
 }
 
-.treatment-box .treatment-form .body .pill-remind .pill div {
-    width: 70%;
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name div {
+    width: 100%;
     font-size: 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name .pill-detail,
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name .pill-dosage,
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name .pill-frequency {
+    margin: 2%;
+    padding: 1%;
+    border-radius: 40px;
+    background-color: #a3a3a3;
+    color: white;
+    font-size: 0.8vw;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name div {
+    width: 80%;
+    font-weight: 550;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .pill-name button {
+    width: 20%;
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill div input {
-    border: none;
-    background-color: #97ffac;
+    border: black dashed 1.9px;
     padding: 0.4vw;
+    background-color: transparent;
     border-radius: 40px;
     width: 100%;
 }
@@ -323,6 +369,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill .pill-name  button {
@@ -348,21 +395,37 @@
 .treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot {
     display: flex;
     flex-direction: row;
-    width: 70%;
-    margin: 2%;
-    margin-bottom: 5%;
+    width: 100%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    justify-content: space-between;
 }
 
-.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot input {
-    width: 30%;
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot div {
+    width: 38%;
     font-size: 1vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot div input {
+    font-size: 1vw;
+    width: 50%;
+    margin-left: 6%;
+}
+
+.treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot div .pill-title {
+    width: auto;
+    font-size: 0.9vw;
+    display: flex;
+    align-items: center;
 }
 
 .treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot button {
     background-color: rgb(255, 121, 121);
     border: none;
     border-radius: 40px;
-    width: 25%;
+    width: 20%;
     margin-left: 5%;
     font-size: 0.8vw;
     color: white;
@@ -373,4 +436,56 @@
 
 .treatment-box .treatment-form .body .pill-remind .pill .drink-time .pill-time-slot button:hover {
     background-color: rgb(211, 78, 78);
+}
+
+.treatment-box .treatment-form .body .note-form {
+    margin: 2%;
+}
+
+.treatment-box .treatment-form .body .note-form .title {
+    font-size: 0.9vw;
+    font-weight: 550;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: rgb(0, 0, 0);
+    margin-bottom: 2%;
+}
+
+.treatment-box .treatment-form .body .note-form .detail {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.treatment-box .treatment-form .body .note-form textarea {
+    border: none;
+    outline: none;
+    width: 92%;
+    background-color: transparent;
+    margin: 1%;
+    padding: 3%;
+    border-radius: 5px;
+    border: #000000 dashed 2px;
+    overflow: hidden;
+    resize: none;
+}
+
+.treatment-box .treatment-form .body .submit {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 2%;
+    border: none;
+    border-radius: 40px;
+    background-color: #6e86ff;
+    font-size: 1vw;
+    font-weight: 550;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    transition: all 0.1s ease-in-out;
+}
+
+.treatment-box .treatment-form .body .submit:hover {
+    background-color: #3b4991;
 }

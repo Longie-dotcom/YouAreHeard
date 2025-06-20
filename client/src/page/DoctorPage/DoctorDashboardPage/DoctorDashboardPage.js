@@ -19,6 +19,7 @@ import Icon from '../../../component/Icon/Icon';
 import SideMenu from '../../../component/SideMenu/SideMenu';
 import DoctorAppointment from '../../../component/DoctorAppointment/DoctorAppointment';
 import TreatmentBox from '../../../component/TreatmentBox/TreatmentBox';
+import TestLabBox from '../../../component/TestLabBox/TestLabBox';
 
 // Hooks
 import useLogout from '../../../hook/useLogout';
@@ -72,6 +73,10 @@ function DoctorDashboardPage({ user, setReloadCookies }) {
 
                     {openSection === 'treatment' && (
                         <TreatmentBox appointments={appointments} />
+                    )}
+
+                    {openSection === 'test' && (
+                        <TestLabBox appointments={appointments} />
                     )}
                 </div>
             </div>

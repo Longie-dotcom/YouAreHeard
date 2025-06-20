@@ -1,5 +1,4 @@
 using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 
@@ -18,9 +17,9 @@ namespace YouAreHeard.Repositories.Implementation
                 lr.testStageID,
                 lr.testTypeID,
                 lr.patientID,
-                lr.doctorID
+                lr.doctorID,
                 lr.date,
-                lr.note
+                lr.notes
             FROM LabResult lr
             ";
 
@@ -40,7 +39,7 @@ namespace YouAreHeard.Repositories.Implementation
                     patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
                     doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
                     date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("note")),
+                    note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
 
@@ -49,7 +48,6 @@ namespace YouAreHeard.Repositories.Implementation
             }
 
             return lrs;
-
         }
 
         public List<LabResultDTO> GetLabResultByDoctorId(int id)
@@ -63,9 +61,9 @@ namespace YouAreHeard.Repositories.Implementation
                 lr.testStageID,
                 lr.testTypeID,
                 lr.patientID,
-                lr.doctorID
+                lr.doctorID,
                 lr.date,
-                lr.note
+                lr.notes
             FROM LabResult lr
             WHERE lr.doctorID = @doctorID
             ";
@@ -85,7 +83,7 @@ namespace YouAreHeard.Repositories.Implementation
                     patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
                     doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
                     date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("note")),
+                    note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
                 lrs.Add(lr);
@@ -105,9 +103,9 @@ namespace YouAreHeard.Repositories.Implementation
                 lr.testStageID,
                 lr.testTypeID,
                 lr.patientID,
-                lr.doctorID
+                lr.doctorID,
                 lr.date,
-                lr.note
+                lr.notes
             FROM LabResult lr
             WHERE lr.patientID = @patientID
             ";
@@ -127,7 +125,7 @@ namespace YouAreHeard.Repositories.Implementation
                     patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
                     doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
                     date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("note")),
+                    note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
                 lrs.Add(lr);
@@ -143,10 +141,10 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO LabResult
-            {testStageID,testTypeID,patientID,doctorID}
+            (testStageID,testTypeID,patientID,doctorID)
             OUTPUT INSERTED.labResultID
             VALUES
-            {@testStageID, @testTypeID, @patientID, @doctorID}
+            (@testStageID, @testTypeID, @patientID, @doctorID)
             ";
 
             using var cmd = new SqlCommand(query, conn);
@@ -157,7 +155,6 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@doctorID", lr.doctorId);
 
             return (int)cmd.ExecuteScalar();
-
         }
     }
 }
