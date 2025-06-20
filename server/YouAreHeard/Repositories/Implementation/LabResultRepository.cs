@@ -18,9 +18,9 @@ namespace YouAreHeard.Repositories.Implementation
                 lr.testStageID,
                 lr.testTypeID,
                 lr.patientID,
-                lr.doctorID
+                lr.doctorID,
                 lr.date,
-                lr.note
+                lr.notes
             FROM LabResult lr
             ";
 
@@ -40,7 +40,7 @@ namespace YouAreHeard.Repositories.Implementation
                     patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
                     doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
                     date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("note")),
+                    note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
 
@@ -63,9 +63,9 @@ namespace YouAreHeard.Repositories.Implementation
                 lr.testStageID,
                 lr.testTypeID,
                 lr.patientID,
-                lr.doctorID
+                lr.doctorID,
                 lr.date,
-                lr.note
+                lr.notes
             FROM LabResult lr
             WHERE lr.doctorID = @doctorID
             ";
@@ -85,7 +85,7 @@ namespace YouAreHeard.Repositories.Implementation
                     patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
                     doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
                     date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("note")),
+                    note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
                 lrs.Add(lr);
@@ -105,9 +105,9 @@ namespace YouAreHeard.Repositories.Implementation
                 lr.testStageID,
                 lr.testTypeID,
                 lr.patientID,
-                lr.doctorID
+                lr.doctorID,
                 lr.date,
-                lr.note
+                lr.notes
             FROM LabResult lr
             WHERE lr.patientID = @patientID
             ";
@@ -127,7 +127,7 @@ namespace YouAreHeard.Repositories.Implementation
                     patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
                     doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
                     date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("note")),
+                    note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
                 lrs.Add(lr);

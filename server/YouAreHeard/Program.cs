@@ -37,6 +37,7 @@ builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IZoomService, ZoomService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ITreatmentPlanService, TreatmentPlanService>();
+builder.Services.AddScoped<ILabResultService, LabResultService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -47,6 +48,9 @@ builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IARVRegimenRepository, ARVRegimenRepository>();
 builder.Services.AddScoped<IPatientGroupRepository, PatientGroupRepository>();
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
+builder.Services.AddScoped<ITestStageRepository, TestStageRepository>();
+builder.Services.AddScoped<ITestTypeRepository, TestTypeRepository>();
+builder.Services.AddScoped<ILabResultRepository, LabResultRepository>();
 
 var app = builder.Build();
 
