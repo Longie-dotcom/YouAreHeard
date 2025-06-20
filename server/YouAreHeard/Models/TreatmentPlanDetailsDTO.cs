@@ -8,7 +8,6 @@
         public int DoctorID { get; set; }
         public int PatientID { get; set; }
         public DateTime Date { get; set; }
-        public int PatientGroupID { get; set; }
         public string? Notes { get; set; }
 
         // Regimen Info
