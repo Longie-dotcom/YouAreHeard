@@ -7,20 +7,17 @@ namespace YouAreHeard.Services.Implementation
     public class TreatmentPlanService : ITreatmentPlanService
     {
         private readonly IARVRegimenRepository _ARVRegimenRepository;
-        private readonly IPatientGroupRepository _patientGroupRepository;
         private readonly IMedicationRepository _medicationRepository;
         private readonly IPillRemindTimesRepository _pillRemindTimesRepository;
         private readonly ITreatmentPlanRepository _treatmentPlanRepository;
 
         public TreatmentPlanService(
             IARVRegimenRepository ARVRegimenRepository,
-            IPatientGroupRepository patientGroupRepository,
             IMedicationRepository medicationRepository,
             IPillRemindTimesRepository pillRemindTimesRepository,
             ITreatmentPlanRepository treatmentPlanRepository)
         {
             _ARVRegimenRepository = ARVRegimenRepository;
-            _patientGroupRepository = patientGroupRepository;
             _medicationRepository = medicationRepository;
             _pillRemindTimesRepository = pillRemindTimesRepository;
             _treatmentPlanRepository = treatmentPlanRepository;
@@ -29,11 +26,6 @@ namespace YouAreHeard.Services.Implementation
         public List<ARVRegimenDTO> GetARVRegimens()
         {
             return _ARVRegimenRepository.GetAllARVRegimens();
-        }
-
-        public List<PatientGroupDTO> GetPatientGroups()
-        {
-            return _patientGroupRepository.GetAllPatientGroups();
         }
 
         public List<MedicationDTO> GetMedications()

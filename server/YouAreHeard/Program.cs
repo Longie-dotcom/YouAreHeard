@@ -45,7 +45,6 @@ builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IARVRegimenRepository, ARVRegimenRepository>();
-builder.Services.AddScoped<IPatientGroupRepository, PatientGroupRepository>();
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 builder.Services.AddScoped<IPillRemindTimesRepository, PillRemindTimesRepository>();
 builder.Services.AddScoped<ITreatmentPlanRepository, TreatmentPlanRepository>();

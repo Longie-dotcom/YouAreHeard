@@ -13,17 +13,16 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO TreatmentPlan
-            (regimenID, doctorID, patientID, date, patientGroupID, notes)
+            (regimenID, doctorID, patientID, date, notes)
             OUTPUT INSERTED.treatmentPlanID
             VALUES
-            (@RegimenID, @DoctorID, @PatientID, @Date, @PatientGroupID, @Notes)";
+            (@RegimenID, @DoctorID, @PatientID, @Date, @Notes)";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@RegimenID", treatmentPlan.RegimenID);
             cmd.Parameters.AddWithValue("@DoctorID", treatmentPlan.DoctorID);
             cmd.Parameters.AddWithValue("@PatientID", treatmentPlan.PatientID);
             cmd.Parameters.AddWithValue("@Date", treatmentPlan.Date);
-            cmd.Parameters.AddWithValue("@PatientGroupID", treatmentPlan.PatientGroupID);
             cmd.Parameters.AddWithValue("@Notes", (object?)treatmentPlan.Notes ?? DBNull.Value);
 
             return (int)cmd.ExecuteScalar();
@@ -36,7 +35,7 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             SELECT 
-                tp.treatmentPlanID, tp.regimenID, tp.doctorID, tp.patientID, tp.date, tp.patientGroupID, tp.notes,
+                tp.treatmentPlanID, tp.regimenID, tp.doctorID, tp.patientID, tp.date, tp.notes,
 
                 ar.name AS regimenName, ar.type, ar.duration,
                 ar.regimenSideEffects, ar.regimenIndications, ar.regimenContraindications,
@@ -72,7 +71,6 @@ namespace YouAreHeard.Repositories.Implementation
                         DoctorID = reader.GetInt32(2),
                         PatientID = reader.GetInt32(3),
                         Date = reader.GetDateTime(4),
-                        PatientGroupID = reader.GetInt32(5),
                         Notes = reader.IsDBNull(6) ? null : reader.GetString(6),
 
                         RegimenName = reader.GetString(7),

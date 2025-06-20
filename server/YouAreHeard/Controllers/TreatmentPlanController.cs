@@ -29,20 +29,6 @@ namespace YouAreHeard.Controllers
             }
         }
 
-        [HttpGet("patientGroup/all")]
-        public IActionResult GetAllPatientGroup()
-        {
-            try
-            {
-                var patientGroups = _treatmentPlanService.GetPatientGroups();
-                return Ok(patientGroups);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Failed to retrieve patient groups.", error = ex.Message });
-            }
-        }
-
         [HttpGet("medication/all")]
         public IActionResult GetAllMedications()
         {
