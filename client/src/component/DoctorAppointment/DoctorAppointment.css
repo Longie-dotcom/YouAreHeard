@@ -139,6 +139,17 @@
     width: 100%;
 }
 
+.doctor-appointment .appointment .appointment-later .zoom-link a {
+    display: flex;
+    align-items: center;
+    border-bottom: transparent solid 2.2px;
+    padding: 0.5%;
+}
+
+.doctor-appointment .appointment .appointment-later .zoom-link a:hover {
+    border-bottom: #4A67F3 solid 2.2px;
+}
+
 .doctor-appointment .appointment .appointment-later .name {
     font-size: 0.8vw;
     width: 20%;

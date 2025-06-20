@@ -3,7 +3,7 @@
     public class PillRemindTimesDTO
     {
         public int? TreatmentPlanID { get; set; }
-        public TimeOnly Time { get; set; }
+        public string Time { get; set; }
         public int MedicationID { get; set; }
         public int DrinkDosage { get; set; }
 

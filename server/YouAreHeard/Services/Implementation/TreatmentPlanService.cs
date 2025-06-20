@@ -44,7 +44,7 @@ namespace YouAreHeard.Services.Implementation
         public void CreateTreatmentPlan(RequestTreatmentPlanDTO requestTreatmentPlan)
         {
             int treatmentPlanId = _treatmentPlanRepository.insertTreatmentPlan(requestTreatmentPlan.TreatmentPlan);
-            if (treatmentPlanId > 0)
+            if (treatmentPlanId >= 0)
             {
                 foreach (var pillRemindTime in requestTreatmentPlan.PillRemindTimes)
                 {
@@ -56,6 +56,11 @@ namespace YouAreHeard.Services.Implementation
             {
                 throw new Exception("Failed to create treatment plan.");
             }
+        }
+
+        public TreatmentPlanDetailsDTO? GetLatestTreatmentPlanByPatientID(int patientId)
+        {
+            return _treatmentPlanRepository.GetLatestTreatmentPlanByPatientID(patientId);
         }
     }
 }

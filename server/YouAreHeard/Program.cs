@@ -49,6 +49,9 @@ builder.Services.AddScoped<IPatientGroupRepository, PatientGroupRepository>();
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 builder.Services.AddScoped<IPillRemindTimesRepository, PillRemindTimesRepository>();
 builder.Services.AddScoped<ITreatmentPlanRepository, TreatmentPlanRepository>();
+builder.Services.AddScoped<ILabResultRepository, LabResultRepository>();
+builder.Services.AddScoped<ITestStageRepository, TestStageRepository>();
+builder.Services.AddScoped<ITestTypeRepository, TestTypeRepository>();
 
 var app = builder.Build();
 

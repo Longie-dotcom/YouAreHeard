@@ -1,0 +1,193 @@
+.confirm-treatment-plan-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan{
+    position: fixed; 
+    border-radius: 10px;
+    display: flex;
+    height: 90vh;
+    margin-top: 5vh;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    justify-items: center;
+    width: 50vw;
+    align-items: center;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan::-webkit-scrollbar {
+    display: none;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .header {
+    width: 95%;
+    margin: 0; 
+    padding: 2.5% !important;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .header .title {
+    width: 60%;
+    border: none;
+    color: rgb(0, 0, 0);
+    display: flex;
+    align-items: center;
+    font-size: 1vw;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .header .logo {
+    height: 100%;
+    width: auto;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .header .logo img {
+    height: 100%;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .header .title .icon {
+    height: 1.5vw;
+    margin-right: 2%;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body {
+    margin: 1%;
+    width: 98% !important;
+    display: flex;
+    flex-direction: column !important;
+    margin-top: 0;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .title {
+    width: 90%;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .regimen div {
+    display: flex;
+    flex-direction: row;
+    margin: 1%;
+    align-items: center;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .regimen div .sub-title {
+    width: 30%;
+    color: #1c3048;
+    font-size: 1vw;
+    font-weight: 550;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .regimen div .detail {
+    width: 70%;
+    font-size: 1vw;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .regimen div .is-adjusted {
+    color: rgb(251, 251, 255);
+    font-weight: 500;
+    background-color: rgb(240, 72, 72);
+    width: fit-content;
+    padding: 1%;
+    border-radius: 40px;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .regimen div .is-not-adjusted {
+    color: rgb(251, 251, 255);
+    font-weight: 500;
+    background-color: rgb(48, 48, 253);
+    width: fit-content;
+    padding: 1%;
+    border-radius: 40px;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-reminder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 2vw;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-size: 1vw;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-grid-header {
+    display: contents;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 8px;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-grid-header > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-grid-header > div > .icon {
+    margin-right: 5%;
+    width: 1.4vw;
+    height: auto;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-grid-row {
+    display: contents;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-grid-row > div {
+    padding: 6px 0;
+    border-top: 1px solid #eee;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .note {
+    padding: 2%;
+    margin: 2%;
+    background-color: #f0f0f0;
+    border: 2px black dashed;
+    border-radius: 10px;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .footer {
+    margin-bottom: 5vh;
+    margin-top: 3vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .footer .cancel-button,
+.confirm-treatment-plan-overlap .confirm-treatment-plan .footer .submit-button {
+    padding: 1%;
+    margin: 1%;
+    border: none;
+    border-radius: 40px;
+    width: 20%;
+    cursor: pointer;
+    font-weight: 550;
+    font-size: 1vw;
+    color: #1c3048;
+    background-color: #98abff;
+    transition: all 0.1s ease-in-out;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .footer .cancel-button:hover,
+.confirm-treatment-plan-overlap .confirm-treatment-plan .footer .submit-button:hover {
+    background-color: #1c3048;
+    color: rgb(255, 255, 255);
+}

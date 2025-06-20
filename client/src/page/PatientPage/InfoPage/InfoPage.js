@@ -11,6 +11,7 @@ import './InfoPage.css';
 import Icon from '../../../component/Icon/Icon';
 import TabBar from '../../../component/TabBar/TabBar';
 import AppointmentList from '../../../component/AppointmentList/AppointmentList';
+import TreatmentPlanInfoBox from '../../../component/TreatmentPlanInfoBox/TreatmentPlanInfoBox';
 
 // Hooks
 import { useState } from 'react';
@@ -65,6 +66,10 @@ function InfoPage({ user }) {
 
             {openAppointment && (
                 <AppointmentList user={user} />
+            )}
+
+            {openTreatment && (
+                <TreatmentPlanInfoBox user={user} />
             )}
         </div>
     )

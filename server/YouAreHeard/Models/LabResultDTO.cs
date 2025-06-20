@@ -2,7 +2,7 @@ namespace YouAreHeard.Models
 {
     public class LabResultDTO
     {
-        public int LabResultId { get; set; }
+        public int? LabResultId { get; set; }
 
         public int testStageId { get; set; }
 

@@ -1,5 +1,4 @@
 using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 
@@ -49,7 +48,6 @@ namespace YouAreHeard.Repositories.Implementation
             }
 
             return lrs;
-
         }
 
         public List<LabResultDTO> GetLabResultByDoctorId(int id)
@@ -143,10 +141,10 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO LabResult
-            {testStageID,testTypeID,patientID,doctorID}
+            (testStageID,testTypeID,patientID,doctorID)
             OUTPUT INSERTED.labResultID
             VALUES
-            {@testStageID, @testTypeID, @patientID, @doctorID}
+            (@testStageID, @testTypeID, @patientID, @doctorID)
             ";
 
             using var cmd = new SqlCommand(query, conn);
@@ -157,7 +155,6 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@doctorID", lr.doctorId);
 
             return (int)cmd.ExecuteScalar();
-
         }
     }
 }
