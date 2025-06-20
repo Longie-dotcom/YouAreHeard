@@ -125,6 +125,13 @@ function TreatmentBox({ appointments }) {
         setUpcomingAppointments(upcomingAppointments || []);
     }, [appointments]);
 
+    useEffect(() => {
+        setSelectedRegimen(null);
+        setSelectedMedications(null);
+        setNotes('');
+        setPatientGroupID(null);
+    }, [selectedTreatmentOf])
+
     return (
         <div className='treatment-box'>
             <div className='title'>
@@ -165,6 +172,7 @@ function TreatmentBox({ appointments }) {
                     ))}
                 </div>
             )}
+
             {selectedTreatmentOf && (
                 <>
                     <div className='title'>

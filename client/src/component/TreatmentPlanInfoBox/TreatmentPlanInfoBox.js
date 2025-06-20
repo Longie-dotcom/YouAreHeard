@@ -17,7 +17,7 @@ function TreatmentPlanInfoBox({ user }) {
 
     const {
         treatmentPlan
-    } = useGetLatestTreatmentPlanPatient({ setError, setLoading, patientId: user.UserId });
+    } = useGetLatestTreatmentPlanPatient({ setError, setLoading, patientId: user?.UserId });
 
     return (
         <div className='treatment-plan-info-box'>
