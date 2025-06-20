@@ -1,11 +1,11 @@
 using Microsoft.Extensions.FileProviders;
 using YouAreHeard.Models;
-using YouAreHeard.Services.Interfaces;
-using YouAreHeard.Services.Implementation;
 using YouAreHeard.Repositories.Implementation;
 using YouAreHeard.Repositories.Interfaces;
-using YouAreHeard.Utilities;
 using YouAreHeard.Services;
+using YouAreHeard.Services.Implementation;
+using YouAreHeard.Services.Interfaces;
+using YouAreHeard.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -48,9 +48,11 @@ builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IARVRegimenRepository, ARVRegimenRepository>();
 builder.Services.AddScoped<IPatientGroupRepository, PatientGroupRepository>();
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
+builder.Services.AddScoped<IPillRemindTimesRepository, PillRemindTimesRepository>();
+builder.Services.AddScoped<ITreatmentPlanRepository, TreatmentPlanRepository>();
+builder.Services.AddScoped<ILabResultRepository, LabResultRepository>();
 builder.Services.AddScoped<ITestStageRepository, TestStageRepository>();
 builder.Services.AddScoped<ITestTypeRepository, TestTypeRepository>();
-builder.Services.AddScoped<ILabResultRepository, LabResultRepository>();
 
 var app = builder.Build();
 

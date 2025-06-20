@@ -1,0 +1,114 @@
+.test-lab-box .title {
+    width: 96%;
+    padding: 1%;
+    margin: 1%;
+    border-bottom: #767676 solid 2px;
+    font-size: 0.9vw;
+    color: #767676;
+    font-weight: 550;
+}
+
+.test-lab-box .patient-list {
+    width: 100%;
+    margin-top: 2%;
+    height: 25vh;
+    overflow-y: auto;
+    overflow-x: hidden;  
+}
+
+.test-lab-box .patient-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.test-lab-box .patient-list::-webkit-scrollbar-thumb {
+    background-color: #b4c1ff;
+    border-radius: 4px;
+}
+
+.test-lab-box .patient-list::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.test-lab-box .patient-list .appointment-later {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.9vw;
+    padding: 0.9vw;
+    padding-left: 0.7vw;
+    padding-right: 0.4vw;
+    border-radius: 40px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+.test-lab-box .patient-list .appointment-later div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.test-lab-box .patient-list .appointment-later .name {
+    font-size: 0.8vw;
+    width: 20%;
+    font-weight: 550;
+}
+
+.test-lab-box .patient-list .appointment-later .date {
+    width: 15%;
+}
+
+.test-lab-box .patient-list .appointment-later .time {
+    width: 15%;
+}
+
+.test-lab-box .patient-list .appointment-later .location {
+    width: 17.5%;
+}
+
+.test-lab-box .patient-list .appointment-later .queue-number {
+    width: 15%;
+}
+
+.test-lab-box .patient-list .appointment-later .patient-detail {
+    width: 17.5%;
+}
+
+.test-lab-box .patient-list .appointment-later .patient-detail button {
+    width: 90%;
+    border: none;
+    border-radius: 20px;
+    background-color: #4A67F3;
+    color: rgb(255, 255, 255);
+    font-size: 0.8vw;
+    cursor: pointer;
+    padding: 0.2vw;
+    transition: all 0.1s ease-in-out;
+}
+
+.test-lab-box .patient-list .appointment-later .patient-detail button:hover {
+    background-color: #3348ad;
+}
+
+.test-lab-box .test-result {
+    background-color: rgb(255, 255, 255);
+    padding: 2vw;
+    border-radius: 10px;
+    margin-top: 1vw;
+}
+
+.test-lab-box .patient-info {
+    background-color: rgb(255, 255, 255);
+    padding: 2vw;
+    border-radius: 10px;
+    margin-top: 1vw;
+}
+
+
+.test-lab-box .test-form {
+    background-color: rgb(255, 255, 255);
+    padding: 2vw;
+    border-radius: 10px;
+    margin-top: 1vw;
+}
