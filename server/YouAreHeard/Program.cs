@@ -37,6 +37,7 @@ builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IZoomService, ZoomService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ITreatmentPlanService, TreatmentPlanService>();
+builder.Services.AddScoped<ILabResultService, LabResultService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
