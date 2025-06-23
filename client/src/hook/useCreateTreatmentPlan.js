@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
 
 function useCreateTreatmentPlan({ setError, setLoading, setIsSubmit }) {
     const t1 = "Bác sĩ chưa nhập ít nhất một thời gian uống thuốc.";
-    const t2 = "Bác sĩ chưa chọn nhóm bệnh nhân";
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const treatmentPlanControllerApi = process.env.REACT_APP_TREATMENT_PLAN_CONTROLLER_API;
@@ -13,17 +11,12 @@ function useCreateTreatmentPlan({ setError, setLoading, setIsSubmit }) {
             setError(t1);
             return;
         }
-
-        if (!treatmentDetail.patientGroupID) {
-            setError(t2);
-            return;
-        }
-
         setLoading(true);
         const requestTreatmentPlan = {
             treatmentPlan: treatmentDetail,
             pillRemindTimes: pillRemindTime
         }
+        console.log(requestTreatmentPlan);
 
         await axios.post(
             `${serverApi}${treatmentPlanControllerApi}/treatmentPlan/create`,

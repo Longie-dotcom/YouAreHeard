@@ -1,0 +1,85 @@
+.medication-info-box-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.medication-info-box-overlap .medication-info-box .title {
+    font-size: 1.2vw;
+    text-align: center;
+    font-weight: 550;
+    margin-bottom: 1vw;
+}
+
+.medication-info-box-overlap .medication-info-box {
+    position: fixed;
+    width: 40vw;
+    padding: 2.5vw;
+    height: auto;
+    margin-top: 20vh;
+    border-radius: 20px;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+.medication-info-box-overlap .medication-info-box .header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0 !important;
+    margin-bottom: 4%;
+}
+
+.medication-info-box-overlap .medication-info-box .header img {
+    height: 100%;
+}
+
+.medication-info-box-overlap .medication-info-box .header .exit {
+    width: 2vw !important;
+    height: 2vw !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important;
+}
+
+.medication-info-box-overlap .medication-info-box .header .exit:hover {
+    background-color: rgb(220, 220, 220) !important;
+}
+
+.medication-info-box-overlap .medication-info-box .body {
+    display: flex;
+    flex-direction: column !important;
+}
+
+.medication-info-box-overlap .medication-info-box .body > div {
+    display: flex;
+    margin: 2%;
+    flex-direction: row;
+    font-size: 1vw;
+    align-items: center;
+}
+
+.medication-info-box-overlap .medication-info-box .body > div .medication-title {
+    width: 30%;
+    font-weight: 550;
+}
+
+.medication-info-box-overlap .medication-info-box .body > div .medication-detail {
+    width: 70%;
+}
+
+

@@ -8,11 +8,9 @@ namespace YouAreHeard
         public int HivStatusID { get; set; }
         public int PregnancyStatusID { get; set; }
 
-
-
-        public float Height { get; set; }
-        public float Weight { get; set; }
-        public string Gender { get; set; }
+        public float? Height { get; set; }
+        public float? Weight { get; set; }
+        public string? Gender { get; set; }
 
 
         public string? PregnancyStatusName { get; set; }

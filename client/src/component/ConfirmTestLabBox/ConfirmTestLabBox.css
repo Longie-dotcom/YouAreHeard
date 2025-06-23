@@ -1,0 +1,205 @@
+.confirm-test-lab-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .title {
+    font-size: 1.2vw;
+    text-align: center;
+    font-weight: 550;
+    margin-bottom: 1vw;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab {
+    position: fixed;
+    width: 70vw;
+    padding: 1.5vw;
+    height: auto;
+    margin-top: 10vh;
+    border-radius: 20px;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    height: 75vh;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+}
+
+.confirm-test-lab-overlap .confirm-test-lab::-webkit-scrollbar {
+    display: none;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .header {
+    height: auto;
+    width: 100%;
+    padding: 0 !important;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body {
+    width: 100%;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab,
+.confirm-test-lab-overlap .confirm-test-lab .body .patient-info {
+    width: 42%;
+    border: 1.9px dashed rgb(0, 0, 0);
+    padding: 2% !important;
+    border-radius: 10px;
+    height: fit-content !important;
+    margin: 2%;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .title,
+.confirm-test-lab-overlap .confirm-test-lab .body .patient-info .title {
+    width: 94%;
+    padding: 1%;
+    margin: 2%;
+    text-align: left;
+    font-size: 1vw;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .is-customize,
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .stage,
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .type {
+    display: flex;
+    flex-direction: row;
+    margin: 3%;
+    align-items: center;
+    font-size: 1vw;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .is-customize .sub-title,
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .stage .sub-title,
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .type .sub-title {
+    width: 50%;
+    font-weight: 550;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .stage .detail,
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .type .detail {
+    width: 50%;
+    color: #6161c2;
+    font-weight: 550;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .is-customize .detail {
+    color: rgb(255, 255, 255);
+    padding: 1%;
+    font-size: 1vw;
+    font-weight: 550;
+    border-radius: 40px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .is-customize .non-customized {
+    background-color: #6d29ff;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-lab .is-customize .customized {
+    background-color: #fe6161;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-metric-values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 1vw;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-size: 1vw;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-metric-header {
+    display: contents;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-metric-header > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-metric-header > div > .icon{
+    margin-right: 5%;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-metric-row {
+    display: contents;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .test-metric-row > div {
+    padding: 6px 0;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .body .note {
+    margin: 2% !important;
+    padding: 2%;
+    font-size: 1vw;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .footer button {
+    width: 14%;
+    margin: 2%;
+    padding: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    font-size: 1vw;
+    font-weight: 550;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .footer .submit-button {
+    background-color: #6161c2;
+    color: white;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .footer .submit-button:hover {
+    background-color: #424288;
+    color: white;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .footer .cancel-button {
+    background-color: #fe6161;
+    color: white;
+}
+
+.confirm-test-lab-overlap .confirm-test-lab .footer .cancel-button:hover {
+    background-color: #ce4848;
+}

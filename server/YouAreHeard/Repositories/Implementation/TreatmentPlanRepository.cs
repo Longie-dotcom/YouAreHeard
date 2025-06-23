@@ -13,10 +13,10 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO TreatmentPlan
-            (regimenID, doctorID, patientID, date, notes)
+            (regimenID, doctorID, patientID, date, notes, isCustomized)
             OUTPUT INSERTED.treatmentPlanID
             VALUES
-            (@RegimenID, @DoctorID, @PatientID, @Date, @Notes)";
+            (@RegimenID, @DoctorID, @PatientID, @Date, @Notes, @IsCustomized)";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@RegimenID", treatmentPlan.RegimenID);
@@ -24,6 +24,7 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@PatientID", treatmentPlan.PatientID);
             cmd.Parameters.AddWithValue("@Date", treatmentPlan.Date);
             cmd.Parameters.AddWithValue("@Notes", (object?)treatmentPlan.Notes ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@IsCustomized", treatmentPlan.IsCustomized);
 
             return (int)cmd.ExecuteScalar();
         }
@@ -34,24 +35,40 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-            SELECT 
-                tp.treatmentPlanID, tp.regimenID, tp.doctorID, tp.patientID, tp.date, tp.notes,
+                SELECT 
+                    tp.treatmentPlanID,         -- 0
+                    tp.regimenID,               -- 1
+                    tp.doctorID,                -- 2
+                    tp.patientID,               -- 3
+                    tp.date,                    -- 4
+                    tp.notes,                   -- 5
+                    tp.isCustomized,            -- 6
 
-                ar.name AS regimenName, ar.type, ar.duration,
-                ar.regimenSideEffects, ar.regimenIndications, ar.regimenContraindications,
+                    ar.name AS regimenName,     -- 7
+                    ar.type,                    -- 8
+                    ar.duration,                -- 9
+                    ar.regimenSideEffects,     -- 10
+                    ar.regimenIndications,     -- 11
+                    ar.regimenContraindications, -- 12
 
-                prt.time, prt.drinkDosage, prt.medicationID,
+                    prt.time,                   -- 13
+                    prt.drinkDosage,            -- 14
+                    prt.medicationID,           -- 15
+                    prt.notes,                  -- 16
 
-                m.medicationName, m.dosageMetric
-
-            FROM TreatmentPlan tp
-            JOIN ARVRegimen ar ON tp.regimenID = ar.regimenID
-            LEFT JOIN PillRemindTimes prt ON tp.treatmentPlanID = prt.treatmentPlanID
-            LEFT JOIN Medication m ON prt.medicationID = m.medicationID
-            WHERE tp.patientID = @PatientID AND tp.date = (
-                SELECT MAX(date) FROM TreatmentPlan WHERE patientID = @PatientID
-            )
-            ORDER BY prt.time";
+                    m.medicationName,           -- 17
+                    m.dosageMetric              -- 18
+                FROM TreatmentPlan tp
+                JOIN ARVRegimen ar ON tp.regimenID = ar.regimenID
+                LEFT JOIN PillRemindTimes prt ON tp.treatmentPlanID = prt.treatmentPlanID
+                LEFT JOIN Medication m ON prt.medicationID = m.medicationID
+                WHERE tp.patientID = @PatientID 
+                  AND tp.date = (
+                      SELECT MAX(date) 
+                      FROM TreatmentPlan 
+                      WHERE patientID = @PatientID
+                  )
+                ORDER BY prt.time";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientID", patientID);
@@ -71,7 +88,8 @@ namespace YouAreHeard.Repositories.Implementation
                         DoctorID = reader.GetInt32(2),
                         PatientID = reader.GetInt32(3),
                         Date = reader.GetDateTime(4),
-                        Notes = reader.IsDBNull(6) ? null : reader.GetString(6),
+                        Notes = reader.IsDBNull(5) ? null : reader.GetString(5),
+                        IsCustomized = reader.GetBoolean(6),
 
                         RegimenName = reader.GetString(7),
                         RegimenType = reader.GetString(8),
@@ -84,18 +102,22 @@ namespace YouAreHeard.Repositories.Implementation
                     };
                 }
 
-                // Only add pill if there's a valid time
                 if (!reader.IsDBNull(13))
                 {
-                    treatmentPlan.PillRemindTimes.Add(new PillRemindTimesDTO
+                    var timeSpan = reader.GetTimeSpan(13);
+
+                    var pill = new PillRemindTimesDTO
                     {
-                        Time = reader.GetTimeSpan(13).ToString(@"hh\:mm"),
-                        DrinkDosage = reader.GetInt32(14),
-                        MedicationID = reader.GetInt32(15),
-                        MedicationName = reader.IsDBNull(16) ? null : reader.GetString(16),
-                        DosageMetric = reader.IsDBNull(17) ? null : reader.GetString(17),
-                        TreatmentPlanID = treatmentPlan.TreatmentPlanID
-                    });
+                        TreatmentPlanID = treatmentPlan.TreatmentPlanID,
+                        Time = timeSpan.ToString(@"hh\:mm"),
+                        DrinkDosage = reader.IsDBNull(14) ? 0 : reader.GetInt32(14),
+                        MedicationID = reader.IsDBNull(15) ? 0 : reader.GetInt32(15),
+                        Notes = reader.IsDBNull(16) ? null : reader.GetString(16),
+                        MedicationName = reader.IsDBNull(17) ? null : reader.GetString(17),
+                        DosageMetric = reader.IsDBNull(18) ? null : reader.GetString(18)
+                    };
+
+                    treatmentPlan.PillRemindTimes.Add(pill);
                 }
             }
 

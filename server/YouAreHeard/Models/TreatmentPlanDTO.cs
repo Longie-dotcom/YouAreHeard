@@ -8,5 +8,6 @@
         public int DoctorID { get; set; }
         public DateTime Date { get; set; }
         public string Notes { get; set; }
+        public bool IsCustomized { get; set; }
     }
 }

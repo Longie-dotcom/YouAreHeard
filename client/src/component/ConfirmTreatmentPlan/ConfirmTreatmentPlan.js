@@ -19,6 +19,7 @@ import useCreateTreatmentPlan from '../../hook/useCreateTreatmentPlan';
 
 function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, setLoading, selectedRegimen, isAdjusted }) {
     const t1 = 'Xác nhận thông tin đơn thuốc/phác đồ điều trị';
+    const t2 = 'Ghi chú cho thuốc'
     const t6 = 'Loại phác đồ';
     const t7 = 'Thời gian sử dụng';
     const t8 = 'Thông tin phác đồ có sẵn (gốc)';
@@ -33,7 +34,7 @@ function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, set
     const t17 = 'Thời gian uống';
     const t18 = 'Liều lượng';
     const t19 = 'Xác nhận';
-    const t20 = 'Ghi chú';
+    const t20 = 'Ghi chú chung';
     const t21 = 'Không có ghi chú';
     const t22 = 'Hủy';
 
@@ -49,7 +50,9 @@ function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, set
                     time: rt.time,
                     medicationID: med.medicationID,
                     drinkDosage: rt.dosage,
-                    medicationName: rt.medicationName
+                    medicationName: rt.medicationName,
+                    notes: med.notes,
+                    dosageMetric: med.dosageMetric
                 }))
             : []
     );
@@ -158,6 +161,20 @@ function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, set
                     </div>
 
                     <div className='title'>
+                        {t2}
+                    </div>
+                    <div className='pill-notes'>
+                        {confirmTreatmentPlan.pillRemindTime
+                            .filter(pill => pill.remindTimes?.some(rt => rt.time?.trim()))
+                            .map((pill, idx) => (
+                                <div key={idx} className="pill-note">
+                                    <div className='pill-title'>{pill.medicationName}</div>
+                                    <div className='pill-detail'>{pill.notes ? pill.notes : '(Không có ghi chú)'}</div>
+                                </div>
+                            ))}
+                    </div>
+
+                    <div className='title'>
                         {t20}
                     </div>
                     <div className='note'>
@@ -166,7 +183,7 @@ function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, set
                 </div>
 
                 <div className='footer'>
-                    <button 
+                    <button
                         onClick={() => createTreatmentPlan({
                             pillRemindTime: transformedPillRemindTimes,
                             treatmentDetail: confirmTreatmentPlan.treatmentDetail
@@ -174,7 +191,7 @@ function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, set
                         className='submit-button'>
                         {t19}
                     </button>
-                    <button 
+                    <button
                         onClick={() => setIsSubmit(false)}
                         className='cancel-button'>
                         {t22}

@@ -13,10 +13,10 @@ import Icon from '../Icon/Icon';
 import ErrorBox from '../ErrorBox/ErrorBox';
 import SkeletonUI from '../SkeletonUI/SkeletonUI';
 import ConfirmTreatmentPlan from '../ConfirmTreatmentPlan/ConfirmTreatmentPlan';
+import MedicationInfoBox from '../MedicationInfoBox/MedicationInfoBox';
 
 // Hooks
 import useLoadAllRegimens from '../../hook/useLoadAllRegimens';
-import useLoadAllPatientGroups from '../../hook/useLoadAllPatientGroups';
 import useLoadAllMedications from '../../hook/useLoadAllMedications';
 
 function TreatmentBox({ appointments }) {
@@ -27,8 +27,8 @@ function TreatmentBox({ appointments }) {
     const t5 = 'Tùy chỉnh phác đồ';
     const t6 = 'Loại phác đồ';
     const t7 = 'Thời gian sử dụng';
-    const t8 = 'Liều lượng';
-    const t9 = 'Tần suất';
+    const t8 = 'Ghi chú cho thuốc';
+    const t9 = 'Xem chi tiết';
     const t10 = 'Chỉ định';
     const t11 = 'Chống chỉ định';
     const t12 = 'Tác dụng phụ';
@@ -45,7 +45,7 @@ function TreatmentBox({ appointments }) {
     const t23 = 'Trực tuyến';
     const t24 = 'Tạo kế hoạch';
     const t25 = 'Số thứ tự: ';
-    const t26 = 'Ghi chú';
+    const t26 = 'Ghi chú chung';
     const t27 = 'Các loại thuốc thay thế đã chọn (Click vào thuốc đã chọn bên dưới để loại bỏ)';
     const t28 = 'Lịch nhắc nhở uống thuốc (trong 1 ngày)';
     const t29 = 'lần/ngày';
@@ -64,10 +64,10 @@ function TreatmentBox({ appointments }) {
     const [isCustomizing, setIsCustomizing] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
 
+    const [medicationInfo, setMedicationInfo] = useState(null);
     const [selectedRegimen, setSelectedRegimen] = useState(null);
     const [selectedMedications, setSelectedMedications] = useState(null);
     const [notes, setNotes] = useState('');
-    const [patientGroupID, setPatientGroupID] = useState(null);
 
     const {
         medications
@@ -75,10 +75,6 @@ function TreatmentBox({ appointments }) {
     const {
         regimens
     } = useLoadAllRegimens({ setError, setLoading });
-    const {
-        patientGroups
-    } = useLoadAllPatientGroups({ setError, setLoading });
-
 
     const formatTime = (timeStr) => {
         const [hours, minutes] = timeStr.split(':');
@@ -90,10 +86,13 @@ function TreatmentBox({ appointments }) {
 
         const updatedMeds = selectedRegimen.medications.map(med => ({
             ...med,
+            notes: '',
+            dosageMetric: med.dosageMetric,
             remindTimes: Array(med.frequency).fill(null).map(() => ({
                 time: '',
                 dosage: med.dosage || 1,
-                medicationName: med.medicationName
+                medicationName: med.medicationName,
+                medicationID: med.medicationID
             }))
         }));
 
@@ -129,7 +128,6 @@ function TreatmentBox({ appointments }) {
         setSelectedRegimen(null);
         setSelectedMedications(null);
         setNotes('');
-        setPatientGroupID(null);
     }, [selectedTreatmentOf])
 
     return (
@@ -140,8 +138,8 @@ function TreatmentBox({ appointments }) {
 
             {upcomingAppointments && (
                 <div className='patient-list'>
-                    {upcomingAppointments.map((appointment) => (
-                        <div className='appointment-later'>
+                    {upcomingAppointments.map((appointment, key) => (
+                        <div key={key} className='appointment-later'>
                             <div className='name'>
                                 {appointment.patientName}
                             </div>
@@ -196,6 +194,7 @@ function TreatmentBox({ appointments }) {
                                         const selectedID = parseInt(e.target.value);
                                         const regimen = regimens.find(r => r.regimenID === selectedID);
                                         setSelectedRegimen(regimen);
+                                        setIsCustomizing(false);
                                         setSelectedMedications(regimen?.medications || []);
                                     }}
                                 >
@@ -280,29 +279,6 @@ function TreatmentBox({ appointments }) {
                                             </div>
                                         </div>
 
-                                        <div className='patient-group'>
-                                            <div className='title'>
-                                                {t14}
-                                            </div>
-                                            <div className='detail'>
-                                                <select
-                                                    name="patientGroupID"
-                                                    value={patientGroupID || ''}
-                                                    onChange={(e) => {
-                                                        const value = e.target.value === 'null' ? null : parseInt(e.target.value, 10);
-                                                        setPatientGroupID(value);
-                                                    }}
-                                                >
-                                                    <option className='empty' value='null'>{t15}</option>
-                                                    {patientGroups?.map(group => (
-                                                        <option key={group.patientGroupID} value={group.patientGroupID}>
-                                                            {group.patientGroupName}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         {isCustomizing && (
                                             <div className='customized-fields'>
                                                 <div className='title'>
@@ -325,7 +301,19 @@ function TreatmentBox({ appointments }) {
                                                                             if (isSelected) {
                                                                                 return prev.filter(m => m.medicationID !== med.medicationID);
                                                                             } else {
-                                                                                return [...prev, med];
+                                                                                const newMed = {
+                                                                                    ...med,
+                                                                                    notes: '',
+                                                                                    dosageMetric: med.dosageMetric,
+                                                                                    remindTimes: Array(med.frequency).fill(null).map(() => ({
+                                                                                        time: '',
+                                                                                        dosage: med.dosage || 1,
+                                                                                        medicationName: med.medicationName,
+                                                                                        medicationID: med.medicationID
+                                                                                    }))
+                                                                                };
+
+                                                                                return [...prev, newMed];
                                                                             }
                                                                         });
                                                                     }}
@@ -373,7 +361,15 @@ function TreatmentBox({ appointments }) {
                                                             <div className='pill-frequency'>
                                                                 {(m.remindTimes?.length || 0)}&nbsp;{t29}
                                                             </div>
+
                                                         </div>
+                                                        <button
+                                                            onClick={() => setMedicationInfo(m)}
+                                                            className='open-medication-info'
+                                                        >
+                                                            {t9}
+                                                        </button>
+
                                                         <button
                                                             type="button"
                                                             className="add-time-button"
@@ -381,7 +377,7 @@ function TreatmentBox({ appointments }) {
                                                                 const newMeds = [...selectedMedications];
                                                                 newMeds[medIdx].remindTimes = [
                                                                     ...(newMeds[medIdx].remindTimes || []),
-                                                                    { time: '', dosage: newMeds[medIdx].dosage || 1, medicationName: m.medicationName }
+                                                                    { time: '', dosage: newMeds[medIdx].dosage || 1, medicationName: m.medicationName, notes: '' }
                                                                 ];
                                                                 setSelectedMedications(newMeds);
                                                             }}
@@ -415,7 +411,6 @@ function TreatmentBox({ appointments }) {
                                                                         className='dosage-input'
                                                                         type='number'
                                                                         min={1}
-                                                                        defaultValue={1}
                                                                         value={time.dosage}
                                                                         onChange={(e) => {
                                                                             const newMeds = [...selectedMedications];
@@ -437,6 +432,22 @@ function TreatmentBox({ appointments }) {
                                                                 </button>
                                                             </div>
                                                         ))}
+
+                                                        {(m.remindTimes || []).some(rt => rt.time?.trim()) && (
+                                                            <div className="pill-note-input">
+                                                                <label>{t8}</label>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder={t8 + " " + m.medicationName}
+                                                                    value={m.notes ?? ''}
+                                                                    onChange={(e) => {
+                                                                        const updated = [...selectedMedications];
+                                                                        updated[medIdx].notes = e.target.value;
+                                                                        setSelectedMedications(updated);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ))}
@@ -448,6 +459,7 @@ function TreatmentBox({ appointments }) {
                                             </div>
                                             <div className='detail'>
                                                 <textarea
+                                                    maxLength={500}
                                                     ref={textareaRef}
                                                     value={notes}
                                                     onInput={(e) => {
@@ -482,9 +494,9 @@ function TreatmentBox({ appointments }) {
                         pillRemindTime: selectedMedications, treatmentDetail: {
                             patientID: selectedTreatmentOf.patientID,
                             doctorID: selectedTreatmentOf.doctorID,
-                            patientGroupID: patientGroupID,
                             regimenID: selectedRegimen.regimenID,
                             date: new Date().toISOString(),
+                            isCustomized: isCustomizing,
                             notes: notes
                         }
                     }} setIsSubmit={setIsSubmit}
@@ -493,6 +505,10 @@ function TreatmentBox({ appointments }) {
                     selectedRegimen={selectedRegimen}
                     isAdjusted={isCustomizing}
                 />
+            )}
+
+            {medicationInfo && (
+                <MedicationInfoBox medicationInfo={medicationInfo} setMedicationInfo={setMedicationInfo} />
             )}
 
             {loading && (

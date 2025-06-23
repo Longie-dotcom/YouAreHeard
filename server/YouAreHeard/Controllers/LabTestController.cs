@@ -5,11 +5,11 @@ using YouAreHeard.Services.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
-public class LabResultController : ControllerBase
+public class LabTestController : ControllerBase
 {
-    private ILabResultService _LabResultService;
+    private ILabTestService _LabResultService;
 
-    public LabResultController(ILabResultService LabResultService)
+    public LabTestController(ILabTestService LabResultService)
     {
         _LabResultService = LabResultService;
     }
@@ -33,7 +33,7 @@ public class LabResultController : ControllerBase
     [HttpGet("testType/all")]
     public IActionResult GetAllTestTypes()
     {
-        var tts = _LabResultService.GetAllTestTypes();
+        var tts = _LabResultService.GetAllTestTypesWithMetrics();
 
         return Ok(tts);
     }
@@ -52,5 +52,21 @@ public class LabResultController : ControllerBase
         var lrs = _LabResultService.GetLabResultByPatientId(patientId);
 
         return Ok(lrs);
+    }
+
+    [HttpGet("metric/all")]
+    public IActionResult GetAllMetrics()
+    {
+        var testMetrics = _LabResultService.GetTestMetrics();
+
+        return Ok(testMetrics);
+    }
+
+    [HttpPost("create")]
+    public IActionResult CreateLabResultTest([FromBody] LabResultDTO labResult)
+    {
+        _LabResultService.CreateLabResult(labResult);
+
+        return Ok();
     }
 }

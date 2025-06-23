@@ -2,7 +2,8 @@ namespace YouAreHeard.Models
 {
     public class TestTypeDTO
     {
-        public int testTypeId { get; set; }
-        public string testTypeName { get; set; }
+        public int TestTypeId { get; set; }
+        public string TestTypeName { get; set; }
+        public List<TestMetricDTO> TestMetrics { get; set; }
     }
 }

@@ -15,5 +15,9 @@ namespace YouAreHeard.Models
         public DateTime date { get; set; }
         
         public string? note { get; set; }
+
+        public bool IsCustomized { get; set; }
+
+        public List<TestMetricValueDTO>? testMetricValues { get; set; }
     }
 }

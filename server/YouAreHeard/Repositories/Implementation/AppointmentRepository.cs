@@ -400,12 +400,15 @@ namespace YouAreHeard.Repositories.Implementation
 
                     PatientProfile = new PatientProfileDTO
                     {
-                        Height = reader.GetFloat(reader.GetOrdinal("height")),
-                        Weight = reader.GetFloat(reader.GetOrdinal("weight")),
-                        Gender = reader.GetString(reader.GetOrdinal("gender")),
-                        HIVStatusName = reader.IsDBNull(reader.GetOrdinal("HIVStatusName"))
+                        Height = reader.IsDBNull(reader.GetOrdinal("height"))
+                        ? (float?)null : reader.GetFloat(reader.GetOrdinal("height")),
+                                        Weight = reader.IsDBNull(reader.GetOrdinal("weight"))
+                        ? (float?)null : reader.GetFloat(reader.GetOrdinal("weight")),
+                                        Gender = reader.IsDBNull(reader.GetOrdinal("gender"))
+                        ? null : reader.GetString(reader.GetOrdinal("gender")),
+                                        HIVStatusName = reader.IsDBNull(reader.GetOrdinal("HIVStatusName"))
                         ? null : reader.GetString(reader.GetOrdinal("HIVStatusName")),
-                        PregnancyStatusName = reader.IsDBNull(reader.GetOrdinal("pregnancyStatusName"))
+                                        PregnancyStatusName = reader.IsDBNull(reader.GetOrdinal("pregnancyStatusName"))
                         ? null : reader.GetString(reader.GetOrdinal("pregnancyStatusName"))
                     }
                 };
