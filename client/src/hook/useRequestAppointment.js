@@ -24,7 +24,7 @@ function useRequestAppointment({ user, choosenAppointment, setResult, type, setE
             notes: note,
             reason: reason,
             isAnonymous: anonymous,
-            patientID: user.UserId,
+            patientID: user?.UserId,
             doctorID: choosenAppointment.doctor.userID
         }
 

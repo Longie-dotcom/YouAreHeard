@@ -4,7 +4,7 @@ namespace YouAreHeard.Repositories.Interfaces
 {
     public interface ITestTypeRepository
     {
-        public List<TestTypeDTO> GetAllTestTypes();
+        public List<TestTypeDTO> GetAllTestTypesWithMetrics();
 
         public TestTypeDTO GetTestTypeById(int id);
     }

@@ -37,7 +37,8 @@ builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IZoomService, ZoomService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ITreatmentPlanService, TreatmentPlanService>();
-builder.Services.AddScoped<ILabResultService, LabResultService>();
+builder.Services.AddScoped<ILabTestService, LabTestService>();
+builder.Services.AddScoped<IPatientProfileService, PatientProfileService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -46,13 +47,15 @@ builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IARVRegimenRepository, ARVRegimenRepository>();
-builder.Services.AddScoped<IPatientGroupRepository, PatientGroupRepository>();
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 builder.Services.AddScoped<IPillRemindTimesRepository, PillRemindTimesRepository>();
 builder.Services.AddScoped<ITreatmentPlanRepository, TreatmentPlanRepository>();
 builder.Services.AddScoped<ILabResultRepository, LabResultRepository>();
 builder.Services.AddScoped<ITestStageRepository, TestStageRepository>();
 builder.Services.AddScoped<ITestTypeRepository, TestTypeRepository>();
+builder.Services.AddScoped<IPatientProfileRepository, PatientProfileRepository>();
+builder.Services.AddScoped<ITestMetricRepository, TestMetricRepository>();
+builder.Services.AddScoped<ITestMetricValueRepository, TestMetricValueRepository>();
 
 var app = builder.Build();
 
@@ -63,12 +66,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "YouAreHeard API v1");
-        c.RoutePrefix = string.Empty; // Swagger UI at root "/"
+        c.RoutePrefix = string.Empty;
     });
 }
 
 // Serve static files
-app.UseStaticFiles(); // wwwroot
+app.UseStaticFiles();
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 app.UseStaticFiles(new StaticFileOptions
 {

@@ -225,8 +225,8 @@ function DoctorAppointment({ user, appointments }) {
             {appointments && upcomingAppointments && (
                 <>
                     <div className='appointment'>
-                        {upcomingAppointments.map((appointment) => (
-                            <div className='appointment-later'>
+                        {upcomingAppointments.map((appointment, key) => (
+                            <div key={key} className='appointment-later'>
                                 <div className='name'>
                                     {appointment.patientName}
                                 </div>

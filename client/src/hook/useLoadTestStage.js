@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useLoadTestType({ setError, setLoading }) {
-    const [testTypes, setTestTypes] = useState(null);
+function useLoadTestStage({ setError, setLoading }) {
+    const [testStages, setTestStages] = useState(null);
     
     const serverApi = process.env.REACT_APP_SERVER_API;
     const labTestPlanControllerApi = process.env.REACT_APP_LAB_TEST_CONTROLLER_API;
 
-    const getTestTypes = async () => {
+    const getTestStages = async () => {
         setLoading(true);
         await axios.get(
-            `${serverApi}${labTestPlanControllerApi}/testType/all`
+            `${serverApi}${labTestPlanControllerApi}/testStage/all`
         )
             .then((response) => {
-                setTestTypes(response.data);
+                setTestStages(response.data);
             }).catch((error) => {
                 setError(error.response?.data?.message);
             }).finally(() => {
@@ -22,12 +22,12 @@ function useLoadTestType({ setError, setLoading }) {
     };
 
     useEffect(() => {
-        getTestTypes();
+        getTestStages();
     }, [])
 
     return ({
-        testTypes
+        testStages
     })
 }
 
-export default useLoadTestType;
+export default useLoadTestStage;

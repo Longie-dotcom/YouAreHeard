@@ -30,6 +30,7 @@ namespace YouAreHeard.Repositories.Implementation
                     testStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
                     testStageName = reader.GetString(reader.GetOrdinal("testStageName"))
                 };
+                tss.Add(ts);
             }
 
             return tss;

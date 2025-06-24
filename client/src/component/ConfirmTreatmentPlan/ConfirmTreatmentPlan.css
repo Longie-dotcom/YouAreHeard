@@ -154,6 +154,27 @@
     border-top: 1px solid #eee;
 }
 
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-notes {
+    margin: 1vw;
+    font-size: 1vw;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-notes .pill-note {
+    padding: 0.5vw;
+    margin: 0.5vw;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-notes .pill-note .pill-title {
+    font-weight: 550;
+}
+
+.confirm-treatment-plan-overlap .confirm-treatment-plan .body .pill-notes .pill-note .pill-detail {
+    font-size: 0.9vw;
+    margin: 0.5vw;
+}
+
 .confirm-treatment-plan-overlap .confirm-treatment-plan .body .note {
     padding: 2%;
     margin: 2%;

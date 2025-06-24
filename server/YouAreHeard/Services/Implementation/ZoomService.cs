@@ -32,7 +32,7 @@ namespace YouAreHeard.Services.Implementation
             {
                 topic = "Medical Appointment",
                 type = 2,
-                start_time = startTime,
+                // start_time = startTime,
                 duration = 30, // you can make this dynamic
                 timezone = "Asia/Ho_Chi_Minh",
                 password = passcode,

@@ -141,10 +141,10 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO LabResult
-            (testStageID,testTypeID,patientID,doctorID)
+            (testStageID,testTypeID,patientID,doctorID,notes,isCustomized)
             OUTPUT INSERTED.labResultID
             VALUES
-            (@testStageID, @testTypeID, @patientID, @doctorID)
+            (@testStageID, @testTypeID, @patientID, @doctorID, @notes, @isCustomized)
             ";
 
             using var cmd = new SqlCommand(query, conn);
@@ -153,6 +153,8 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@testTypeID", lr.testTypeId);
             cmd.Parameters.AddWithValue("@patientID", lr.patientId);
             cmd.Parameters.AddWithValue("@doctorID", lr.doctorId);
+            cmd.Parameters.AddWithValue("@notes", lr.note);
+            cmd.Parameters.AddWithValue("@isCustomized", lr.IsCustomized);
 
             return (int)cmd.ExecuteScalar();
         }

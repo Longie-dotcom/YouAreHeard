@@ -42,6 +42,7 @@ function TreatmentPlanInfoBox({ user }) {
                         <p><strong>Chỉ định:</strong> {treatmentPlan.regimenIndications}</p>
                         <p><strong>Tác dụng phụ:</strong> {treatmentPlan.regimenSideEffects}</p>
                         <p><strong>Chống chỉ định:</strong> {treatmentPlan.regimenContraindications}</p>
+                        <p><strong>Điều chỉnh</strong> {treatmentPlan.isCustomized ? 'yes' : 'no'}</p>
                     </div>
 
                     <div className="section">

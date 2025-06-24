@@ -2,13 +2,13 @@ using YouAreHeard.Models;
 
 namespace YouAreHeard.Services
 {
-    public interface ILabResultService
+    public interface ILabTestService
     {
         List<TestStageDTO> GetAllTestStages();
 
         TestStageDTO GetTestStageById(int id);
 
-        List<TestTypeDTO> GetAllTestTypes();
+        List<TestTypeDTO> GetAllTestTypesWithMetrics();
 
         TestTypeDTO GetTestTypeById(int id);
 
@@ -18,6 +18,8 @@ namespace YouAreHeard.Services
 
         List<LabResultDTO> GetLabResultByDoctorId(int id);
 
-        int InsertLabResult(LabResultDTO lr);
+        void CreateLabResult(LabResultDTO lr);
+
+        List<TestMetricDTO> GetTestMetrics();
     } 
 }

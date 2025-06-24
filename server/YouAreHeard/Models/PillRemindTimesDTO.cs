@@ -6,6 +6,7 @@
         public string Time { get; set; }
         public int MedicationID { get; set; }
         public int DrinkDosage { get; set; }
+        public string? Notes { get; set; }
 
         public string? DosageMetric { get; set; } //Lấy đơn vị từ Medication
         public string? MedicationName { get; set; } //Lấy tên thuốc từ Medication
