@@ -65,6 +65,13 @@ namespace YouAreHeard.Services
         {
             var labResultId = _LabResultRepository.InsertLabResult(lr);
 
+
+            if (labResultId < 0)
+            {
+                throw new Exception("Failed to create lab result.");
+            }
+
+
             foreach (var metric in lr.testMetricValues)
             {
                 var testMetricValue = new TestMetricValueDTO

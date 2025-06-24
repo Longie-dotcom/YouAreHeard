@@ -65,7 +65,18 @@ public class LabTestController : ControllerBase
     [HttpPost("create")]
     public IActionResult CreateLabResultTest([FromBody] LabResultDTO labResult)
     {
-        _LabResultService.CreateLabResult(labResult);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        try
+        {
+            _LabResultService.CreateLabResult(labResult);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
         return Ok();
     }
