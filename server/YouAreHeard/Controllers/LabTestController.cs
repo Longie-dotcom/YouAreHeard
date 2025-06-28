@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using YouAreHeard.Models;
 using YouAreHeard.Services;
-using YouAreHeard.Services.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -65,18 +64,7 @@ public class LabTestController : ControllerBase
     [HttpPost("create")]
     public IActionResult CreateLabResultTest([FromBody] LabResultDTO labResult)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        try
-        {
-            _LabResultService.CreateLabResult(labResult);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        _LabResultService.CreateLabResult(labResult);
 
         return Ok();
     }

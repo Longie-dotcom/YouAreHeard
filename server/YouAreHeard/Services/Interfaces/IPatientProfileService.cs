@@ -1,5 +1,3 @@
-using YouAreHeard.Models;
-
 namespace YouAreHeard.Services.Interfaces
 {
     public interface IPatientProfileService

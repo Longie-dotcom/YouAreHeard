@@ -1,4 +1,3 @@
-using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
 

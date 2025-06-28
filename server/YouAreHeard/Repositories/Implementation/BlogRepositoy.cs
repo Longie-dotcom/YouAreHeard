@@ -1,8 +1,6 @@
+using Microsoft.Data.SqlClient;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
-using YouAreHeard.Enums;
-using YouAreHeard.NewFolder;
 
 namespace YouAreHeard.Repositories.Implementation
 {
@@ -41,7 +39,7 @@ namespace YouAreHeard.Repositories.Implementation
                 });
             }
             return blogs;
-            
+
         }
 
         public void UploadBlog(BlogDTO blog)

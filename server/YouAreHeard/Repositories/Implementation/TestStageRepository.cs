@@ -1,7 +1,6 @@
+using Microsoft.Data.SqlClient;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
-using YouAreHeard.NewFolder;
 
 namespace YouAreHeard.Repositories.Implementation
 {
@@ -60,7 +59,7 @@ namespace YouAreHeard.Repositories.Implementation
                 testStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
                 testStageName = reader.GetString(reader.GetOrdinal("testStageName"))
             };
-            
+
         }
     }
 }

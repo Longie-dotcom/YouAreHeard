@@ -13,7 +13,7 @@ namespace YouAreHeard.Models
         public int doctorId { get; set; }
 
         public DateTime date { get; set; }
-        
+
         public string? note { get; set; }
 
         public bool IsCustomized { get; set; }

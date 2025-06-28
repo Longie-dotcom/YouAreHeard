@@ -1,8 +1,8 @@
-﻿using YouAreHeard.Models;
+﻿using YouAreHeard.Enums;
+using YouAreHeard.Models;
 using YouAreHeard.NewFolder;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
-using YouAreHeard.Enums;
 
 namespace YouAreHeard.Services
 {
@@ -12,35 +12,54 @@ namespace YouAreHeard.Services
         private readonly IScheduleRepository _scheduleRepository;
         private readonly IZoomService _zoomService;
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IPayOSService _payOSService;
 
         public AppointmentService(
-            IAppointmentRepository appointmentRepository, 
-            IZoomService zoomService, 
-            IScheduleRepository scheduleRepository, 
-            IDoctorRepository doctorRepository)
+            IAppointmentRepository appointmentRepository,
+            IZoomService zoomService,
+            IScheduleRepository scheduleRepository,
+            IDoctorRepository doctorRepository,
+            IPayOSService payOSService)
         {
             _appointmentRepository = appointmentRepository;
             _zoomService = zoomService;
             _scheduleRepository = scheduleRepository;
             _doctorRepository = doctorRepository;
+            _payOSService = payOSService;
         }
 
-        public async Task<AppointmentDTO> RequestAppointmentAsync(RequestAppointmentDTO requestAppointment)
+        public string RequestAppointmentAsync(RequestAppointmentDTO requestAppointment)
         {
-            var schedule = _scheduleRepository.GetScheduleById(requestAppointment.DoctorScheduleID, true, DateTime.Now);
+            // Lazy clean-up
+            CleanUpAllSchedulesAvailability();
+
+            // Validate the schedule
+            var schedule = _scheduleRepository.GetScheduleById(requestAppointment.DoctorScheduleID, DateTime.Now);
             if (schedule == null)
             {
                 throw new Exception("Schedule not found.");
             }
 
-            int currentQueue = _appointmentRepository.GetQueueCountByScheduleId(requestAppointment.DoctorScheduleID, AppointmentStatusEnum.Confirmed);
-            if (currentQueue >= Constraint.AmountOfPersonPerSchedule)
+            if (schedule.DoctorScheduleID == DoctorScheduleStatusEnum.Close)
+            {
+                throw new Exception("Schedule is full. ");
+            }
+
+            // Validate the queue number
+            int currentQueue = _appointmentRepository.GetQueueCountByScheduleId(requestAppointment.DoctorScheduleID, new List<int>()
+            {
+                AppointmentStatusEnum.Confirmed,
+                AppointmentStatusEnum.Pending
+            });
+            if (currentQueue >= Constraints.AmountOfPersonPerSchedule)
             {
                 throw new Exception("Maximum number of appointments reached.");
             }
 
+            // Update queue number
             int queueNumber = currentQueue + 1;
 
+            // Set appointment status as pending state
             var appointmentDTO = new AppointmentDTO
             {
                 IsOnline = requestAppointment.IsOnline,
@@ -52,33 +71,37 @@ namespace YouAreHeard.Services
                 Reason = requestAppointment.Reason,
                 QueueNumber = queueNumber,
                 StartTime = schedule.StartTime,
+                ZoomLink = null,
                 EndTime = schedule.EndTime,
                 ScheduleDate = schedule.Date,
-                AppointmentStatusID = AppointmentStatusEnum.Confirmed,
+                AppointmentStatusID = AppointmentStatusEnum.Pending,
                 CreatedDate = DateTime.Now
             };
 
-            if (appointmentDTO.IsOnline)
-            {
-                appointmentDTO.ZoomLink = await _zoomService.GenerateZoomLink(appointmentDTO);
-            }
+            int orderCode = GenerateUniqueOrderCode(appointmentDTO.AppointmentID);
+            appointmentDTO.OrderCode = orderCode.ToString();
 
             int appointmentId = _appointmentRepository.InsertAppointment(appointmentDTO);
-            if (queueNumber >= Constraint.AmountOfPersonPerSchedule)
+            if (queueNumber >= Constraints.AmountOfPersonPerSchedule)
             {
-                _scheduleRepository.UpdateScheduleAvailability(appointmentDTO.DoctorScheduleID, false);
+                _scheduleRepository.UpdateScheduleStatus(appointmentDTO.DoctorScheduleID, DoctorScheduleStatusEnum.Close);
             }
 
-            var fullAppointment = _appointmentRepository.GetAppointmentById(appointmentId);
-            var doctorProfile = _doctorRepository.GetDoctorProfileByDoctorId(appointmentDTO.DoctorID);
+            AppointmentDTO appointment2 = _appointmentRepository.GetAppointmentById(appointmentId);
 
-            fullAppointment.StartTime = schedule.StartTime;
-            fullAppointment.EndTime = schedule.EndTime;
-            fullAppointment.ScheduleDate = schedule.Date;
-            fullAppointment.Location = schedule.Location;
-            fullAppointment.DoctorName = doctorProfile.Name;
+            string paymentUrl = _payOSService.GeneratePaymentUrl(new PayOSPaymentRequest
+            {
+                OrderCode = orderCode,
+                Amount = 30000,
+                Description = $"Thanh toán cuộc hẹn #{appointmentId}",
+                BuyerName = appointment2.PatientName,
+                BuyerEmail = "test@gmail.com",
+                BuyerPhone = appointment2.PatientPhone,
+                BuyerAddress = "Hanoi, Vietnam",
+                Items = new List<object>()
+            });
 
-            return fullAppointment;
+            return paymentUrl;
         }
 
         public List<AppointmentDTO> GetAppointmentsByPatientId(int patientId)
@@ -88,7 +111,18 @@ namespace YouAreHeard.Services
 
         public List<AppointmentDTO> GetAppointmentsByDoctorId(int doctorId)
         {
-            return _appointmentRepository.GetAppointmentsByDoctorId(doctorId, AppointmentStatusEnum.Confirmed);
+            var appointments = _appointmentRepository.GetAppointmentsByDoctorId(doctorId, AppointmentStatusEnum.Confirmed);
+
+            foreach (var appointment in appointments)
+            {
+                if (appointment.IsAnonymous)
+                {
+                    appointment.PatientName = ConstraintWords.AnonymousName;
+                    appointment.PatientPhone = ConstraintWords.AnonymousName;
+                }
+            }
+
+            return appointments;
         }
 
         public void CancelAppointmentById(int appointmentId)
@@ -104,15 +138,59 @@ namespace YouAreHeard.Services
             AdjustQueueAfterCancellation(scheduleId, appointment.QueueNumber);
 
             // Reopen the schedule if under max capacity
-            int remainingConfirmed = _appointmentRepository.GetQueueCountByScheduleId(scheduleId, AppointmentStatusEnum.Confirmed);
-            if (remainingConfirmed < Constraint.AmountOfPersonPerSchedule)
+            int remaining = _appointmentRepository.GetQueueCountByScheduleId(scheduleId, new List<int>() {
+                AppointmentStatusEnum.Confirmed, AppointmentStatusEnum.Pending
+            });
+            if (remaining == 0)
             {
-                _scheduleRepository.UpdateScheduleAvailability(scheduleId, true);
+                _scheduleRepository.UpdateScheduleStatus(scheduleId, DoctorScheduleStatusEnum.Open);
+            }
+            else if (remaining < Constraints.AmountOfPersonPerSchedule)
+            {
+                _scheduleRepository.UpdateScheduleStatus(scheduleId, DoctorScheduleStatusEnum.Pending);
             }
         }
+
         public AppointmentDTO GetAppointmentWithPatientDetailsById(int appointmentId)
         {
-            return _appointmentRepository.GetAppointmentWithPatientDetailsById(appointmentId);
+            var appointment = _appointmentRepository.GetAppointmentWithPatientDetailsById(appointmentId);
+            if (appointment.IsAnonymous)
+            {
+                appointment.PatientName = ConstraintWords.AnonymousName;
+                appointment.PatientPhone = ConstraintWords.AnonymousName;
+            }
+            return appointment;
+        }
+
+        public async Task<AppointmentDTO> HandlePayOSWebhookAsync(string orderCode)
+        {
+            var appointment = _appointmentRepository.GetAppointmentByOrderCode(orderCode);
+            if (appointment == null)
+                throw new Exception("Appointment not found.");
+
+            if (appointment.AppointmentStatusID == AppointmentStatusEnum.Confirmed)
+                return appointment;
+
+            int currentConfirmed = _appointmentRepository.GetQueueCountByScheduleId(
+                appointment.DoctorScheduleID, new List<int>()
+                {
+                    AppointmentStatusEnum.Confirmed, AppointmentStatusEnum.Pending
+                });
+            if (currentConfirmed >= Constraints.AmountOfPersonPerSchedule)
+                throw new Exception("Appointment limit reached before payment was confirmed.");
+
+            _appointmentRepository.UpdateAppointmentStatus(appointment.AppointmentID, AppointmentStatusEnum.Confirmed);
+
+            if (appointment.IsOnline && string.IsNullOrEmpty(appointment.ZoomLink))
+            {
+                appointment.ZoomLink = await _zoomService.GenerateZoomLink(appointment);
+                _appointmentRepository.UpdateZoomLink(appointment.AppointmentID, appointment.ZoomLink);
+            }
+
+            var doctorProfile = _doctorRepository.GetDoctorProfileByDoctorId(appointment.DoctorID);
+            appointment.DoctorName = doctorProfile.Name;
+
+            return appointment;
         }
 
         private void AdjustQueueAfterCancellation(int doctorScheduleId, int? canceledQueue)
@@ -128,6 +206,58 @@ namespace YouAreHeard.Services
                 {
                     _appointmentRepository.UpdateQueueNumber(appointment.AppointmentID, appointment.QueueNumber.Value - 1);
                 }
+            }
+        }
+
+        private int GenerateUniqueOrderCode(int appointmentId)
+        {
+            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            string input = $"{appointmentId}_{timestamp}";
+
+            int hash = Math.Abs(input.GetHashCode());
+
+            return hash % 1_000_000_000;
+        }
+
+        private void CleanUpAndRefreshScheduleAvailability(DoctorScheduleDTO doctorSchedule)
+        {
+            // 1. Clean expired pending appointments
+            _appointmentRepository.CancelExpiredPendingAppointmentsBySchedule(
+                doctorSchedule.DoctorScheduleID,
+                DateTime.Now,
+                Constraints.ExpiredPendingAppointment
+            );
+
+            // 2. Count current queue (Confirmed + Pending)
+            int currentQueue = _appointmentRepository.GetQueueCountByScheduleId(doctorSchedule.DoctorScheduleID, new List<int>
+            {
+                AppointmentStatusEnum.Confirmed,
+                AppointmentStatusEnum.Pending
+            });
+
+            // 3. Determine if schedule should still be available
+            int status = doctorSchedule.DoctorScheduleStatus;
+            if (currentQueue == 0)
+            {
+                status = DoctorScheduleStatusEnum.Open;
+            }
+            else if (currentQueue < Constraints.AmountOfPersonPerSchedule)
+            {
+                status = DoctorScheduleStatusEnum.Pending;
+            }
+            ;
+
+
+            // 4. Update availability in DB
+            _scheduleRepository.UpdateScheduleStatus(doctorSchedule.DoctorScheduleID, status);
+        }
+
+        private void CleanUpAllSchedulesAvailability()
+        {
+            var allSchedules = _scheduleRepository.GetAllSchedules();
+            foreach (var schedule in allSchedules)
+            {
+                CleanUpAndRefreshScheduleAvailability(schedule);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using YouAreHeard.Models;
+﻿using YouAreHeard.Models;
 
 namespace YouAreHeard.Repositories.Interfaces
 {

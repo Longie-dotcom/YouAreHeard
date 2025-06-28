@@ -21,5 +21,5 @@ namespace YouAreHeard.Services
         void CreateLabResult(LabResultDTO lr);
 
         List<TestMetricDTO> GetTestMetrics();
-    } 
+    }
 }

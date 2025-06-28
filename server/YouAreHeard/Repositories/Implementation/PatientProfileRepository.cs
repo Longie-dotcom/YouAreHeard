@@ -1,7 +1,5 @@
-using YouAreHeard.Models;
-using YouAreHeard.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
-using YouAreHeard.NewFolder;
+using YouAreHeard.Repositories.Interfaces;
 
 namespace YouAreHeard.Repositories.Implementation
 {

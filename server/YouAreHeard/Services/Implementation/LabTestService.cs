@@ -1,6 +1,5 @@
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
-using YouAreHeard.Services.Interfaces;
 
 namespace YouAreHeard.Services
 {
@@ -13,8 +12,8 @@ namespace YouAreHeard.Services
         private readonly ITestMetricValueRepository _TestMetricValueRepository;
 
         public LabTestService(
-            ILabResultRepository labResultRepository, 
-            ITestStageRepository testStageRepository, 
+            ILabResultRepository labResultRepository,
+            ITestStageRepository testStageRepository,
             ITestTypeRepository testTypeRepository,
             ITestMetricRepository testMetricRepository,
             ITestMetricValueRepository testMetricValueRepository)
@@ -64,13 +63,6 @@ namespace YouAreHeard.Services
         public void CreateLabResult(LabResultDTO lr)
         {
             var labResultId = _LabResultRepository.InsertLabResult(lr);
-
-
-            if (labResultId < 0)
-            {
-                throw new Exception("Failed to create lab result.");
-            }
-
 
             foreach (var metric in lr.testMetricValues)
             {

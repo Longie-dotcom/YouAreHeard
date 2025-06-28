@@ -16,7 +16,7 @@ namespace YouAreHeard.Controllers
         }
 
         [HttpPost("request")]
-        public async Task<IActionResult> RequestAppointment([FromBody] RequestAppointmentDTO requestAppointment)
+        public IActionResult RequestAppointment([FromBody] RequestAppointmentDTO requestAppointment)
         {
             if (!ModelState.IsValid)
             {
@@ -25,8 +25,8 @@ namespace YouAreHeard.Controllers
 
             try
             {
-                AppointmentDTO appointment = await _appointmentService.RequestAppointmentAsync(requestAppointment);
-                return Ok(appointment);
+                string appointmentId = _appointmentService.RequestAppointmentAsync(requestAppointment);
+                return Ok(appointmentId);
             }
             catch (Exception ex)
             {
@@ -87,6 +87,20 @@ namespace YouAreHeard.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Failed to retrieve appointments.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("return")]
+        public async Task<IActionResult> PayOSReturn([FromQuery] int orderCode)
+        {
+            try
+            {
+                var result = await _appointmentService.HandlePayOSWebhookAsync(orderCode.ToString());
+                return Redirect($"https://youareheard.life/successAppointment?orderCode={orderCode}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Error confirming appointment.", error = ex.Message });
             }
         }
     }

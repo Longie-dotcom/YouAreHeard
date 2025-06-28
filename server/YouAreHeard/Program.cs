@@ -39,6 +39,7 @@ builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ITreatmentPlanService, TreatmentPlanService>();
 builder.Services.AddScoped<ILabTestService, LabTestService>();
 builder.Services.AddScoped<IPatientProfileService, PatientProfileService>();
+builder.Services.AddScoped<IPayOSService, PayOSService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -98,7 +99,18 @@ try
 }
 catch (Exception ex)
 {
-    app.Logger.LogError(ex, "Failed to initialize zoom!");
+    app.Logger.LogError(ex, "Failed to initialize Zoom!");
+}
+
+// PayOS config
+try
+{
+    var payosConfig = builder.Configuration.GetSection("PayOS").Get<PayOSSettings>();
+    PayOSSettingContext.Initialize(payosConfig);
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Failed to initialize PayOS!");
 }
 
 // DB config

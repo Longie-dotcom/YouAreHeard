@@ -1,7 +1,7 @@
-﻿using YouAreHeard.Models;
-using YouAreHeard.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using YouAreHeard.Models;
 using YouAreHeard.NewFolder;
+using YouAreHeard.Repositories.Interfaces;
 
 namespace YouAreHeard.Repositories.Implementation
 {
@@ -14,10 +14,10 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO Appointment 
-            (doctorID, patientID, doctorScheduleID, appointmentStatusID, zoomLink, notes, reason, isAnonymous, isOnline, queueNumber, date)
+            (doctorID, patientID, doctorScheduleID, appointmentStatusID, zoomLink, notes, reason, isAnonymous, isOnline, queueNumber, date, orderCode)
             OUTPUT INSERTED.appointmentID
             VALUES 
-            (@DoctorID, @PatientID, @DoctorScheduleID, @AppointmentStatusID, @ZoomLink, @Notes, @Reason, @IsAnonymous, @IsOnline, @QueueNumber, @CreatedDate)";
+            (@DoctorID, @PatientID, @DoctorScheduleID, @AppointmentStatusID, @ZoomLink, @Notes, @Reason, @IsAnonymous, @IsOnline, @QueueNumber, @CreatedDate, @OrderCode)";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@DoctorID", appointment.DoctorID);
@@ -31,6 +31,7 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@IsOnline", appointment.IsOnline);
             cmd.Parameters.AddWithValue("@QueueNumber", (object?)appointment.QueueNumber ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@CreatedDate", appointment.CreatedDate);
+            cmd.Parameters.AddWithValue("@OrderCode", appointment.OrderCode);
 
             return (int)cmd.ExecuteScalar();
         }
@@ -213,20 +214,28 @@ namespace YouAreHeard.Repositories.Implementation
             }
         }
 
-        public int GetQueueCountByScheduleId(int scheduleId, int statusId)
+        public int GetQueueCountByScheduleId(int scheduleId, List<int> statusIds)
         {
             using var conn = DBContext.GetConnection();
             conn.Open();
 
-            string query = @"
+            // Build placeholders like @Status0, @Status1, etc.
+            var statusParams = statusIds.Select((s, i) => $"@Status{i}").ToList();
+            string inClause = string.Join(", ", statusParams);
+
+            string query = $@"
             SELECT COUNT(*) 
             FROM Appointment 
             WHERE doctorScheduleID = @ScheduleID 
-            AND AppointmentStatusID = @StatusID";
+            AND AppointmentStatusID IN ({inClause})";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@ScheduleID", scheduleId);
-            cmd.Parameters.AddWithValue("@StatusID", statusId);
+
+            for (int i = 0; i < statusIds.Count; i++)
+            {
+                cmd.Parameters.AddWithValue($"@Status{i}", statusIds[i]);
+            }
 
             return (int)cmd.ExecuteScalar();
         }
@@ -255,6 +264,61 @@ namespace YouAreHeard.Repositories.Implementation
 
             using var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@AppointmentID", appointmentId);
+
+            using var reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new AppointmentDTO
+                {
+                    AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
+                    DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
+                    AppointmentStatusID = reader.IsDBNull(reader.GetOrdinal("appointmentStatusID"))
+                        ? (int?)null : reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
+                    ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink"))
+                        ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
+                    Notes = reader.IsDBNull(reader.GetOrdinal("notes"))
+                        ? null : reader.GetString(reader.GetOrdinal("notes")),
+                    Reason = reader.IsDBNull(reader.GetOrdinal("reason"))
+                        ? null : reader.GetString(reader.GetOrdinal("reason")),
+                    IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
+                    IsOnline = reader.GetBoolean(reader.GetOrdinal("isOnline")),
+                    QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber"))
+                        ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
+                    CreatedDate = reader.IsDBNull(reader.GetOrdinal("date"))
+                        ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("date")),
+                    DoctorID = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                    PatientID = reader.GetInt32(reader.GetOrdinal("patientID"))
+                };
+            }
+
+            return null;
+        }
+
+        public AppointmentDTO GetAppointmentByOrderCode(string orderCode)
+        {
+            using var connection = DBContext.GetConnection();
+            connection.Open();
+
+            string query = @"
+            SELECT 
+                appointmentID,
+                doctorScheduleID,
+                appointmentStatusID,
+                zoomLink,
+                notes,
+                reason,
+                isAnonymous,
+                isOnline,
+                queueNumber,
+                date,
+                doctorID,
+                patientID
+            FROM Appointment
+            WHERE orderCode = @OrderCode";
+
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@OrderCode", orderCode);
 
             using var reader = command.ExecuteReader();
 
@@ -348,6 +412,7 @@ namespace YouAreHeard.Repositories.Implementation
                 a.notes,
                 a.reason,
                 a.queueNumber,
+                a.isAnonymous,
 
                 u.userID AS patientUserID,
                 u.name AS patientName,
@@ -389,6 +454,7 @@ namespace YouAreHeard.Repositories.Implementation
                         ? null : reader.GetString(reader.GetOrdinal("reason")),
                     QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber"))
                         ? null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
+                    IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
 
                     PatientID = reader.GetInt32(reader.GetOrdinal("patientUserID")),
                     PatientName = reader.IsDBNull(reader.GetOrdinal("patientName"))
@@ -402,19 +468,63 @@ namespace YouAreHeard.Repositories.Implementation
                     {
                         Height = reader.IsDBNull(reader.GetOrdinal("height"))
                         ? (float?)null : reader.GetFloat(reader.GetOrdinal("height")),
-                                        Weight = reader.IsDBNull(reader.GetOrdinal("weight"))
+                        Weight = reader.IsDBNull(reader.GetOrdinal("weight"))
                         ? (float?)null : reader.GetFloat(reader.GetOrdinal("weight")),
-                                        Gender = reader.IsDBNull(reader.GetOrdinal("gender"))
+                        Gender = reader.IsDBNull(reader.GetOrdinal("gender"))
                         ? null : reader.GetString(reader.GetOrdinal("gender")),
-                                        HIVStatusName = reader.IsDBNull(reader.GetOrdinal("HIVStatusName"))
+                        HIVStatusName = reader.IsDBNull(reader.GetOrdinal("HIVStatusName"))
                         ? null : reader.GetString(reader.GetOrdinal("HIVStatusName")),
-                                        PregnancyStatusName = reader.IsDBNull(reader.GetOrdinal("pregnancyStatusName"))
+                        PregnancyStatusName = reader.IsDBNull(reader.GetOrdinal("pregnancyStatusName"))
                         ? null : reader.GetString(reader.GetOrdinal("pregnancyStatusName"))
                     }
                 };
             }
 
             return null;
+        }
+
+        public void UpdateZoomLink(int appointmentId, string zoomLink)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+            UPDATE Appointment
+            SET zoomLink = @ZoomLink
+            WHERE appointmentID = @AppointmentID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@ZoomLink", zoomLink ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@AppointmentID", appointmentId);
+
+            int rowsAffected = cmd.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new Exception($"No appointment found with ID {appointmentId}.");
+            }
+        }
+
+        public void CancelExpiredPendingAppointmentsBySchedule(int scheduleId, DateTime now, int expirationMinutes)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+            UPDATE Appointment
+            SET AppointmentStatusID = @CancelledStatus
+            WHERE DoctorScheduleID = @ScheduleID
+            AND AppointmentStatusID = @PendingStatus
+            AND DATEADD(minute, @ExpireMinutes, date) < @Now";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@CancelledStatus", AppointmentStatusEnum.Cancelled);
+            cmd.Parameters.AddWithValue("@PendingStatus", AppointmentStatusEnum.Pending);
+            cmd.Parameters.AddWithValue("@ExpireMinutes", expirationMinutes);
+            cmd.Parameters.AddWithValue("@Now", now);
+            cmd.Parameters.AddWithValue("@ScheduleID", scheduleId);
+
+            cmd.ExecuteNonQuery();
         }
     }
 }

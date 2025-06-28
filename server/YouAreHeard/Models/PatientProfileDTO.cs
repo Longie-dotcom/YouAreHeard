@@ -1,5 +1,3 @@
-using Microsoft.Win32;
-
 namespace YouAreHeard
 {
     public class PatientProfileDTO
@@ -14,7 +12,7 @@ namespace YouAreHeard
 
 
         public string? PregnancyStatusName { get; set; }
-        
-        public string? HIVStatusName{ get; set; }
+
+        public string? HIVStatusName { get; set; }
     }
 }

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using YouAreHeard;
-using YouAreHeard.Models;
-using YouAreHeard.Services;
 using YouAreHeard.Services.Interfaces;
 
 [ApiController]

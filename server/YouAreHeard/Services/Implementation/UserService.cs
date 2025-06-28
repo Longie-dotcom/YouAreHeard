@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
@@ -85,7 +85,7 @@ namespace YouAreHeard.Services.Implementation
             return new OkObjectResult(new { message = "Đăng xuất thành công." });
         }
 
-        public UserDTO GetUserById (int id)
+        public UserDTO GetUserById(int id)
         {
             return _userRepository.GetUserById(id);
         }

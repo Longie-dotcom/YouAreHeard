@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Mail;
-using YouAreHeard.Helper;
+﻿using YouAreHeard.Helper;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
 

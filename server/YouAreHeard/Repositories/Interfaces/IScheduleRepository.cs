@@ -4,10 +4,12 @@ namespace YouAreHeard.Repositories.Interfaces
 {
     public interface IScheduleRepository
     {
-        List<DoctorScheduleDTO> GetDoctorSchedules(int doctorId, bool isAvailable, DateTime date);
-        DoctorScheduleDTO GetScheduleById(int scheduleId, bool isAvailable, DateTime date);
+        List<DoctorScheduleDTO> GetDoctorSchedules(int doctorId, int status, DateTime date);
+        List<DoctorScheduleDTO> GetAllDoctorSchedules(int doctorId, DateTime date);
+        DoctorScheduleDTO GetScheduleById(int scheduleId, int status, DateTime date);
         DoctorScheduleDTO GetScheduleById(int scheduleId, DateTime date);
-        public void UpdateScheduleAvailability(int scheduleId, bool isAvailable);
-        List<DoctorScheduleDTO> GetAllSchedules(bool isAvailable, DateTime date);
+        public void UpdateScheduleStatus(int scheduleId, int status);
+        public List<DoctorScheduleDTO> GetAllSchedulesWithAvailability(List<int> statusList, DateTime date);
+        List<DoctorScheduleDTO> GetAllSchedules();
     }
 }

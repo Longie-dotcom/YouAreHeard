@@ -1,5 +1,6 @@
-﻿using YouAreHeard.Models;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using YouAreHeard.Enums;
+using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 
 namespace YouAreHeard.Repositories.Implementation
@@ -62,7 +63,7 @@ namespace YouAreHeard.Repositories.Implementation
 
         public List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId)
         {
-            return _scheduleRepository.GetDoctorSchedules(userId, true, DateTime.Now);
+            return _scheduleRepository.GetAllDoctorSchedules(userId, DateTime.Now);
         }
 
         public List<DoctorProfileDTO> GetAllDoctorProfiles()
@@ -85,7 +86,7 @@ namespace YouAreHeard.Repositories.Implementation
                             FROM (
                                 SELECT DISTINCT ds.date
                                 FROM DoctorSchedule ds
-                                WHERE ds.userID = dp.userID AND ds.isAvailable = 1
+                                WHERE ds.userID = dp.userID 
                             ) AS d
                         ) AS availableDays
                     FROM DoctorProfile dp
@@ -111,9 +112,12 @@ namespace YouAreHeard.Repositories.Implementation
             }
             return doctors;
         }
+
         public List<DoctorScheduleDTO> GetAllAvailableDoctorSchedules()
         {
-            return _scheduleRepository.GetAllSchedules(true, DateTime.Now);
+            return _scheduleRepository.GetAllSchedulesWithAvailability(
+                new List<int>() { DoctorScheduleStatusEnum.Open, DoctorScheduleStatusEnum.Pending, DoctorScheduleStatusEnum.Close },
+                DateTime.Now);
         }
     }
 }
