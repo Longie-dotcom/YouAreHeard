@@ -8,7 +8,8 @@
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public DateTime Date { get; set; }
-        public bool IsAvailable { get; set; }
+        public int DoctorScheduleStatus { get; set; }
+        public string? DoctorScheduleStatusName { get; set; }
         public DoctorProfileDTO DoctorProfile { get; set; }
     }
 }

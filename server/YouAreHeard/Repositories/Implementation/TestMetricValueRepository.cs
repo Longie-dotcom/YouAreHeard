@@ -1,6 +1,6 @@
-﻿using YouAreHeard.Models;
+﻿using Microsoft.Data.SqlClient;
+using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
 
 namespace YouAreHeard.Repositories.Implementation
 {

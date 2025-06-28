@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using YouAreHeard.Enums;
 using YouAreHeard.Models;
 using YouAreHeard.Services.Interfaces;
-using YouAreHeard.Enums;
 
 namespace YouAreHeard.Controllers
 {

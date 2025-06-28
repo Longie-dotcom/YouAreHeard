@@ -14,7 +14,9 @@
         public int? QueueNumber { get; set; }
         public int PatientID { get; set; }
         public int DoctorID { get; set; }
+        public string? DoctorNotes { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string OrderCode { get; set; }
 
         // Appointment status (table AppointmentStatus)
         public string? AppointmentStatusName { get; set; }

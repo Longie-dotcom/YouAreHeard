@@ -54,9 +54,9 @@ namespace YouAreHeard.Repositories.Implementation
                         Duration = reader.IsDBNull(reader.GetOrdinal("duration")) ? "" : reader.GetString(reader.GetOrdinal("duration")),
                         RegimenSideEffects = reader.IsDBNull(reader.GetOrdinal("regimenSideEffects"))
                         ? "" : reader.GetString(reader.GetOrdinal("regimenSideEffects")),
-                                            RegimenIndications = reader.IsDBNull(reader.GetOrdinal("regimenIndications"))
+                        RegimenIndications = reader.IsDBNull(reader.GetOrdinal("regimenIndications"))
                         ? "" : reader.GetString(reader.GetOrdinal("regimenIndications")),
-                                            RegimenContraindications = reader.IsDBNull(reader.GetOrdinal("regimenContraindications"))
+                        RegimenContraindications = reader.IsDBNull(reader.GetOrdinal("regimenContraindications"))
                         ? "" : reader.GetString(reader.GetOrdinal("regimenContraindications")),
                         Medications = new List<MedicationDTO>()
                     };

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using YouAreHeard.Enums;
 using YouAreHeard.Helper;
 using YouAreHeard.Models;
 using YouAreHeard.Services.Interfaces;
@@ -64,6 +65,12 @@ namespace YouAreHeard.Services.Implementation
 
             // Get patient info
             var patient = _userService.GetUserById(appointment.PatientID);
+
+            // Hide patient name if the appointment is anonymous
+            if (appointment.IsAnonymous)
+            {
+                patient.Name = ConstraintWords.AnonymousName;
+            }
 
             // Send the email
             EmailHelper.SendZoomLinkEmail(patient.Email, doctor.Name, appointment.ScheduleDate, appointment.StartTime, zoomLink, passcode);

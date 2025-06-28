@@ -3,28 +3,28 @@ using System.Net.Mail;
 
 namespace YouAreHeard.Helper
 {
-  public static class EmailHelper
-  {
-    public static void SendOtpEmail(string toEmail, string otp)
+    public static class EmailHelper
     {
-      var settings = EmailSettingsContext.Settings;
+        public static void SendOtpEmail(string toEmail, string otp)
+        {
+            var settings = EmailSettingsContext.Settings;
 
-      var fromAddress = new MailAddress(settings.From, settings.DisplayName);
-      var toAddress = new MailAddress(toEmail);
+            var fromAddress = new MailAddress(settings.From, settings.DisplayName);
+            var toAddress = new MailAddress(toEmail);
 
-      var smtp = new SmtpClient
-      {
-        Host = settings.SmtpHost,
-        Port = settings.SmtpPort,
-        EnableSsl = settings.EnableSSL,
-        DeliveryMethod = SmtpDeliveryMethod.Network,
-        UseDefaultCredentials = false,
-        Credentials = new NetworkCredential(settings.Username, settings.Password)
-      };
+            var smtp = new SmtpClient
+            {
+                Host = settings.SmtpHost,
+                Port = settings.SmtpPort,
+                EnableSsl = settings.EnableSSL,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(settings.Username, settings.Password)
+            };
 
-      string subject = "Mã xác minh OTP của bạn";
+            string subject = "Mã xác minh OTP của bạn";
 
-      string body = $@"
+            string body = $@"
             <!DOCTYPE html>
             <html lang='vi'>
             <head>
@@ -97,43 +97,43 @@ namespace YouAreHeard.Helper
             </html>
             ";
 
-      using var message = new MailMessage(fromAddress, toAddress)
-      {
-        Subject = subject,
-        Body = body,
-        IsBodyHtml = true
-      };
+            using var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
 
-      smtp.Send(message);
-    }
+            smtp.Send(message);
+        }
 
 
-    public static void SendZoomLinkEmail(
-        string toEmail,
-        string doctorName,
-        DateTime appointmentTime,
-        TimeSpan startTime,
-        string zoomLink,
-        string passcode)
-    {
-      var settings = EmailSettingsContext.Settings;
+        public static void SendZoomLinkEmail(
+            string toEmail,
+            string doctorName,
+            DateTime appointmentTime,
+            TimeSpan startTime,
+            string zoomLink,
+            string passcode)
+        {
+            var settings = EmailSettingsContext.Settings;
 
-      var fromAddress = new MailAddress(settings.From, settings.DisplayName);
-      var toAddress = new MailAddress(toEmail);
+            var fromAddress = new MailAddress(settings.From, settings.DisplayName);
+            var toAddress = new MailAddress(toEmail);
 
-      var smtp = new SmtpClient
-      {
-        Host = settings.SmtpHost,
-        Port = settings.SmtpPort,
-        EnableSsl = settings.EnableSSL,
-        DeliveryMethod = SmtpDeliveryMethod.Network,
-        UseDefaultCredentials = false,
-        Credentials = new NetworkCredential(settings.Username, settings.Password)
-      };
+            var smtp = new SmtpClient
+            {
+                Host = settings.SmtpHost,
+                Port = settings.SmtpPort,
+                EnableSsl = settings.EnableSSL,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(settings.Username, settings.Password)
+            };
 
-      string subject = "Thông tin cuộc hẹn khám bệnh trực tuyến";
+            string subject = "Thông tin cuộc hẹn khám bệnh trực tuyến";
 
-      string body = $@"
+            string body = $@"
             <!DOCTYPE html>
             <html lang='vi'>
             <head>
@@ -201,36 +201,36 @@ namespace YouAreHeard.Helper
             </html>
             ";
 
-      using var message = new MailMessage(fromAddress, toAddress)
-      {
-        Subject = subject,
-        Body = body,
-        IsBodyHtml = true
-      };
+            using var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
 
-      smtp.Send(message);
-    }
+            smtp.Send(message);
+        }
 
-    public static void sendZoomLinkEmailToDoctor(string toEmail, string patientName, DateTime appointmentTime, TimeSpan startTime, string zoomLink, string passcode)
-    {
-      var settings = EmailSettingsContext.Settings;
+        public static void sendZoomLinkEmailToDoctor(string toEmail, string patientName, DateTime appointmentTime, TimeSpan startTime, string zoomLink, string passcode)
+        {
+            var settings = EmailSettingsContext.Settings;
 
-      var fromAddress = new MailAddress(settings.From, settings.DisplayName);
-      var toAddress = new MailAddress(toEmail);
+            var fromAddress = new MailAddress(settings.From, settings.DisplayName);
+            var toAddress = new MailAddress(toEmail);
 
-      var smtp = new SmtpClient
-      {
-        Host = settings.SmtpHost,
-        Port = settings.SmtpPort,
-        EnableSsl = settings.EnableSSL,
-        DeliveryMethod = SmtpDeliveryMethod.Network,
-        UseDefaultCredentials = false,
-        Credentials = new NetworkCredential(settings.Username, settings.Password)
-      };
+            var smtp = new SmtpClient
+            {
+                Host = settings.SmtpHost,
+                Port = settings.SmtpPort,
+                EnableSsl = settings.EnableSSL,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(settings.Username, settings.Password)
+            };
 
-      string subject = "Thông tin cuộc hẹn khám bệnh trực tuyến";
+            string subject = "Thông tin cuộc hẹn khám bệnh trực tuyến";
 
-      string body = $@"
+            string body = $@"
             <!DOCTYPE html>
             <html lang='vi'>
             <head>
@@ -298,15 +298,15 @@ namespace YouAreHeard.Helper
             </html>
             ";
 
-      using var message = new MailMessage(fromAddress, toAddress)
-      {
-        Subject = subject,
-        Body = body,
-        IsBodyHtml = true
-      };
+            using var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
 
-      smtp.Send(message);
+            smtp.Send(message);
+        }
+
     }
-
-  }
 }

@@ -8,4 +8,4 @@ namespace YouAreHeard.Repositories.Interfaces
 
         public TestTypeDTO GetTestTypeById(int id);
     }
-}   
+}

@@ -1,6 +1,4 @@
 using YouAreHeard.Models;
-using YouAreHeard.Repositories.Interfaces;
-using YouAreHeard.NewFolder;
 
 namespace YouAreHeard.Repositories.Interfaces
 {

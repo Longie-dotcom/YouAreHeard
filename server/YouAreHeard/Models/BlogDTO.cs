@@ -6,7 +6,7 @@ namespace YouAreHeard.Models
 
         public int userId { get; set; }
 
-        public string caption{ get; set; }
+        public string caption { get; set; }
 
         public string title { get; set; }
 
