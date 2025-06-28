@@ -11,12 +11,17 @@ namespace YouAreHeard.Services.Implementation
         private readonly IDoctorRepository _doctorRepository;
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IScheduleRepository _scheduleRepository;
+        private readonly IDoctorRatingRepository _doctorRatingRepository;
 
-        public DoctorService(IDoctorRepository doctorRepository, IAppointmentRepository appointmentRepository, IScheduleRepository scheduleRepository)
+        public DoctorService(IDoctorRepository doctorRepository,
+            IAppointmentRepository appointmentRepository,
+            IScheduleRepository scheduleRepository,
+            IDoctorRatingRepository doctorRatingRepository)
         {
             _doctorRepository = doctorRepository;
             _appointmentRepository = appointmentRepository;
             _scheduleRepository = scheduleRepository;
+            _doctorRatingRepository = doctorRatingRepository;
         }
 
         public DoctorProfileDTO GetDoctorProfileByDoctorId(int userId)
@@ -83,5 +88,12 @@ namespace YouAreHeard.Services.Implementation
                 CleanUpAndRefreshScheduleAvailability(schedule);
             }
         }
+
+        public void RatingDoctor(DoctorRatingDTO rating)
+        {
+            _doctorRatingRepository.AddRating(rating);
+        }
+
+
     }
 }

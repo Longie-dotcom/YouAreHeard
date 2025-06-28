@@ -40,6 +40,7 @@ builder.Services.AddScoped<ITreatmentPlanService, TreatmentPlanService>();
 builder.Services.AddScoped<ILabTestService, LabTestService>();
 builder.Services.AddScoped<IPatientProfileService, PatientProfileService>();
 builder.Services.AddScoped<IPayOSService, PayOSService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -61,6 +62,8 @@ builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
 builder.Services.AddScoped<IHIVStatusRepository, HIVStatusRepository>();
 builder.Services.AddScoped<IPregnancyStatusRepository, PregnancyStatusRepository>();
 builder.Services.AddScoped<IPatientConditionRepository, PatientConditionRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddScoped<IDoctorRatingRepository, DoctorRatingRepository>();
 
 var app = builder.Build();
 

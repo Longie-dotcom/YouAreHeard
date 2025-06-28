@@ -34,12 +34,12 @@ namespace YouAreHeard.Repositories.Implementation
                 var lr = new LabResultDTO
                 {
                     LabResultId = reader.GetInt32(reader.GetOrdinal("labResultID")),
-                    testStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
-                    testTypeId = reader.GetInt32(reader.GetOrdinal("testTypeId")),
-                    patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
-                    doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
-                    date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("notes")),
+                    TestStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
+                    TestTypeId = reader.GetInt32(reader.GetOrdinal("testTypeId")),
+                    PatientId = reader.GetInt32(reader.GetOrdinal("patientID")),
+                    DoctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                    Date = reader.GetDateTime(reader.GetOrdinal("date")),
+                    Note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
 
@@ -78,12 +78,12 @@ namespace YouAreHeard.Repositories.Implementation
                 var lr = new LabResultDTO
                 {
                     LabResultId = reader.GetInt32(reader.GetOrdinal("labResultID")),
-                    testStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
-                    testTypeId = reader.GetInt32(reader.GetOrdinal("testTypeId")),
-                    patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
-                    doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
-                    date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("notes")),
+                    TestStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
+                    TestTypeId = reader.GetInt32(reader.GetOrdinal("testTypeId")),
+                    PatientId = reader.GetInt32(reader.GetOrdinal("patientID")),
+                    DoctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                    Date = reader.GetDateTime(reader.GetOrdinal("date")),
+                    Note = reader.GetString(reader.GetOrdinal("notes")),
 
                 };
                 lrs.Add(lr);
@@ -92,46 +92,86 @@ namespace YouAreHeard.Repositories.Implementation
             return lrs;
         }
 
-        public List<LabResultDTO> GetLabResultByPatientId(int id)
+        public List<LabResultDTO> GetLabResultByPatientId(int patientID)
         {
             using var conn = DBContext.GetConnection();
             conn.Open();
 
             string query = @"
-            SELECT
-                lr.labResultID,
-                lr.testStageID,
-                lr.testTypeID,
-                lr.patientID,
-                lr.doctorID,
-                lr.date,
-                lr.notes
-            FROM LabResult lr
-            WHERE lr.patientID = @patientID
-            ";
+                SELECT
+                    lr.labResultID,
+                    lr.testStageID,
+                    ts.testStageName,
+                    lr.testTypeID,
+                    tt.testTypeName,
+                    lr.patientID,
+                    lr.doctorID,
+                    lr.date,
+                    lr.notes,
+                    lr.isCustomized,
+
+                    tm.testMetricID,
+                    tm.testMetricName,
+                    tm.unitName,
+                    tmv.value
+                FROM LabResult lr
+                JOIN TestStage ts ON lr.testStageID = ts.testStageID
+                JOIN TestType tt ON lr.testTypeID = tt.testTypeID
+                LEFT JOIN TestMetricValue tmv ON lr.labResultID = tmv.labResultID
+                LEFT JOIN TestMetric tm ON tmv.testMetricID = tm.testMetricID
+                WHERE lr.patientID = @patientID
+                ORDER BY lr.date DESC, lr.labResultID, tm.testMetricID";
 
             using var cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@patientID", id);
+            cmd.Parameters.AddWithValue("@patientID", patientID);
 
             using var reader = cmd.ExecuteReader();
-            var lrs = new List<LabResultDTO>();
+
+            var results = new List<LabResultDTO>();
+            LabResultDTO currentResult = null;
+            int lastResultId = -1;
+
             while (reader.Read())
             {
-                var lr = new LabResultDTO
-                {
-                    LabResultId = reader.GetInt32(reader.GetOrdinal("labResultID")),
-                    testStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
-                    testTypeId = reader.GetInt32(reader.GetOrdinal("testTypeId")),
-                    patientId = reader.GetInt32(reader.GetOrdinal("patientID")),
-                    doctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
-                    date = reader.GetDateTime(reader.GetOrdinal("date")),
-                    note = reader.GetString(reader.GetOrdinal("notes")),
+                int labResultID = reader.GetInt32(reader.GetOrdinal("labResultID"));
 
-                };
-                lrs.Add(lr);
+                if (labResultID != lastResultId)
+                {
+                    currentResult = new LabResultDTO
+                    {
+                        LabResultId = labResultID,
+                        TestStageId = reader.GetInt32(reader.GetOrdinal("testStageID")),
+                        TestStageName = reader.GetString(reader.GetOrdinal("testStageName")),
+                        TestTypeId = reader.GetInt32(reader.GetOrdinal("testTypeID")),
+                        TestTypeName = reader.GetString(reader.GetOrdinal("testTypeName")),
+                        PatientId = reader.GetInt32(reader.GetOrdinal("patientID")),
+                        DoctorId = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                        Date = reader.GetDateTime(reader.GetOrdinal("date")),
+                        Note = reader.IsDBNull(reader.GetOrdinal("notes")) ? null : reader.GetString(reader.GetOrdinal("notes")),
+                        IsCustomized = reader.GetBoolean(reader.GetOrdinal("isCustomized")),
+                        TestMetricValues = new List<TestMetricValueDTO>()
+                    };
+
+                    results.Add(currentResult);
+                    lastResultId = labResultID;
+                }
+
+                if (!reader.IsDBNull(reader.GetOrdinal("testMetricID")))
+                {
+                    var metric = new TestMetricValueDTO
+                    {
+                        LabResultID = labResultID,
+                        TestMetricID = reader.GetInt32(reader.GetOrdinal("testMetricID")),
+                        TestMetricName = reader.GetString(reader.GetOrdinal("testMetricName")),
+                        UnitName = reader.IsDBNull(reader.GetOrdinal("unitName")) ? null : reader.GetString(reader.GetOrdinal("unitName")),
+                        Value = reader.IsDBNull(reader.GetOrdinal("value")) ? null : reader.GetString(reader.GetOrdinal("value"))
+                    };
+
+                    currentResult.TestMetricValues.Add(metric);
+                }
             }
 
-            return lrs;
+            return results;
         }
 
         public int InsertLabResult(LabResultDTO lr)
@@ -149,11 +189,11 @@ namespace YouAreHeard.Repositories.Implementation
 
             using var cmd = new SqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("@testStageID", lr.testStageId);
-            cmd.Parameters.AddWithValue("@testTypeID", lr.testTypeId);
-            cmd.Parameters.AddWithValue("@patientID", lr.patientId);
-            cmd.Parameters.AddWithValue("@doctorID", lr.doctorId);
-            cmd.Parameters.AddWithValue("@notes", lr.note);
+            cmd.Parameters.AddWithValue("@testStageID", lr.TestStageId);
+            cmd.Parameters.AddWithValue("@testTypeID", lr.TestTypeId);
+            cmd.Parameters.AddWithValue("@patientID", lr.PatientId);
+            cmd.Parameters.AddWithValue("@doctorID", lr.DoctorId);
+            cmd.Parameters.AddWithValue("@notes", lr.Note);
             cmd.Parameters.AddWithValue("@isCustomized", lr.IsCustomized);
 
             return (int)cmd.ExecuteScalar();

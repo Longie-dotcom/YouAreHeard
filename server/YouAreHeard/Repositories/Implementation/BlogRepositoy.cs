@@ -15,7 +15,7 @@ namespace YouAreHeard.Repositories.Implementation
             SELECT
                 b.blogID,
                 b.userID,
-                b.caption,
+                b.details,
                 b.title,
                 b.image,
                 b.date
@@ -32,7 +32,7 @@ namespace YouAreHeard.Repositories.Implementation
                 {
                     blogId = reader.GetInt32(reader.GetOrdinal("blogID")),
                     userId = reader.GetInt32(reader.GetOrdinal("userID")),
-                    caption = reader.GetString(reader.GetOrdinal("caption")),
+                    details = reader.GetString(reader.GetOrdinal("details")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     image = reader.GetString(reader.GetOrdinal("image")),
                     date = reader.GetDateTime(reader.GetOrdinal("date"))
@@ -49,18 +49,88 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-                INSERT INTO Blog (blogID, userID, caption, title, image, date)
-                Values (@blogID, @userID, @caption, @title, @image, @date)
+                INSERT INTO Blog (userID, details, title, image, date)
+                Values (@userID, @details, @title, @image, @date)
             ";
 
             using var cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@blogID", blog.blogId);
             cmd.Parameters.AddWithValue("@userID", blog.userId);
-            cmd.Parameters.AddWithValue("@caption", blog.caption);
+            cmd.Parameters.AddWithValue("@details", blog.details);
             cmd.Parameters.AddWithValue("@title", blog.title);
             cmd.Parameters.AddWithValue("@image", blog.image);
             cmd.Parameters.AddWithValue("@date", blog.date);
             cmd.ExecuteNonQuery();
+        }
+
+        public void UpdateBlog(BlogDTO blog)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+                UPDATE Blog
+                SET 
+                    details = @details,
+                    title = @title,
+                    image = @image,
+                    date = @date
+                WHERE blogID = @blogID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@blogID", blog.blogId);
+            cmd.Parameters.AddWithValue("@details", blog.details);
+            cmd.Parameters.AddWithValue("@title", blog.title);
+            cmd.Parameters.AddWithValue("@image", blog.image);
+            cmd.Parameters.AddWithValue("@date", blog.date);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public void DeleteBlog(int blogId)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = "DELETE FROM Blog WHERE blogID = @blogID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@blogID", blogId);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public List<BlogDTO> GetBlogsByUserId(int userId)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+                SELECT blogID, userID, details, title, image, date
+                FROM Blog
+                WHERE userID = @userID
+                ORDER BY date DESC";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@userID", userId);
+
+            using var reader = cmd.ExecuteReader();
+            var blogs = new List<BlogDTO>();
+
+            while (reader.Read())
+            {
+                var blog = new BlogDTO
+                {
+                    blogId = reader.GetInt32(reader.GetOrdinal("blogID")),
+                    userId = reader.GetInt32(reader.GetOrdinal("userID")),
+                    details = reader.GetString(reader.GetOrdinal("details")),
+                    title = reader.GetString(reader.GetOrdinal("title")),
+                    image = reader.GetString(reader.GetOrdinal("image")),
+                    date = reader.GetDateTime(reader.GetOrdinal("date"))
+                };
+                blogs.Add(blog);
+            }
+
+            return blogs;
         }
     }
 }
