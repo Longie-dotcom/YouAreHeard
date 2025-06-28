@@ -15,5 +15,8 @@
         public string Phone { get; set; }
         public string AvailableDays { get; set; }
 
+        // Additional properties for DoctorRating
+        public double? AverageRating { get; set; }
+        public int? TotalRatings { get; set; }
     }
 }

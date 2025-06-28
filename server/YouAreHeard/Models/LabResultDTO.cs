@@ -4,20 +4,20 @@ namespace YouAreHeard.Models
     {
         public int? LabResultId { get; set; }
 
-        public int testStageId { get; set; }
+        public int TestStageId { get; set; }
+        public string? TestStageName { get; set; }
 
-        public int testTypeId { get; set; }
+        public int TestTypeId { get; set; }
+        public string? TestTypeName { get; set; }
 
-        public int patientId { get; set; }
+        public int PatientId { get; set; }
+        public int DoctorId { get; set; }
 
-        public int doctorId { get; set; }
-
-        public DateTime date { get; set; }
-
-        public string? note { get; set; }
+        public DateTime Date { get; set; }
+        public string? Note { get; set; }
 
         public bool IsCustomized { get; set; }
 
-        public List<TestMetricValueDTO>? testMetricValues { get; set; }
+        public List<TestMetricValueDTO>? TestMetricValues { get; set; }
     }
 }

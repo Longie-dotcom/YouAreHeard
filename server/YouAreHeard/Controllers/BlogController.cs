@@ -30,7 +30,44 @@ public class BlogController : ControllerBase
                 return BadRequest(ModelState);
             }
         }
-        _blogService.uploadBlog(blog);
+        _blogService.UploadBlog(blog);
         return Ok();
+    }
+
+    [HttpPut("updateblog")]
+    public IActionResult UpdateBlog([FromBody] BlogDTO blog)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        _blogService.UpdateBlog(blog);
+        return Ok();
+    }
+
+    [HttpDelete("deleteblog/{blogId}")]
+    public IActionResult DeleteBlog(int blogId)
+    {
+        if (blogId <= 0)
+        {
+            return BadRequest("Invalid blog ID.");
+        }
+        _blogService.DeleteBlog(blogId);
+        return Ok();
+    }
+
+    [HttpGet("userblogs/{userId}")]
+    public IActionResult GetBlogsByUserId(int userId)
+    {
+        if (userId <= 0)
+        {
+            return BadRequest("Invalid user ID.");
+        }
+        var blogs = _blogService.GetBlogsByUserId(userId);
+        if (blogs == null || blogs.Count == 0)
+        {
+            return NotFound("No blogs found for this user.");
+        }
+        return Ok(blogs);
     }
 }

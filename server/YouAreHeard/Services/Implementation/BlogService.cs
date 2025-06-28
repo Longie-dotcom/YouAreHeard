@@ -12,7 +12,7 @@ namespace YouAreHeard.Services
         {
             _blogRepository = blogRepository;
         }
-        public void uploadBlog(BlogDTO blog)
+        public void UploadBlog(BlogDTO blog)
         {
             _blogRepository.UploadBlog(blog);
         }
@@ -20,6 +20,21 @@ namespace YouAreHeard.Services
         public List<BlogDTO> getAllBlogs()
         {
             return _blogRepository.getAllBlogs();
+        }
+
+        public void UpdateBlog(BlogDTO blog)
+        {
+            _blogRepository.UpdateBlog(blog);
+        }
+
+        public void DeleteBlog(int blogId)
+        {
+            _blogRepository.DeleteBlog(blogId);
+        }
+
+        public List<BlogDTO> GetBlogsByUserId(int userId)
+        {
+            return _blogRepository.GetBlogsByUserId(userId);
         }
     }
 }

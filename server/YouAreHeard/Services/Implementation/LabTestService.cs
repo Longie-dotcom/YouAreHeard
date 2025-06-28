@@ -64,7 +64,7 @@ namespace YouAreHeard.Services
         {
             var labResultId = _LabResultRepository.InsertLabResult(lr);
 
-            foreach (var metric in lr.testMetricValues)
+            foreach (var metric in lr.TestMetricValues)
             {
                 var testMetricValue = new TestMetricValueDTO
                 {

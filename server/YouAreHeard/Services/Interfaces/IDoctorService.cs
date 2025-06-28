@@ -8,5 +8,6 @@ namespace YouAreHeard.Services.Interfaces
         List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId);
         List<DoctorProfileDTO> GetAllDoctorProfiles();
         List<DoctorScheduleDTO> GetAvailableDoctorSchedules();
+        void RatingDoctor(DoctorRatingDTO rating);
     }
 }

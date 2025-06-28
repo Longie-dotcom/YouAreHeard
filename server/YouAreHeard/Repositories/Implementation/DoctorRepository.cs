@@ -20,19 +20,41 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-            SELECT 
-                dp.userID, 
-                u.name AS doctorName, 
-                u.phone,
-                dp.specialties, 
-                dp.yearsOfExperience, 
-                dp.image, 
-                dp.gender, 
-                dp.description, 
-                dp.languagesSpoken
-            FROM DoctorProfile dp
-            JOIN [User] u ON dp.userID = u.userID
-            WHERE dp.userID = @UserID";
+                SELECT 
+                    dp.userID, 
+                    u.name AS doctorName, 
+                    u.phone,
+                    dp.specialties, 
+                    dp.yearsOfExperience, 
+                    dp.image, 
+                    dp.gender, 
+                    dp.description, 
+                    dp.languagesSpoken,
+
+                    (
+                        SELECT STRING_AGG(DATENAME(WEEKDAY, d.date), ', ')
+                        FROM (
+                            SELECT DISTINCT ds.date
+                            FROM DoctorSchedule ds
+                            WHERE ds.userID = dp.userID 
+                        ) AS d
+                    ) AS availableDays,
+
+                    (
+                        SELECT AVG(CAST(rateValue AS FLOAT)) 
+                        FROM DoctorRating 
+                        WHERE doctorID = dp.userID
+                    ) AS AverageRating,
+
+                    (
+                        SELECT COUNT(*) 
+                        FROM DoctorRating 
+                        WHERE doctorID = dp.userID
+                    ) AS TotalRatings
+
+                FROM DoctorProfile dp
+                JOIN [User] u ON dp.userID = u.userID
+                WHERE dp.userID = @UserID";
 
             using SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@UserID", userId);
@@ -44,7 +66,7 @@ namespace YouAreHeard.Repositories.Implementation
                 return null;
             }
 
-            var profile = new DoctorProfileDTO
+            return new DoctorProfileDTO
             {
                 UserID = reader.GetInt32(reader.GetOrdinal("userID")),
                 Name = reader["doctorName"]?.ToString(),
@@ -55,10 +77,10 @@ namespace YouAreHeard.Repositories.Implementation
                 Gender = reader["gender"]?.ToString(),
                 Description = reader["description"]?.ToString(),
                 LanguagesSpoken = reader["languagesSpoken"]?.ToString(),
-                AvailableDays = "" // You can compute this later if needed
+                AvailableDays = reader["availableDays"] != DBNull.Value ? reader["availableDays"].ToString() : "",
+                AverageRating = reader["AverageRating"] != DBNull.Value ? Convert.ToDouble(reader["AverageRating"]) : (double?)null,
+                TotalRatings = reader["TotalRatings"] != DBNull.Value ? Convert.ToInt32(reader["TotalRatings"]) : (int?)null
             };
-
-            return profile;
         }
 
         public List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId)
@@ -70,46 +92,66 @@ namespace YouAreHeard.Repositories.Implementation
         {
             using SqlConnection conn = DBContext.GetConnection();
             conn.Open();
+
             string query = @"
-            SELECT 
-            dp.userID, 
-                        dp.specialties, 
-                        dp.yearsOfExperience, 
-                        dp.image, 
-                        dp.gender, 
-                        dp.description, 
-                        dp.languagesSpoken,
-                        u.name, 
-                        u.phone,
-                        (
-                            SELECT STRING_AGG(DATENAME(WEEKDAY, d.date), ', ')
-                            FROM (
-                                SELECT DISTINCT ds.date
-                                FROM DoctorSchedule ds
-                                WHERE ds.userID = dp.userID 
-                            ) AS d
-                        ) AS availableDays
-                    FROM DoctorProfile dp
-                    INNER JOIN [User] u ON dp.userID = u.userID";
+                SELECT 
+                    dp.userID, 
+                    dp.specialties, 
+                    dp.yearsOfExperience, 
+                    dp.image, 
+                    dp.gender, 
+                    dp.description, 
+                    dp.languagesSpoken,
+                    u.name, 
+                    u.phone,
+
+                    (
+                        SELECT STRING_AGG(DATENAME(WEEKDAY, d.date), ', ')
+                        FROM (
+                            SELECT DISTINCT ds.date
+                            FROM DoctorSchedule ds
+                            WHERE ds.userID = dp.userID 
+                        ) AS d
+                    ) AS availableDays,
+
+                    (
+                        SELECT AVG(CAST(rateValue AS FLOAT)) 
+                        FROM DoctorRating 
+                        WHERE doctorID = dp.userID
+                    ) AS AverageRating,
+
+                    (
+                        SELECT COUNT(*) 
+                        FROM DoctorRating 
+                        WHERE doctorID = dp.userID
+                    ) AS TotalRatings
+
+                FROM DoctorProfile dp
+                INNER JOIN [User] u ON dp.userID = u.userID";
+
             using SqlCommand cmd = new SqlCommand(query, conn);
             using var reader = cmd.ExecuteReader();
+
             var doctors = new List<DoctorProfileDTO>();
             while (reader.Read())
             {
                 doctors.Add(new DoctorProfileDTO
                 {
                     UserID = reader.GetInt32(reader.GetOrdinal("userID")),
-                    Specialties = reader["specialties"].ToString(),
+                    Specialties = reader["specialties"]?.ToString(),
                     YearsOfExperience = reader.GetInt32(reader.GetOrdinal("yearsOfExperience")),
-                    Image = reader["image"].ToString(),
-                    Gender = reader["gender"].ToString(),
-                    Description = reader["description"].ToString(),
-                    LanguagesSpoken = reader["languagesSpoken"].ToString(),
-                    Name = reader["name"].ToString(),
-                    Phone = reader["phone"].ToString(),
-                    AvailableDays = reader["availableDays"] != DBNull.Value ? reader["availableDays"].ToString() : ""
+                    Image = reader["image"]?.ToString(),
+                    Gender = reader["gender"]?.ToString(),
+                    Description = reader["description"]?.ToString(),
+                    LanguagesSpoken = reader["languagesSpoken"]?.ToString(),
+                    Name = reader["name"]?.ToString(),
+                    Phone = reader["phone"]?.ToString(),
+                    AvailableDays = reader["availableDays"] != DBNull.Value ? reader["availableDays"].ToString() : "",
+                    AverageRating = reader["AverageRating"] != DBNull.Value ? Convert.ToDouble(reader["AverageRating"]) : (double?)null,
+                    TotalRatings = reader["TotalRatings"] != DBNull.Value ? Convert.ToInt32(reader["TotalRatings"]) : (int?)null
                 });
             }
+
             return doctors;
         }
 

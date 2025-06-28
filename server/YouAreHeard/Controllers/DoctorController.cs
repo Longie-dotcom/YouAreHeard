@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using YouAreHeard.Models;
 using YouAreHeard.Services.Interfaces;
 
 [ApiController]
@@ -41,5 +42,16 @@ public class DoctorController : ControllerBase
     {
         var doctors = _doctorService.GetAllDoctorProfiles();
         return Ok(doctors);
+    }
+
+    [HttpPost("rating")]
+    public IActionResult RateDoctor([FromBody] DoctorRatingDTO rating)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        _doctorService.RatingDoctor(rating);
+        return Ok(new { message = "Đánh giá bác sĩ thành công." });
     }
 }

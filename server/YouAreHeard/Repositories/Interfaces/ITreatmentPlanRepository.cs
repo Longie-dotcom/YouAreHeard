@@ -6,5 +6,6 @@ namespace YouAreHeard.Repositories.Interfaces
     {
         public int insertTreatmentPlan(TreatmentPlanDTO treatmentPlan);
         public TreatmentPlanDetailsDTO? GetLatestTreatmentPlanByPatientID(int patientID);
+        public List<TreatmentPlanDetailsDTO> GetAllTreatmentPlansByPatientID(int patientID);
     }
 }
