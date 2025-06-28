@@ -154,6 +154,10 @@ namespace YouAreHeard.Services
         public AppointmentDTO GetAppointmentWithPatientDetailsById(int appointmentId)
         {
             var appointment = _appointmentRepository.GetAppointmentWithPatientDetailsById(appointmentId);
+            if (appointment == null)
+            {
+                return null;
+            }
             if (appointment.IsAnonymous)
             {
                 appointment.PatientName = ConstraintWords.AnonymousName;

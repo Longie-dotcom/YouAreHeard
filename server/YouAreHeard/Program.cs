@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins("http://localhost:3000", "https://localhost:7188")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -57,6 +57,10 @@ builder.Services.AddScoped<ITestTypeRepository, TestTypeRepository>();
 builder.Services.AddScoped<IPatientProfileRepository, PatientProfileRepository>();
 builder.Services.AddScoped<ITestMetricRepository, TestMetricRepository>();
 builder.Services.AddScoped<ITestMetricValueRepository, TestMetricValueRepository>();
+builder.Services.AddScoped<IConditionRepository, ConditionRepository>();
+builder.Services.AddScoped<IHIVStatusRepository, HIVStatusRepository>();
+builder.Services.AddScoped<IPregnancyStatusRepository, PregnancyStatusRepository>();
+builder.Services.AddScoped<IPatientConditionRepository, PatientConditionRepository>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 
 namespace YouAreHeard.Repositories.Implementation
@@ -32,8 +33,8 @@ namespace YouAreHeard.Repositories.Implementation
                     UserID = reader.GetInt32(reader.GetOrdinal("userID")),
                     HivStatusID = reader.GetInt32(reader.GetOrdinal("hivStatusID")),
                     PregnancyStatusID = reader.GetInt32(reader.GetOrdinal("pregnancyStatusID")),
-                    Height = reader.GetFloat(reader.GetOrdinal("height")),
-                    Weight = reader.GetFloat(reader.GetOrdinal("weight")),
+                    Height = reader.GetDouble(reader.GetOrdinal("height")),
+                    Weight = reader.GetDouble(reader.GetOrdinal("weight")),
                     Gender = reader.GetString(reader.GetOrdinal("gender"))
 
                 };
@@ -49,31 +50,63 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-                SELECT
-                    pp.userID,
-                    pp.hivStatusID,
-                    pp.pregnancyStatusID,
-                    pp.height,
-                    pp.weight,
-                    pp.gender
-                FROM PatientProfile pp
-                WHERE pp.userID = @userID
-            ";
+        SELECT
+            pp.userID,
+            pp.hivStatusID,
+            hs.HIVStatusName,
+            pp.pregnancyStatusID,
+            ps.pregnancyStatusName,
+            pp.height,
+            pp.weight,
+            pp.gender,
+            pc.conditionID,
+            c.conditionName
+        FROM PatientProfile pp
+        LEFT JOIN HIVStatus hs ON pp.hivStatusID = hs.HIVStatusID
+        LEFT JOIN PregnancyStatus ps ON pp.pregnancyStatusID = ps.pregnancyStatusID
+        LEFT JOIN PatientCondition pc ON pp.userID = pc.userID
+        LEFT JOIN [Condition] c ON pc.conditionID = c.conditionID
+        WHERE pp.userID = @userID
+    ";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@userID", id);
             using var reader = cmd.ExecuteReader();
-            if (!reader.Read()) return null;
 
-            return new PatientProfileDTO
+            PatientProfileDTO patient = null;
+            var conditions = new List<ConditionDTO>();
+
+            while (reader.Read())
             {
-                UserID = reader.GetInt32(reader.GetOrdinal("userID")),
-                HivStatusID = reader.GetInt32(reader.GetOrdinal("hivStatusID")),
-                PregnancyStatusID = reader.GetInt32(reader.GetOrdinal("pregnancyStatusID")),
-                Height = reader.GetFloat(reader.GetOrdinal("height")),
-                Weight = reader.GetFloat(reader.GetOrdinal("weight")),
-                Gender = reader.GetString(reader.GetOrdinal("gender"))
-            };
+                if (patient == null)
+                {
+                    patient = new PatientProfileDTO
+                    {
+                        UserID = reader.GetInt32(reader.GetOrdinal("userID")),
+                        HivStatusID = reader.GetInt32(reader.GetOrdinal("hivStatusID")),
+                        PregnancyStatusID = reader.GetInt32(reader.GetOrdinal("pregnancyStatusID")),
+                        HIVStatusName = reader.IsDBNull(reader.GetOrdinal("HIVStatusName")) ? null : reader.GetString(reader.GetOrdinal("HIVStatusName")),
+                        PregnancyStatusName = reader.IsDBNull(reader.GetOrdinal("pregnancyStatusName")) ? null : reader.GetString(reader.GetOrdinal("pregnancyStatusName")),
+                        Height = reader.IsDBNull(reader.GetOrdinal("height")) ? null : reader.GetDouble(reader.GetOrdinal("height")),
+                        Weight = reader.IsDBNull(reader.GetOrdinal("weight")) ? null : reader.GetDouble(reader.GetOrdinal("weight")),
+                        Gender = reader.GetString(reader.GetOrdinal("gender")),
+                        Conditions = conditions
+                    };
+                }
+
+                if (!reader.IsDBNull(reader.GetOrdinal("conditionID")))
+                {
+                    conditions.Add(new ConditionDTO
+                    {
+                        ConditionID = reader.GetInt32(reader.GetOrdinal("conditionID")),
+                        ConditionName = reader.IsDBNull(reader.GetOrdinal("conditionName"))
+                                        ? null
+                                        : reader.GetString(reader.GetOrdinal("conditionName"))
+                    });
+                }
+            }
+
+            return patient;
         }
 
         public void InsertPatientProfile(PatientProfileDTO pp)
@@ -82,7 +115,7 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-            INSERT INTO LabResult (userID,hivStatusID,pregnancyStatusID,height,weight,gender)
+            INSERT INTO PatientProfile (userID,hivStatusID,pregnancyStatusID,height,weight,gender)
             VALUES (@userID,@hivStatusID,@pregnancyStatusID,@height,@weight,@gender)
             ";
 

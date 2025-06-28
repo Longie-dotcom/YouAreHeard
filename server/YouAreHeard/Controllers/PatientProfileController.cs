@@ -40,4 +40,25 @@ public class PatientProfileController : ControllerBase
         _patientProfileService.InsertPatientProfile(pp);
         return Ok();
     }
+
+    [HttpGet("conditions")]
+    public IActionResult GetAllConditions()
+    {
+        var conditions = _patientProfileService.GetAllConditions();
+        return Ok(conditions);
+    }
+
+    [HttpGet("hivstatuses")]
+    public IActionResult GetAllHIVStatuses()
+    {
+        var hivStatuses = _patientProfileService.GetAllHIVStatuses();
+        return Ok(hivStatuses);
+    }
+
+    [HttpGet("pregnancystatuses")]
+    public IActionResult GetAllPregnancyStatuses()
+    {
+        var pregnancyStatuses = _patientProfileService.GetAllPregnancyStatuses();
+        return Ok(pregnancyStatuses);
+    }
 }

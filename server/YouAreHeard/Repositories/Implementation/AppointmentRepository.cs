@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using YouAreHeard.Models;
 using YouAreHeard.NewFolder;
 using YouAreHeard.Repositories.Interfaces;
@@ -424,13 +425,18 @@ namespace YouAreHeard.Repositories.Implementation
                 pp.gender,
 
                 hs.HIVStatusName,
-                ps.pregnancyStatusName
+                ps.pregnancyStatusName,
+
+                c.conditionID,
+                c.conditionName
 
             FROM Appointment a
             INNER JOIN [User] u ON a.patientID = u.userID
             LEFT JOIN PatientProfile pp ON pp.userID = u.userID
             LEFT JOIN HIVStatus hs ON pp.hivStatusID = hs.HIVStatusID
             LEFT JOIN PregnancyStatus ps ON pp.pregnancyStatusID = ps.PregnancyStatusID
+            LEFT JOIN PatientCondition pc ON pc.userID = u.userID
+            LEFT JOIN [Condition] c ON c.conditionID = pc.conditionID
             WHERE a.appointmentID = @AppointmentID";
 
             using var command = new SqlCommand(query, connection);
@@ -438,49 +444,50 @@ namespace YouAreHeard.Repositories.Implementation
 
             using var reader = command.ExecuteReader();
 
-            if (reader.Read())
+            AppointmentDTO appointment = null;
+            var conditions = new List<ConditionDTO>();
+
+            while (reader.Read())
             {
-                return new AppointmentDTO
+                if (appointment == null)
                 {
-                    AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
-                    DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
-                    AppointmentStatusID = reader.IsDBNull(reader.GetOrdinal("appointmentStatusID"))
-                        ? null : reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
-                    ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink"))
-                        ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
-                    Notes = reader.IsDBNull(reader.GetOrdinal("notes"))
-                        ? null : reader.GetString(reader.GetOrdinal("notes")),
-                    Reason = reader.IsDBNull(reader.GetOrdinal("reason"))
-                        ? null : reader.GetString(reader.GetOrdinal("reason")),
-                    QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber"))
-                        ? null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
-                    IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
-
-                    PatientID = reader.GetInt32(reader.GetOrdinal("patientUserID")),
-                    PatientName = reader.IsDBNull(reader.GetOrdinal("patientName"))
-                        ? null : reader.GetString(reader.GetOrdinal("patientName")),
-                    PatientPhone = reader.IsDBNull(reader.GetOrdinal("patientPhone"))
-                        ? null : reader.GetString(reader.GetOrdinal("patientPhone")),
-                    PatientDob = reader.IsDBNull(reader.GetOrdinal("patientDob"))
-                        ? null : reader.GetDateTime(reader.GetOrdinal("patientDob")),
-
-                    PatientProfile = new PatientProfileDTO
+                    appointment = new AppointmentDTO
                     {
-                        Height = reader.IsDBNull(reader.GetOrdinal("height"))
-                        ? (float?)null : reader.GetFloat(reader.GetOrdinal("height")),
-                        Weight = reader.IsDBNull(reader.GetOrdinal("weight"))
-                        ? (float?)null : reader.GetFloat(reader.GetOrdinal("weight")),
-                        Gender = reader.IsDBNull(reader.GetOrdinal("gender"))
-                        ? null : reader.GetString(reader.GetOrdinal("gender")),
-                        HIVStatusName = reader.IsDBNull(reader.GetOrdinal("HIVStatusName"))
-                        ? null : reader.GetString(reader.GetOrdinal("HIVStatusName")),
-                        PregnancyStatusName = reader.IsDBNull(reader.GetOrdinal("pregnancyStatusName"))
-                        ? null : reader.GetString(reader.GetOrdinal("pregnancyStatusName"))
-                    }
-                };
+                        AppointmentID = reader.GetInt32("appointmentID"),
+                        DoctorScheduleID = reader.GetInt32("doctorScheduleID"),
+                        AppointmentStatusID = reader.GetValue("appointmentStatusID") as int?,
+                        ZoomLink = reader["zoomLink"] as string,
+                        Notes = reader["notes"] as string,
+                        Reason = reader["reason"] as string,
+                        QueueNumber = reader.GetValue("queueNumber") as int?,
+                        IsAnonymous = reader.GetBoolean("isAnonymous"),
+                        PatientID = reader.GetInt32("patientUserID"),
+                        PatientName = reader["patientName"] as string,
+                        PatientPhone = reader["patientPhone"] as string,
+                        PatientDob = reader["patientDob"] as DateTime?,
+                        PatientProfile = new PatientProfileDTO
+                        {
+                            Height = reader.IsDBNull("height") ? null : (double?)reader.GetDouble("height"),
+                            Weight = reader.IsDBNull("weight") ? null : (double?)reader.GetDouble("weight"),
+                            Gender = reader["gender"] as string,
+                            HIVStatusName = reader["HIVStatusName"] as string,
+                            PregnancyStatusName = reader["pregnancyStatusName"] as string,
+                            Conditions = conditions
+                        }
+                    };
+                }
+
+                if (!reader.IsDBNull(reader.GetOrdinal("conditionID")))
+                {
+                    conditions.Add(new ConditionDTO
+                    {
+                        ConditionID = reader.GetInt32("conditionID"),
+                        ConditionName = reader["conditionName"] as string
+                    });
+                }
             }
 
-            return null;
+            return appointment;
         }
 
         public void UpdateZoomLink(int appointmentId, string zoomLink)
