@@ -7,6 +7,10 @@ function useGetPatientDetailByAppointment({ setError, setLoading, setAppointment
     const appointmentControllerApi = process.env.REACT_APP_APPOINTMENT_CONTROLLER_API;
 
     const getPatientProfileByAppointmentId = async ({ appointmentId }) => {
+        if (!appointmentId) {
+            return;
+        }
+        
         setLoading(true);
         await axios.get(
             `${serverApi}${appointmentControllerApi}/getDetail/${appointmentId}`

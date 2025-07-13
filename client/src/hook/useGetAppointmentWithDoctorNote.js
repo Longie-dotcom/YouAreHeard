@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-function useLoadDoctorAppointments({ setError, setLoading, doctorId }) {
-    const [appointments, setAppointments] = useState(null);
-    
+function useGetAppointmentWithDoctorNote({ setError, setLoading, doctorId }) {
+    const [appointmentNote, setAppointment] = useState(null);
+
     const serverApi = process.env.REACT_APP_SERVER_API;
     const appointmentControllerApi = process.env.REACT_APP_APPOINTMENT_CONTROLLER_API;
 
-    const getAllAppointmentByDoctorId = async () => {
-        if (!doctorId) {
+    const getAppointmentWithDoctorNote = async () => {
+        if(!doctorId){
             return;
         }
 
         setLoading(true);
         await axios.get(
-            `${serverApi}${appointmentControllerApi}/doctor/${doctorId}`
+            `${serverApi}${appointmentControllerApi}/appointmentsWithDoctorNote/${doctorId}`
         )
             .then((response) => {
-                setAppointments(response.data);
+                setAppointment(response.data);
             }).catch((error) => {
                 setError(error.response?.data?.message);
             }).finally(() => {
@@ -26,12 +26,12 @@ function useLoadDoctorAppointments({ setError, setLoading, doctorId }) {
     };
 
     useEffect(() => {
-        getAllAppointmentByDoctorId();
+        getAppointmentWithDoctorNote();
     }, [doctorId])
 
     return ({
-        appointments
+        appointmentNote
     })
 }
 
-export default useLoadDoctorAppointments;
+export default useGetAppointmentWithDoctorNote;

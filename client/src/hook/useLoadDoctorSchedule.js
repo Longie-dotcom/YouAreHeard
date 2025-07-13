@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useLoadDoctorSchedule({ doctorId, setError, setLoading }) {
+function useLoadDoctorSchedule({ setError, setLoading, doctorId, roleId }) {
     const [schedules, setSchedules] = useState(null);
     
     const serverApi = process.env.REACT_APP_SERVER_API;
@@ -22,8 +22,12 @@ function useLoadDoctorSchedule({ doctorId, setError, setLoading }) {
                     setLoading(false);
                 })
         } else {
+            if (!roleId) {
+                return;
+            }
+
             await axios.get(
-                `${serverApi}${doctorControllerApi}/schedule/all`
+                `${serverApi}${doctorControllerApi}/schedule/all/${roleId}`
             )
                 .then((response) => {
                     setSchedules(response.data);
@@ -37,10 +41,10 @@ function useLoadDoctorSchedule({ doctorId, setError, setLoading }) {
 
     useEffect(() => {
         getDoctorSchedule();
-    }, [doctorId])
+    }, [doctorId, roleId]);
 
     return ({
-        schedules, getDoctorSchedule
+        schedules
     })
 }
 

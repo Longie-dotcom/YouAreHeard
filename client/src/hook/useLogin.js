@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function useLogin({ setReloadCookies, setError, setLoading }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const authenticationControllerApi = process.env.REACT_APP_AUTHENTICATION_CONTROLLER_API;
 
     const handleSubmit = async () => {
+
         const loginToken = {
             email: email,
             password: password,

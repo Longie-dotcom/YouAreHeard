@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const getUserFromCookies = () => {
   const cookies = document.cookie.split(';').map(c => c.trim());
@@ -18,20 +18,27 @@ const getUserFromCookies = () => {
 
 const useUser = () => {
   const [reloadCookies, setReloadCookies] = useState(0);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined); // undefined = loading, null = no user
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const userData = getUserFromCookies();
+    setUser(userData);
+
+    // Only auto-redirect if user just landed at root
     if (userData) {
-      setUser(userData);
-      if (userData.RoleId === Number(process.env.REACT_APP_ROLE_PATIENT_ID)) {
-        navigate('/homePage')
-      } else if (userData.RoleId === Number(process.env.REACT_APP_ROLE_DOCTOR_ID)) {
-        navigate('/doctorDashboardPage');
+      const currentPath = location.pathname;
+
+      if (currentPath === '/' || currentPath === '/login') {
+        if (userData.RoleId === Number(process.env.REACT_APP_ROLE_PATIENT_ID)) {
+          navigate('/homePage');
+        } else if (userData.RoleId === Number(process.env.REACT_APP_ROLE_DOCTOR_ID)) {
+          navigate('/doctorDashboardPage');
+        } else if (userData.RoleId === Number(process.env.REACT_APP_ROLE_STAFF_ID)) {
+          navigate('/staffDashboardPage');
+        }
       }
-    } else {
-      setUser(null);
     }
   }, [reloadCookies]);
 

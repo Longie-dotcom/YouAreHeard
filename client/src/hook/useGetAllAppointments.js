@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-function useLoadAppointments({ user, setError, setLoading, reload }) {
+function useGetAllAppointments({ setError, setLoading, reload }) {
     const [appointments, setAppointments] = useState(null);
-    
+
     const serverApi = process.env.REACT_APP_SERVER_API;
     const appointmentControllerApi = process.env.REACT_APP_APPOINTMENT_CONTROLLER_API;
 
     const getAllAppointments = async () => {
-        if (!user){
-            return;
-        }
-
         setLoading(true);
         await axios.get(
-            `${serverApi}${appointmentControllerApi}/patient/${user?.UserId}`
+            `${serverApi}${appointmentControllerApi}/all`
         )
             .then((response) => {
                 setAppointments(response.data);
@@ -27,11 +23,11 @@ function useLoadAppointments({ user, setError, setLoading, reload }) {
 
     useEffect(() => {
         getAllAppointments();
-    }, [user, reload])
+    }, [reload])
 
     return ({
         appointments
     })
 }
 
-export default useLoadAppointments;
+export default useGetAllAppointments;

@@ -8,6 +8,10 @@ function useGetDoctorById({ setError, setLoading }) {
     const doctorControllerApi = process.env.REACT_APP_DOCTOR_CONTROLLER_API;
 
     const getDoctorById = async ({ doctorId }) => {
+        if (!doctorId) {
+            return;
+        }
+
         setLoading(true);
         await axios.get(
             `${serverApi}${doctorControllerApi}/profile/${doctorId}`

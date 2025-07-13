@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-function useRequestAppointment({ user, choosenAppointment, type, setError, setLoading }) {
+function usePaidAppointment({ user, choosenAppointment, setResult, type, setError, setLoading }) {
     const t1 = 'Vui lòng chọn loại cuộc hẹn';
     const t2 = 'Server xảy ra lỗi';
 
@@ -20,16 +20,12 @@ function useRequestAppointment({ user, choosenAppointment, type, setError, setLo
 
         const appointmentDetail = {
             doctorScheduleID: choosenAppointment.schedule.doctorScheduleID,
-            isOnline: type === process.env.REACT_APP_ROLE_DOCTOR_ID ? false : true,
+            isOnline: type === 'online' ? true : false,
             notes: note,
             reason: reason,
             isAnonymous: anonymous,
             patientID: user?.UserId,
             doctorID: choosenAppointment.doctor.userID
-        }
-        
-        if (type === process.env.REACT_APP_ROLE_DOCTOR_ID) {
-            appointmentDetail.isAnonymous = false;
         }
 
         try {
@@ -45,7 +41,7 @@ function useRequestAppointment({ user, choosenAppointment, type, setError, setLo
                 }
             );
 
-            window.location.href = response.data;
+            setResult(response.data);
         } catch (error) {
             const response = error.response?.data;
             const message = response?.message || t2;
@@ -69,4 +65,4 @@ function useRequestAppointment({ user, choosenAppointment, type, setError, setLo
     })
 }
 
-export default useRequestAppointment;
+export default usePaidAppointment;

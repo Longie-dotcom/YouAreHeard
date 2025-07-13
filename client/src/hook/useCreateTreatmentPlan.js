@@ -1,7 +1,8 @@
 import axios from "axios";
 
-function useCreateTreatmentPlan({ setError, setLoading, setIsSubmit }) {
+function useCreateTreatmentPlan({ setError, setLoading, setIsSubmit, setFinish }) {
     const t1 = "Bác sĩ chưa nhập ít nhất một thời gian uống thuốc.";
+    const t2 = "Tạo phác đồ điều trị thành công";
 
     const serverApi = process.env.REACT_APP_SERVER_API;
     const treatmentPlanControllerApi = process.env.REACT_APP_TREATMENT_PLAN_CONTROLLER_API;
@@ -28,6 +29,7 @@ function useCreateTreatmentPlan({ setError, setLoading, setIsSubmit }) {
             }
         )
             .then((response) => {
+                setFinish(t2);
             }).catch((error) => {
                 setError(error.response?.data?.message);
             }).finally(() => {

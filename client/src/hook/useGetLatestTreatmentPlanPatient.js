@@ -8,6 +8,10 @@ function useGetLatestTreatmentPlanPatient({ setError, setLoading, patientId }) {
     const treatmentPlanControllerApi = process.env.REACT_APP_TREATMENT_PLAN_CONTROLLER_API;
 
     const getLatestTreatmentPlanByPatientId = async () => {
+        if (!patientId) {
+            return;
+        }
+
         setLoading(true);
         await axios.get(
             `${serverApi}${treatmentPlanControllerApi}/patient/${patientId}`
