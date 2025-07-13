@@ -1,0 +1,135 @@
+.post-blog-box .create-blog {
+    border: none;
+    font-size: 1vw;
+    border-radius: 50px;
+    padding: 2%;
+    width: 30%;
+    background-color: #4A67F3;
+    font-weight: 550;
+    color: rgb(255, 255, 255);
+    transition: background-color 0.1s ease-in-out, width 0.1s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-blog-box .create-blog:hover {
+    background-color: #2d3f97;
+    width: 35%;
+}
+
+.post-blog-box .create-blog .icon {
+    width: 1.2vw;
+    height: auto;
+    margin-right: 0.4vw;
+}
+
+.post-blog-box .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+    
+    max-height: 80vh;
+    overflow-y: scroll;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.post-blog-box .post-list::-webkit-scrollbar {
+    display: none;
+}
+
+.post-blog-box .post-list .blog-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.post-blog-box .post-list .blog-card .blog-thumbnail {
+    height: 180px;
+    width: auto;
+    max-width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.post-blog-box .post-list .blog-card .blog-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.post-blog-box .post-list .blog-card .blog-content .blog-title {
+    font-size: 1.1vw;
+    font-weight: 600;
+    color: #333;
+}
+
+.post-blog-box .post-list .blog-card .blog-content .blog-details {
+    font-size: 1vw;
+    color: #666;
+}
+
+.post-blog-box .post-list .blog-card .blog-content .blog-meta {
+    font-size: 0.9vw;
+    font-weight: 550;
+    color: #999;
+}
+
+.post-blog-box .post-list .blog-card .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.post-blog-box .post-list .blog-card .buttons button {
+    width: 30%;
+    padding: 1%;
+    border: none;
+    border-radius: 50px;
+    font-size: 1vw;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.post-blog-box .post-list .blog-card .buttons .delete-blog {
+    background-color: rgb(255, 79, 79);
+    color: rgb(255, 255, 255);
+}
+
+.post-blog-box .post-list .blog-card .buttons .delete-blog:hover {
+    background-color: rgb(203, 22, 22);
+}
+
+.post-blog-box .text-box-overlap {
+    display: flex;
+    justify-content: center;
+}
+
+.post-blog-box .text-box {
+    width: fit-content !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 15vh !important;
+}
+
+.post-blog-box .text-box img.preview-image {
+    height: 50vh;
+    width: auto;
+    max-width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
