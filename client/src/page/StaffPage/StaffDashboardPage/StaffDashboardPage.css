@@ -1,0 +1,83 @@
+#staff-dashboard-page {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    margin-bottom: 20vh;
+}
+
+.expand {
+    width: 90vw !important;
+    margin-left: 5vw !important;
+    margin-right: 5vw !important;
+}
+
+#staff-dashboard-page .header {
+    height: 5vh;
+    padding: 1.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#staff-dashboard-page .header .logo {
+    height: 100%;
+}
+
+#staff-dashboard-page .header .logo img {
+    height: 100%;
+}
+
+#staff-dashboard-page .header button {
+    width: 10%;
+    border: none;
+    border-radius: 40px;
+    height: 100%;
+    background-color: #4A67F3;
+    color: rgb(255, 255, 255);
+    font-size: 1vw;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+#staff-dashboard-page .header button:hover {
+    background-color: #202c6b;
+}
+
+#staff-dashboard-page .body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#staff-dashboard-page .body .menu {
+    width: 30%;
+}
+
+#staff-dashboard-page .body .main {
+    width: 70%;
+}
+
+
+#staff-dashboard-page .scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+#staff-dashboard-page .scroll-to-top:hover {
+  background-color: #135ba1;
+}
