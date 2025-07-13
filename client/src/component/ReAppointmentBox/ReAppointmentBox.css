@@ -1,0 +1,177 @@
+.re-appointment-box-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    z-index: 9900;
+}
+
+.re-appointment-box-overlap .re-appointment-box .title {
+    font-size: 1.2vw;
+    text-align: center;
+    font-weight: 550;
+    margin-bottom: 1vw;
+}
+
+.re-appointment-box-overlap .re-appointment-box {
+    position: fixed;
+    width: 40vw;
+    padding: 2.5vw;
+    height: 75vh;
+    margin-top: 10vh;
+    border-radius: 20px;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    overflow-y: auto; /* enable scrolling */
+    scrollbar-width: none; /* Firefox */
+}
+
+.re-appointment-box-overlap .re-appointment-box::-webkit-scrollbar {
+    display: none;
+}
+
+.re-appointment-box-overlap .re-appointment-box .header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0 !important;
+    margin-bottom: 4%;
+}
+
+.re-appointment-box-overlap .re-appointment-box .header img {
+    height: 100%;
+}
+
+.re-appointment-box-overlap .re-appointment-box .header .exit {
+    width: 2vw !important;
+    height: 2vw !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important;
+}
+
+.re-appointment-box-overlap .re-appointment-box .header .exit:hover {
+    background-color: rgb(220, 220, 220) !important;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .title {
+    font-size: 0.9vw;
+    display: flex;
+    float: left;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-container {
+    width: 100%;
+    margin-top: 1.5vw;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-header button {
+    background: none;
+    border: none;
+    font-size: 1.4vw;
+    cursor: pointer;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-header .year select {
+    font-size: 1vw;
+    padding: 0.3vw;
+    border: none;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.3vw;
+    margin-bottom: 1vw;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-day-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.9vw;
+    padding: 0.5vw 0;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-day {
+    text-align: center;
+    padding: 0.6vw 0;
+    border-radius: 0.6vw;
+    height: 2.8vw;
+    font-size: 0.9vw;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+    background-color: #f8f8f8;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-day.filled {
+    background-color: #f0f0f0;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-day.has-appointment {
+    background-color: #d7efff;
+    cursor: pointer;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .calendar-day.has-appointment:hover {
+    background-color: #b5e0ff;
+}
+
+/* Schedule list styling */
+.re-appointment-box-overlap .re-appointment-box .body .schedule-list {
+    width: 100%;
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .schedule-list li {
+    background-color: #f9f9f9;
+    border-radius: 0.5vw;
+    padding: 0.6vw;
+    font-size: 0.95vw;
+    margin-bottom: 0.6vw;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .schedule-list li:hover {
+    background-color: #e0f7e0;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .schedule-list li.selected {
+    background-color: #b5eec5;
+}
+
+.re-appointment-box-overlap .re-appointment-box .body .note > textarea{
+    width: 90%;
+    padding: 4%;
+    margin: 1%;
+    border-radius: 10px;
+    border: 1.9px dashed rgb(0, 0, 0);
+}
