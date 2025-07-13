@@ -54,3 +54,24 @@
 #doctor-dashboard-page .body .main {
     width: 70%;
 }
+
+
+#doctor-dashboard-page .scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+#doctor-dashboard-page .scroll-to-top:hover {
+  background-color: #135ba1;
+}

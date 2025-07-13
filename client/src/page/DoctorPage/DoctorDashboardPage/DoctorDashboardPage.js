@@ -1,6 +1,4 @@
 // Modules
-import { useNavigate } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
 import { useState } from 'react';
 
 // Style sheet
@@ -15,11 +13,11 @@ import LogoText from '../../../uploads/logo-text.png';
 import LogoPicture from '../../../uploads/logo-picture.png';
 
 // Components
-import Icon from '../../../component/Icon/Icon';
 import SideMenu from '../../../component/SideMenu/SideMenu';
-import DoctorAppointment from '../../../component/DoctorAppointment/DoctorAppointment';
+import NextAppointment from '../../../component/NextAppointment/NextAppointment';
 import TreatmentBox from '../../../component/TreatmentBox/TreatmentBox';
 import TestLabBox from '../../../component/TestLabBox/TestLabBox';
+import PatientMedicalHistory from '../../../component/PatientMedicalHistory/PatientMedicalHistory';
 
 // Hooks
 import useLogout from '../../../hook/useLogout';
@@ -27,6 +25,8 @@ import useLoadDoctorAppointments from '../../../hook/useLoadDoctorAppointments';
 
 function DoctorDashboardPage({ user, setReloadCookies }) {
     const t1 = 'Đăng xuất';
+    const t2 = '⬆ Lên đầu';
+    const t3 = 'Hiện bác sĩ chưa có lịch khám/điều trị';
     const menuItems = [
         { id: 'appointment', label: 'Các cuộc hẹn', icon: HospitalIcon },
         { id: 'history', label: 'Lịch sử khám bệnh', icon: TreatmentIcon },
@@ -43,6 +43,13 @@ function DoctorDashboardPage({ user, setReloadCookies }) {
     const { logout } = useLogout({ setReloadCookies, setError, setLoading });
     return (
         <div id='doctor-dashboard-page'>
+            <button
+                className="scroll-to-top"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+                {t2}
+            </button>
+
             <div className='header'>
                 <div className='logo'>
                     <img src={LogoPicture} alt='logo' />
@@ -68,15 +75,18 @@ function DoctorDashboardPage({ user, setReloadCookies }) {
 
                 <div className='main'>
                     {openSection === 'appointment' && (
-                        <DoctorAppointment user={user} appointments={appointments} />
+                        <NextAppointment user={user} appointments={appointments} emptyText={t3} />
                     )}
 
                     {openSection === 'treatment' && (
-                        <TreatmentBox appointments={appointments} />
+                        <TreatmentBox appointments={appointments} user={user} />
                     )}
 
                     {openSection === 'test' && (
                         <TestLabBox appointments={appointments} />
+                    )}
+                    {openSection === 'history' && (
+                        <PatientMedicalHistory appointments={appointments} user={user} />
                     )}
                 </div>
             </div>
