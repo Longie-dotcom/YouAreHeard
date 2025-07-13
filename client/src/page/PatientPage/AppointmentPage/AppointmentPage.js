@@ -1,54 +1,115 @@
 // Modules
-import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Style sheet
 import './AppointmentPage.css';
 
 // Assets
-import FinishIcon from '../../../uploads/icon/finish.png';
 
 // Components
-import Icon from '../../../component/Icon/Icon';
-import TabBar from '../../../component/TabBar/TabBar';
+import TabMenu from '../../../component/TabMenu/TabMenu';
 import DoctorList from '../../../component/DoctorList/DoctorList';
 import CalendarSelection from '../../../component/CalendarSelection/CalendarSelection';
 import ConfirmAppointmentBox from '../../../component/ConfirmAppointmentBox/ConfirmAppointmentBox';
+import TextBox from '../../../component/TextBox/TextBox';
+import SkeletonUI from '../../../component/SkeletonUI/SkeletonUI';
+import ErrorBox from '../../../component/ErrorBox/ErrorBox';
 
 // Hooks
-import { useState } from 'react';
+import useGetPatientProfile from '../../../hook/useGetPatientProfile';
 
 function AppointmentPage({ user }) {
     const t1 = 'Đặt lịch hẹn';
     const t2 = 'Chọn bác sĩ và thời gian phù hợp cho cuộc hẹn của bạn';
     const t3 = 'Chọn theo bác sĩ';
     const t4 = 'Chọn theo ngày';
+    const t5 = 'Hãy cập nhật hồ sơ để đăng ký lịch'
+    const t6 = 'Đang chuyển hướng đến hồ sơ trong';
+    const t7 = 'Hãy chọn loại cuộc hẹn dựa trên mong muốn của bạn';
+    const t9 = 'Khám/Điều trị';
+    const t10 = 'Tư vấn trực tuyến';
 
-    const t5 = 'Đặt lịch thành công';
-    const t6 = 'Bác sĩ';
-    const t7 = 'Ngày';
-    const t8 = 'Thời gian';
-    const t9 = 'Loại cuộc hẹn';
-    const t10 = 'Tiếp tục đặt hẹn';
-    const t11 = 'Về trang chủ';
-    const t12 = 'Khám/Điều trị (Offline)';
-    const t14m1 = 'Tư vấn trực tiếp (Online)';
-    const t14 = 'BS.';
-    const t15 = '-';
     const t16 = 'Trờ lại';
-    const t17 = 'Đường dẫn của Zoom meeting đã được gửi tới';
-    const t18 = 'Số thứ tự: ';
+
+    const t8 = 'Mô tả';
+    const t14m1 = 'Hình thức';
+    const t14 = 'Chi phí đăng ký';
+    const t11 = 'Trực tiếp tại cơ sở (Offline)';
+    const t12 = 'Trực tuyến (Online)';
+    const t15 = 'Sau khi đăng ký dịch vụ này, người dùng sẽ nhận';
+    const t19 = 'mã định danh (số và QR)';
+    const t20 = 'chứa thông tin cá nhân và lịch hẹn để sử dụng khi đến khám tại cơ sở.';
+    const t17 = 'Dịch vụ này cung cấp';
+    const t21 = 'đường dẫn Zoom';
+    const t22 = 'giúp kết nối người dùng với tư vấn viên để trao đổi trực tuyến.';
+    const t18 = '30.000 VNĐ/lần';
+
+    const t23 = 'Bác sĩ phụ trách khám và điều trị';
+    const t24 = 'Các bác sĩ sẽ gặp trực tiếp cùng với bạn để hỗ trợ bạn trong việc khám và điều trị cho bạn'
+    const t25 = 'Tư vấn viên phụ trách tư vấn trực tuyến';
+    const t26 = 'Các tư vấn viên sẽ là người lắng nghe và hỗ trợ bạn trong quá trình điều trị';
+
+    const t27 = 'Xác nhận thông tin';
+    const t28 = 'Bạn hãy kiểm tra lại thông tin đăng ký lịch của mình trước khi xác nhận';
+    const defaultState = 'byDoctor';
 
     const [chooseByDoctor, setChooseByDoctor] = useState(true);
     const [chooseByDate, setChooseByDate] = useState(false);
+
     const [choosenDate, setChoosenDate] = useState(null);
     const [choosenDoctor, setChoosenDoctor] = useState(null);
+
     const [choosenAppointment, setChoosenAppointment] = useState(null);
     const [type, setType] = useState(null);
-    const [result, setResult] = useState(null);
-    const navigate = useNavigate();
     const calendarRef = useRef(null);
     const confirmRef = useRef(null);
+    const navigate = useNavigate();
+    const [activeTabId, setActiveTabId] = useState(defaultState);
+
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const {
+        profile, finish
+    } = useGetPatientProfile({ setError, setLoading, userId: user?.UserId })
+
+    useEffect(() => {
+        if (!profile && finish) {
+            let seconds = 5;
+
+            setError(
+                <>
+                    <div>{t5}</div>
+                    <div>{t6}&nbsp;{seconds}s</div>
+                </>
+            );
+
+            const interval = setInterval(() => {
+                seconds -= 1;
+                if (seconds > 0) {
+                    setError(
+                        <>
+                            <div>{t5}</div>
+                            <div>{t6}&nbsp;{seconds}s</div>
+                        </>
+                    );
+                }
+            }, 1000);
+
+            const timeout = setTimeout(() => {
+                clearInterval(interval);
+                navigate('/patientProfile');
+            }, 5000);
+
+            return () => {
+                clearTimeout(timeout);
+                clearInterval(interval);
+            };
+        }
+    }, [profile]);
+
 
     useEffect(() => {
         if (choosenDoctor && calendarRef.current) {
@@ -74,36 +135,168 @@ function AppointmentPage({ user }) {
     }
 
     const tabs = [
-        { name: t3, action: handleOpenChooseByDoctor },
-        { name: t4, action: handleOpenChooseByDate }
+        {
+            id: 'byDoctor',
+            label: t3,
+            action: () => {
+                handleOpenChooseByDoctor();
+                setActiveTabId('byDoctor');
+            }
+        },
+        {
+            id: 'byDate',
+            label: t4,
+            action: () => {
+                handleOpenChooseByDate();
+                setActiveTabId('byDate');
+            }
+        }
     ];
 
 
     return (
         <div id='appointment-page'>
+            {error && (
+                <ErrorBox error={error} setError={setError} />
+            )}
+
+            {loading && (
+                <SkeletonUI />
+            )}
+
             <div className='header'>
                 <h1>
                     {t1}
                 </h1>
                 <p>
-                    {t2}
+                    {type ? t2 : t7}
                 </p>
             </div>
 
-            {!result && !choosenAppointment && (
-                <TabBar tabs={tabs} />
+            {!type && (
+                <div className='type'>
+                    <div className='type-selection'>
+                        <button
+                            className='offline'
+                            onClick={() => {
+                                setType(process.env.REACT_APP_ROLE_DOCTOR_ID);
+                            }}
+                        >
+                            <p className='type-name'>{t9}</p>
+                        </button>
+                        <div className='note'>
+                            <div className='type-detail'>
+                                <div className='type-detail-title'>
+                                    {t8}
+                                </div>
+                                <div className='type-detail-content'>
+                                    {t15}&nbsp;<span className='qr'>{t19}</span>&nbsp;{t20}
+                                </div>
+                            </div>
+                            <div className='type-detail'>
+                                <div className='type-detail-title'>
+                                    {t14m1}
+                                </div>
+                                <div className='type-detail-content'>
+                                    {t11}
+                                </div>
+                            </div>
+                            <div className='type-detail cost'>
+                                <div className='type-detail-title'>
+                                    {t14}
+                                </div>
+                                <div className='type-detail-content'>
+                                    {t18}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='type-selection'>
+                        <button
+                            className='online'
+                            onClick={() => {
+                                setType(process.env.REACT_APP_ROLE_STAFF_ID);
+                            }}
+                        >
+                            <p className='type-name'>{t10}</p>
+                        </button>
+                        <div className='note'>
+                            <div className='type-detail'>
+                                <div className='type-detail-title'>
+                                    {t8}
+                                </div>
+                                <div className='type-detail-content'>
+                                    {t17}&nbsp;<span className='zoom'>{t21}</span>&nbsp;{t22}
+                                </div>
+                            </div>
+                            <div className='type-detail'>
+                                <div className='type-detail-title'>
+                                    {t14m1}
+                                </div>
+                                <div className='type-detail-content'>
+                                    {t12}
+                                </div>
+                            </div>
+                            <div className='type-detail cost'>
+                                <div className='type-detail-title'>
+                                    {t14}
+                                </div>
+                                <div className='type-detail-content'>
+                                    {t18}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
 
-            {!result && !choosenAppointment && chooseByDoctor && (
+            {!choosenAppointment && type && (
+                <TabMenu
+                    tabs={tabs}
+                    activeTabId={activeTabId}
+                    setActiveTabId={setActiveTabId}
+                />
+            )}
+
+            {!choosenAppointment && chooseByDoctor && type && (
                 <>
+                    <div className='sub-header'>
+                        <div className='previous'>
+                            <button
+                                onClick={() => {
+                                    setChoosenAppointment(null);
+                                    setChoosenDoctor(null);
+                                    setChoosenDate(null);
+                                    setActiveTabId(defaultState);
+                                    setType(null);
+                                }}
+                            >
+                                {t16}
+                            </button>
+                        </div>
+
+                        <div className='title'>
+                            <div className='main-title'>
+                                {type === process.env.REACT_APP_ROLE_DOCTOR_ID ? t23 : t25}
+                            </div>
+                            <div className='sub-title'>
+                                {type === process.env.REACT_APP_ROLE_DOCTOR_ID ? t24 : t26}
+                            </div>
+                        </div>
+                    </div>
+
+
                     <DoctorList
                         choosenDate={null}
                         setChoosenDoctor={setChoosenDoctor}
+                        type={type}
                     />
 
                     {choosenDoctor && (
                         <div ref={calendarRef}>
                             <CalendarSelection
+                                type={type}
                                 doctor={choosenDoctor}
                                 setChoosenAppointment={setChoosenAppointment}
                             />
@@ -112,16 +305,43 @@ function AppointmentPage({ user }) {
                 </>
             )}
 
-            {!result && !choosenAppointment && chooseByDate && (
+            {!choosenAppointment && chooseByDate && type && (
                 <>
+                    <div className='sub-header'>
+                        <div className='previous'>
+                            <button
+                                onClick={() => {
+                                    setChoosenAppointment(null);
+                                    setChoosenDoctor(null);
+                                    setChoosenDate(null);
+                                    setActiveTabId(defaultState);
+                                    setType(null);
+                                }}
+                            >
+                                {t16}
+                            </button>
+                        </div>
+
+                        <div className='title'>
+                            <div className='main-title'>
+                                {t23}
+                            </div>
+                            <div className='sub-title'>
+                                {t24}
+                            </div>
+                        </div>
+                    </div>
+
                     <CalendarSelection
                         doctor={null}
+                        type={type}
                         setChoosenDate={setChoosenDate}
                     />
 
                     {choosenDate && (
                         <div ref={calendarRef}>
                             <DoctorList
+                                type={type}
                                 choosenDate={choosenDate}
                                 setChoosenAppointment={setChoosenAppointment}
                             />
@@ -131,124 +351,40 @@ function AppointmentPage({ user }) {
             )}
 
 
-            {!result && choosenAppointment && (
+            {choosenAppointment && type && (
                 <div
                     className='confirm'
                     ref={confirmRef}>
-                    <div className='previous'>
-                        <button
-                            onClick={() => {
-                                setChoosenAppointment(null);
-                                setChoosenDoctor(null);
-                            }}
-                        >
-                            {t16}
-                        </button>
+                    <div className='sub-header'>
+                        <div className='previous'>
+                            <button
+                                onClick={() => {
+                                    setChoosenAppointment(null);
+                                    setChoosenDoctor(null);
+                                    setChoosenDate(null);
+                                    setActiveTabId(defaultState);
+                                    setType(null);
+                                }}
+                            >
+                                {t16}
+                            </button>
+                        </div>
+
+                        <div className='title'>
+                            <div className='main-title'>
+                                {t27}
+                            </div>
+                            <div className='sub-title'>
+                                {t28}
+                            </div>
+                        </div>
                     </div>
+
                     <ConfirmAppointmentBox
                         setChoosenAppointment={setChoosenAppointment}
                         choosenAppointment={choosenAppointment} user={user}
-                        setResult={setResult}
                         type={type}
-                        setType={setType}
                     />
-                </div>
-            )}
-
-            {result && (
-                <div className='finish'>
-                    <div className='header'>
-                        <div className='title'>
-                            {t5}
-                        </div>
-
-                        <div className='icon-holder'>
-                            <Icon src={FinishIcon} alt={'confirm-icon'} />
-                        </div>
-                    </div>
-
-                    <div className='body'>
-                        <div className='doctor'>
-                            <div className='title'>
-                                {t6}
-                            </div>
-
-                            <div className='detail'>
-                                <p className='name'>{t14}&nbsp;{result.doctorName}</p>
-                            </div>
-                        </div>
-
-                        <div className='date'>
-                            <div className='title'>
-                                {t7}
-                            </div>
-
-                            <div className='detail'>
-                                {result.scheduleDate.split('T')[0]}
-                            </div>
-                        </div>
-
-                        <div className='time'>
-                            <div className='title'>
-                                {t8}
-                            </div>
-
-                            <div className='detail'>
-                                {result.startTime}
-                                &nbsp;{t15}&nbsp;
-                                {result.endTime}
-                            </div>
-                        </div>
-
-                        <div className='date'>
-                            <div className='title'>
-                                {t9}
-                            </div>
-
-                            <div className='detail'>
-                                {type === 'offline' ? t12 : t14m1}
-                            </div>
-                        </div>
-
-                        <div className='queue-number'>
-                            <div className='title'>
-                                {t18}
-                            </div>
-
-                            <div className='detail'>
-                                {result.queueNumber}
-                            </div>
-                        </div>
-
-                        {type === 'online' && (
-                            <div className='note'>
-                                <p>
-                                    <span>{t17}</span>&nbsp;<span className='email'>{user?.Email}</span>
-                                </p>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className='footer'>
-                        <button
-                            onClick={() => {
-                                setResult(null);
-                                setChoosenDoctor(null);
-                                setChoosenAppointment(null);
-                                navigate('/appointmentPage');
-                            }}
-                            className='new-request'
-                        >
-                            {t10}
-                        </button>
-
-                        <button
-                            onClick={() => navigate('/homePage')}
-                            className='back'
-                        >
-                            {t11}
-                        </button>
-                    </div>
                 </div>
             )}
         </div>
