@@ -11,14 +11,15 @@
     width: 100%;
 }
 
-.appointment-list .appointment-table-wrapper .appointment-table  thead tr {
+.appointment-list .appointment-table-wrapper .appointment-table thead tr {
     background-color: #f7f7f7;
     border-radius: 40px;
 }
 
-.appointment-list .appointment-table-wrapper .appointment-table  th,
-.appointment-list .appointment-table-wrapper .appointment-table  td {
-    padding: 12px 16px; /* Adds margin inside the cells */
+.appointment-list .appointment-table-wrapper .appointment-table th,
+.appointment-list .appointment-table-wrapper .appointment-table td {
+    padding: 12px 16px;
+    /* Adds margin inside the cells */
     text-align: center;
     font-size: 0.8vw;
 }
@@ -34,12 +35,13 @@
 }
 
 /* Flex alignment for icon and text */
-.appointment-list .appointment-table-wrapper .appointment-table th > .icon-label,
-.appointment-list .appointment-table-wrapper .appointment-table td > .icon-label {
+.appointment-list .appointment-table-wrapper .appointment-table th>.icon-label,
+.appointment-list .appointment-table-wrapper .appointment-table td>.icon-label {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* space between icon and text */
+    gap: 8px;
+    /* space between icon and text */
 }
 
 /* Optional: if your icon images are too large */
@@ -60,6 +62,7 @@
     transition: all 0.1s ease-in-out;
 }
 
+.appointment-list .appointment-table-wrapper .appointment-table .view-qr,
 .appointment-list .appointment-table-wrapper .appointment-table .view-note,
 .appointment-list .appointment-table-wrapper .appointment-table .view-reason,
 .appointment-list .appointment-table-wrapper .appointment-table button.view {
@@ -70,6 +73,7 @@
 }
 
 
+.appointment-list .appointment-table-wrapper .appointment-table .view-qr:hover,
 .appointment-list .appointment-table-wrapper .appointment-table .view-note:hover,
 .appointment-list .appointment-table-wrapper .appointment-table .view-reason:hover,
 .appointment-list .appointment-table-wrapper .appointment-table button.view:hover {
@@ -102,4 +106,199 @@
     font-style: italic;
     font-size: 0.85rem;
     color: #555;
+}
+
+.appointment-list .appointment-table-wrapper .appointment-table .body .status {
+    font-weight: 600;
+    padding: 8%;
+    padding-left: 12%;
+    padding-right: 12%;
+    border-radius: 50px;
+}
+
+.appointment-list .appointment-table-wrapper .appointment-table .body .status-1 {
+    background-color: rgb(21, 220, 21);
+    color: rgb(255, 255, 255);
+}
+
+.appointment-list .appointment-table-wrapper .appointment-table .body .status-4 {
+    background-color: rgb(236, 254, 77);
+    color: rgb(255, 255, 255);
+}
+
+.appointment-list .appointment-table-wrapper .empty {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: 500;
+    color: #9a9c9f;
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+
+
+.appointment-list .appointment-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 5%;
+}
+
+.appointment-list .appointment-card-list .appointment-card {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.appointment-list .appointment-card-list .appointment-card .row {
+    display: flex;
+    height: 5vh;
+    margin: 2%;
+    border-radius: 5px;
+    align-items: center;
+    padding: 2%;
+    border: 1.9px dashed rgb(0, 0, 0);
+}
+
+.appointment-list .appointment-card-list .appointment-card .row>.title {
+    width: 30%;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    font-size: 1.5vh;
+    align-items: center;
+    gap: 1vh;
+}
+
+.appointment-list .appointment-card-list .appointment-card .row>.content {
+    width: 70%;
+    font-weight: 700;
+    text-align: right;
+    color: #555;
+    font-size: 1.9vh;
+}
+
+.appointment-list .appointment-card-list .appointment-card .row>.content.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.appointment-list .appointment-card-list .appointment-card .row>.title img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.appointment-list .appointment-card-list .appointment-card .row>.content a.zoom-link {
+    color: #007bff;
+    font-weight: 550;
+    text-decoration: none;
+}
+
+.appointment-list .appointment-card-list .appointment-card .row>.content a.zoom-link:hover {
+    border-bottom: 2px solid #007bff;
+}
+
+.appointment-list .appointment-card-list .appointment-card button {
+    padding: 6px 14px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.appointment-list .appointment-card-list .appointment-card .view,
+.appointment-list .appointment-card-list .appointment-card .view-qr,
+.appointment-list .appointment-card-list .appointment-card .view-note,
+.appointment-list .appointment-card-list .appointment-card .view-reason {
+    background-color: #415AFA;
+    color: white;
+}
+
+.appointment-list .appointment-card-list .appointment-card .view:hover,
+.appointment-list .appointment-card-list .appointment-card .view-qr:hover,
+.appointment-list .appointment-card-list .appointment-card .view-note:hover,
+.appointment-list .appointment-card-list .appointment-card .view-reason:hover {
+    background-color: #2e41ba;
+}
+
+.appointment-list .appointment-card-list .appointment-card .cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+.appointment-list .appointment-card-list .appointment-card .cancel:hover {
+    background-color: #ae362d;
+}
+
+.appointment-list .appointment-table-wrapper {
+    display: block;
+}
+
+.appointment-list .appointment-card-list {
+    display: none;
+}
+
+
+.appointment-list .text-box img {
+    width: 100%;
+    padding: 2%;
+    border: 1.9px dashed rgb(0, 0, 0);
+    border-radius: 10px;
+    height: auto;
+}
+
+.appointment-list .text-box {
+    margin-top: 17vh;
+    font-weight: 700;
+}
+
+.appointment-list .text-box .qr-code-detail {
+    margin-top: 4%;
+    font-size: 1vw;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+}
+
+.appointment-list .text-box .qr-code-detail .title {
+    font-size: 1vw;
+    font-weight: 500;
+    color: black;
+    margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .appointment-list .appointment-table-wrapper {
+        display: none;
+    }
+
+    .appointment-list .appointment-card-list {
+        display: flex;
+    }
+
+    .appointment-list .text-box img {
+        width: 50%;
+        padding: 2%;
+        border: 1.9px dashed rgb(0, 0, 0);
+        border-radius: 10px;
+        height: auto;
+    }
+
+    .appointment-list .text-box .qr-code-detail {
+        font-size: 3vw;
+    }
+
+    .appointment-list .text-box .qr-code-detail .title {
+        font-size: 3vw;
+    }
 }

@@ -1,0 +1,133 @@
+.appointment-form-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    z-index: 9900;
+}
+
+.appointment-form-overlap .appointment-form {
+    position: fixed;
+    width: 40vw;
+    padding: 2.5vw;
+    height: 75vh;
+    margin-top: 10vh;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.appointment-form-overlap .appointment-form::-webkit-scrollbar {
+    display: none;
+}
+
+.appointment-form-overlap .appointment-form h2 {
+    font-size: 1.2vw;
+    font-weight: 550;
+    margin-bottom: 1vw;
+}
+
+.appointment-form-overlap .appointment-form label {
+    align-self: flex-start;
+    font-size: 0.95vw;
+    margin-top: 1vw;
+    margin-bottom: 0.5vw;
+}
+
+.appointment-form-overlap .appointment-form select {
+    width: 100%;
+    padding: 0.6vw;
+    font-size: 0.95vw;
+    border: 1px solid #ccc;
+    border-radius: 0.4vw;
+    margin-bottom: 1.5vw;
+}
+
+.appointment-form-overlap .calendar {
+    width: 100%;
+    margin-bottom: 1vw;
+}
+
+.appointment-form-overlap .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+
+.appointment-form-overlap .calendar-header button {
+    background: none;
+    border: none;
+    font-size: 1.4vw;
+    cursor: pointer;
+}
+
+.appointment-form-overlap .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.3vw;
+}
+
+.appointment-form-overlap .calendar-day-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.9vw;
+    padding: 0.5vw 0;
+}
+
+.appointment-form-overlap .calendar-day {
+    text-align: center;
+    padding: 0.6vw 0;
+    border-radius: 0.6vw;
+    height: 2.8vw;
+    font-size: 0.9vw;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
+}
+
+.appointment-form-overlap .calendar-day.filled {
+    background-color: #f0f0f0;
+}
+
+.appointment-form-overlap .calendar-day.has-appointment {
+    background-color: #d7efff;
+    cursor: pointer;
+}
+
+.appointment-form-overlap .calendar-day.has-appointment:hover {
+    background-color: #b5e0ff;
+}
+
+.appointment-form-overlap .schedule-list {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.appointment-form-overlap .schedule-list li {
+    background-color: #f9f9f9;
+    border-radius: 0.5vw;
+    padding: 0.6vw;
+    font-size: 0.95vw;
+    margin-bottom: 0.6vw;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.appointment-form-overlap .schedule-list li:hover {
+    background-color: #e0f7e0;
+}
