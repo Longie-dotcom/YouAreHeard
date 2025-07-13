@@ -1,6 +1,4 @@
 // Modules
-import { useNavigate } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
 
 // Style sheet
 import './InfoPage.css';
@@ -8,10 +6,10 @@ import './InfoPage.css';
 // Assets
 
 // Components
-import Icon from '../../../component/Icon/Icon';
-import TabBar from '../../../component/TabBar/TabBar';
+import TabMenu from '../../../component/TabMenu/TabMenu';
 import AppointmentList from '../../../component/AppointmentList/AppointmentList';
 import TreatmentPlanInfoBox from '../../../component/TreatmentPlanInfoBox/TreatmentPlanInfoBox';
+import TestResultInfoBox from '../../../component/TestResultInfoBox/TestResultInfoBox';
 
 // Hooks
 import { useState } from 'react';
@@ -23,32 +21,16 @@ function InfoPage({ user }) {
     const t4 = 'Thông tin của người dùng';
     const t5 = 'Trang thông tin thể hiện các lịch hẹn sắp tới, kết quả xét nghiệm và phác đồ điều trị hiện tại của người dùng trong hiện tại';
 
-    const [openAppointment, setOpenAppointment] = useState(true);
-    const [openTestResult, setOpenTestResult] = useState(false);
-    const [openTreatment, setOpenTreatment] = useState(false);
+    const [activeTab, setActiveTab] = useState('appointment');
 
-    const handleOpenAppointment = () => {
-        setOpenTestResult(false);
-        setOpenTreatment(false);
-        setOpenAppointment(true);
-    }
-
-    const handleOpenTestResult = () => {
-        setOpenAppointment(false);
-        setOpenTreatment(false);
-        setOpenTestResult(true);
-    }
-
-    const handleOpenTreatment = () => {
-        setOpenAppointment(false);
-        setOpenTestResult(false);
-        setOpenTreatment(true);
-    }
+    const handleOpenAppointment = () => setActiveTab('appointment');
+    const handleOpenTestResult = () => setActiveTab('test');
+    const handleOpenTreatment = () => setActiveTab('treatment');
 
     const tabs = [
-        { name: t1, action: handleOpenAppointment },
-        { name: t2, action: handleOpenTestResult },
-        { name: t3, action: handleOpenTreatment }
+        { id: 'appointment', label: t1, action: handleOpenAppointment },
+        { id: 'test', label: t2, action: handleOpenTestResult },
+        { id: 'treatment', label: t3, action: handleOpenTreatment }
     ];
 
     return (
@@ -62,15 +44,15 @@ function InfoPage({ user }) {
                 </p>
             </div>
 
-            <TabBar tabs={tabs} />
+            <TabMenu
+                tabs={tabs}
+                setActiveTabId={setActiveTab}
+                activeTabId={activeTab}
+            />
 
-            {openAppointment && (
-                <AppointmentList user={user} />
-            )}
-
-            {openTreatment && (
-                <TreatmentPlanInfoBox user={user} />
-            )}
+            {activeTab === 'appointment' && <AppointmentList user={user} />}
+            {activeTab === 'treatment' && <TreatmentPlanInfoBox user={user} />}
+            {activeTab === 'test' && <TestResultInfoBox user={user} />}
         </div>
     )
 }
