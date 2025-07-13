@@ -1,0 +1,143 @@
+.doctor-note-appointment-overlap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .title {
+    font-size: 1.2vw;
+    text-align: center;
+    font-weight: 550;
+    margin-bottom: 1vw;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment {
+    position: fixed;
+    width: 60vw;
+    padding: 1.5vw;
+    height: auto;
+    max-height: 80vh;
+    margin-top: 10vh;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    overflow-y: scroll;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment::-webkit-scrollbar {
+    display: none;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .appointment-info {
+    padding: 0.4vw;
+    width: 100%;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment div .sub-title {
+    font-size: 0.9vw;
+    font-weight: 550;
+    padding: 0.2vw;
+    margin: 0.2vw;
+    color: #616161;
+    border-bottom: #b0b0b0 solid 2px;
+    margin-bottom: 1vw;    
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .main-title {
+    font-size: 1.2vw;
+    color: rgb(0, 0, 0);
+    display: flex;
+    align-items: center;
+    border: none;
+    margin-bottom: 0.5vw;
+    font-weight: 550;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .main-title .icon {
+    margin-right: 1vw;
+    height: 2vw;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .appointment-info .box {
+    display: flex;
+    padding: 0.7vw;
+    flex-direction: row;
+    align-items: center;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .appointment-info .box .title {
+    font-size: 1vw;
+    margin: 0 !important;
+    width: 40%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .appointment-info .box .title .icon {
+    margin-right: 1vw;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .appointment-info .box .info {
+    font-size: 1vw;
+    display: flex;
+    align-items: center;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .appointment-info .box .info .icon {
+    margin-right: 0.4vw;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .note {
+    width: 100%;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .note textarea {
+    outline: none;
+    margin: 2%;
+    padding: 2%;
+    width: 92%;
+    border-radius: 10px;
+    border: 1.9px dashed rgb(0, 0, 0);
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .footer .submit {
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 1vw;
+    background-color: rgb(126, 105, 251);
+    padding: 1%;
+    color: white;
+    width: 20%;
+    transition: all 0.1s ease-in-out;
+    border: none;
+}
+
+.doctor-note-appointment-overlap .doctor-note-appointment .footer .submit:hover {
+    background-color: #d9d2ff;
+    color: rgb(0, 0, 0);
+    width: 22%;
+}
+
+
+

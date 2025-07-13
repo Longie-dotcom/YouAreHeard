@@ -154,6 +154,11 @@
     font-size: 0.8vw;
     width: 20%;
     font-weight: 550;
+    cursor: pointer;
+}
+
+.doctor-appointment .appointment .appointment-later .name:hover {
+    color: #8a96d5;
 }
 
 .doctor-appointment .appointment .appointment-later .date {

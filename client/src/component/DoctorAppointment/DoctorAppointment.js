@@ -13,12 +13,15 @@ import ScheduleIcon from '../../uploads/icon/schedule.png';
 import LocationIcon from '../../uploads/icon/location.png';
 import ZoomIcon from '../../uploads/icon/zoom.png';
 import TicketIcon from '../../uploads/icon/ticket.png';
+import ConfirmIcon from '../../uploads/icon/confirm.png';
 
 // Components
 import Icon from '../Icon/Icon';
 import ErrorBox from '../ErrorBox/ErrorBox';
 import SkeletonUI from '../SkeletonUI/SkeletonUI';
 import AppointmentDetailBox from '../AppointmentDetail/AppointmentDetailBox';
+import DoctorNoteAppointment from '../DoctorNoteAppointment/DoctorNoteAppointment';
+import TextBox from '../TextBox/TextBox';
 
 // Hooks
 import useGetPatientDetailByAppointment from '../../hook/useGetPatientDetailByAppointment';
@@ -45,12 +48,14 @@ function DoctorAppointment({ user, appointments }) {
     const t24 = 'Xem thông tin';
     const t25 = 'Số thứ tự: ';
 
+    const [appointment, setOpenNoteAppointment] = useState(null);
     const [nextAppointment, setNextAppointment] = useState(null);
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
     const [upcomingAppointments, setUpcomingAppointments] = useState(null);
     const [appointmentDetail, setAppointmentDetail] = useState(null);
     const [filterType, setFilterType] = useState('all');
+    const [finish, setFinish] = useState(null);
 
     const {
         getPatientProfileByAppointmentId
@@ -83,9 +88,9 @@ function DoctorAppointment({ user, appointments }) {
             });
 
         if (filterType === 'online') {
-            upcomingAppointments = upcomingAppointments.filter(app => app.zoomLink);
+            upcomingAppointments = upcomingAppointments.filter(app => app.isOnline);
         } else if (filterType === 'offline') {
-            upcomingAppointments = upcomingAppointments.filter(app => !app.zoomLink);
+            upcomingAppointments = upcomingAppointments.filter(app => !app.isOnline);
         }
 
         setUpcomingAppointments(upcomingAppointments || []);
@@ -140,19 +145,17 @@ function DoctorAppointment({ user, appointments }) {
                             </div>
                         </div>
 
-                        {!nextAppointment.zoomLink && (
+                        {!nextAppointment.isOnline ? (
                             <div className="location">
                                 <div className="title">
                                     <Icon src={LocationIcon} alt={'person-icon'} />
                                     {t5}
                                 </div>
                                 <div className="detail">
-                                    {nextAppointment.zoomLink ? t8 : nextAppointment.location}
+                                    {nextAppointment.location}
                                 </div>
                             </div>
-                        )}
-
-                        {nextAppointment.zoomLink && (
+                        ) : (
                             <div className="zoom">
                                 <div className="title">
                                     {t6}
@@ -166,7 +169,7 @@ function DoctorAppointment({ user, appointments }) {
                                     </a>
                                 </div>
                             </div>
-                        )}
+                        ) }
 
                         {nextAppointment.notes && (
                             <div className="note">
@@ -227,7 +230,12 @@ function DoctorAppointment({ user, appointments }) {
                     <div className='appointment'>
                         {upcomingAppointments.map((appointment, key) => (
                             <div key={key} className='appointment-later'>
-                                <div className='name'>
+                                <div
+                                    onClick={() => {
+                                        setOpenNoteAppointment(appointment);
+                                    }}
+                                    className='name'
+                                >
                                     {appointment.patientName}
                                 </div>
                                 <div className='date'>
@@ -237,7 +245,7 @@ function DoctorAppointment({ user, appointments }) {
                                     {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
                                 </div>
                                 <div className='location'>
-                                    {appointment.zoomLink ? (
+                                    {appointment.isOnline ? (
                                         <div className='zoom-link'>
                                             <a href={appointment.zoomLink}>
                                                 <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
@@ -274,12 +282,26 @@ function DoctorAppointment({ user, appointments }) {
                 />
             )}
 
+            {appointment && (
+                <DoctorNoteAppointment 
+                    appointment={appointment} 
+                    setOpenNoteAppointment={setOpenNoteAppointment}
+                    setError={setError}
+                    setFinish={setFinish}
+                    setLoading={setLoading}
+                />
+            )}
+
             {loading && (
                 <SkeletonUI />
             )}
 
             {error && (
                 <ErrorBox error={error} setError={setError} />
+            )}
+
+            {finish && (
+                <TextBox setText={setFinish} text={finish} title={<Icon src={ConfirmIcon} alt={'confirm-icon'} />} />
             )}
         </div>
     )

@@ -18,7 +18,7 @@ import useLoadAllDoctor from '../../hook/useLoadAllDoctor';
 import { useState } from 'react';
 import DoctorProfileBox from '../DoctorProfileBox/DoctorProfileBox';
 
-function DoctorList({ setChoosenDoctor, choosenDate, setChoosenAppointment }) {
+function DoctorList({ type, setChoosenDoctor, choosenDate, setChoosenAppointment }) {
     const t1 = 'Năm kinh nghiệm';
     const t2 = 'Có sẵn: ';
     const t3 = 'Đánh giá: ';
@@ -45,10 +45,11 @@ function DoctorList({ setChoosenDoctor, choosenDate, setChoosenAppointment }) {
     
     const {
         doctors
-    } = useLoadAllDoctor({ setError, setLoading });
+    } = useLoadAllDoctor({ setError, setLoading, roleId: type });
 
     return (
         <div className="doctor-list" style={{ height: 'fit-content' }}>
+
             {!choosenDate && doctors && (doctors.map((doctor) => (
                 <div key={doctor.userID} className="doctor-card">
                     <div className='header'>
