@@ -1,0 +1,271 @@
+#patient-profile-page {
+    width: 80vw;
+    min-height: 150vh;
+    padding-top: 19vh;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    max-height: 81vh;
+    background-color: #F9FAFB;
+}
+
+#patient-profile-page .header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+#patient-profile-page .header .logo img {
+    height: 4vw
+}
+
+#patient-profile-page .header .title h1 {
+    font-size: 1.6vw;
+    text-align: center;
+    margin: 0.5vw;
+}
+
+#patient-profile-page .header .title p {
+    font-size: 0.7vw;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+}
+
+#patient-profile-page .header .title p .login {
+    color: #0EA8EA;
+}
+
+#patient-profile-page .header .title p .login:hover {
+    cursor: pointer;
+    border-bottom: 2px solid #0EA8EA;
+}
+
+#patient-profile-page .body {
+    display: flex;
+    margin-top: 2%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 1vw;
+}
+
+#patient-profile-page .body .section {
+    padding: 10%;
+}
+
+#patient-profile-page .body .section .title {
+    margin-bottom: 1vw;
+}
+
+#patient-profile-page .body .section .title .main-title{
+    font-size: 1vw;
+    font-weight: 550;
+    margin-bottom: 0.3vw;
+}
+
+#patient-profile-page .body .section .title .note .hightlight {
+    font-weight: 600;
+    color: #2e98fb;
+}
+
+#patient-profile-page .body .section .title .note{
+    font-size: 0.7vw;
+}
+
+#patient-profile-page .body .section .input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#patient-profile-page .body .section .input-group select,
+#patient-profile-page .body .section .input-group input {
+    border: none;
+    border-radius: 5px;
+    padding: 3%;
+    background-color: #f1f1f1;
+    margin-bottom: 1.5vw;
+    font-size: 0.9vw;
+}
+
+#patient-profile-page .body .section .input-group .note {
+    font-size: 0.7vw;
+    margin-bottom: 0.3vw;
+}
+
+
+#patient-profile-page .body .section .input-group select:placeholder,
+#patient-profile-page .body .section .input-group input::placeholder {
+    font-size: 0.8vw;
+}
+
+#patient-profile-page .body .section .input-group label {
+    margin: 1%;
+    margin-bottom: 2%;
+    font-size: 1vw;
+    font-weight: 570;
+}
+
+#patient-profile-page .body .section .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#patient-profile-page .body .section .condition-box {
+    padding: 8px 16px;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 1vw;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+#patient-profile-page .body .section .condition-box:hover {
+    background-color: #e0e0e0;
+}
+
+#patient-profile-page .body .section .condition-box.selected {
+    background-color: #0084ff;
+    color: white;
+    font-weight: 500;
+}
+
+#patient-profile-page .footer .policy {
+    display: flex;
+    justify-content: center;
+}
+
+#patient-profile-page .footer .policy .policy-detail {
+    width: auto;
+    display: flex;
+    align-items: center;
+    font-size: 0.7vw;
+    font-weight: 500;
+    text-align: center;
+}
+
+#patient-profile-page .footer .policy .policy-detail .security,
+#patient-profile-page .footer .policy .policy-detail .usability {
+    color: #0EA8EA;
+    cursor: pointer;
+}
+
+#patient-profile-page .footer .policy .policy-detail .security:hover,
+#patient-profile-page .footer .policy .policy-detail .usability:hover {
+    border-bottom: #0EA8EA solid 2px;
+}
+
+#patient-profile-page .footer .buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#patient-profile-page .footer .submit-button {
+    margin-top: 1vw;
+    padding: 0.4vw;
+    width: 20%;
+    border: none;
+    border-radius: 40px;
+    background-color: #415AFA;
+    font-weight: 500;
+    font-size: 0.9vw;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: width 0.3s ease-in-out;
+}
+
+#patient-profile-page .footer .submit-button:hover {
+    width: 25%;
+}
+
+@media screen and (max-width: 768px) {
+  #patient-profile-page {
+    width: 92vw;
+    padding: 10vw 4vw;
+    padding-bottom: 20vh;
+    min-height: auto;
+    max-height: none;
+  }
+
+  #patient-profile-page .header .logo img {
+    height: 10vw;
+  }
+
+  #patient-profile-page .header .title h1 {
+    font-size: 5vw;
+    margin: 3vw 0;
+  }
+
+  #patient-profile-page .header .title p {
+    font-size: 3.5vw;
+  }
+
+  #patient-profile-page .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6vw;
+  }
+
+  #patient-profile-page .body .section {
+    padding: 0;
+    margin-top: 3vh;
+  }
+
+  #patient-profile-page .body .section .title .main-title {
+    font-size: 4.5vw;
+  }
+
+  #patient-profile-page .body .section .title .note {
+    font-size: 3vw;
+  }
+
+  #patient-profile-page .body .section .input-group label {
+    font-size: 3.5vw;
+    margin: 2vw 0;
+  }
+
+  #patient-profile-page .body .section .input-group input,
+  #patient-profile-page .body .section .input-group select {
+    font-size: 3.5vw;
+    padding: 4vw;
+    margin-bottom: 4vw;
+  }
+
+  #patient-profile-page .body .section .input-group .note {
+    font-size: 3vw;
+    margin-bottom: 1vw;
+  }
+
+  #patient-profile-page .body .section .condition-box {
+    font-size: 3vw;
+    padding: 2vw 4vw;
+  }
+
+  #patient-profile-page .footer {
+    margin-top: 5vh;
+  }
+
+  #patient-profile-page .footer .policy {
+    text-align: center;
+  }
+
+  #patient-profile-page .footer .policy .policy-detail {
+    font-size: 3vw;
+  }
+
+  #patient-profile-page .footer .submit-button {
+    width: 70%;
+    font-size: 3.5vw;
+    padding: 3vw;
+    margin-top: 6vw;
+  }
+
+  #patient-profile-page .footer .submit-button:hover {
+    width: 75%;
+  }
+}
