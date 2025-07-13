@@ -1,3 +1,11 @@
+.calendar-desktop {
+    display: block;
+}
+
+.calendar-mobile {
+    display: none;
+}
+
 .calendar-selection {
     width: 70vw;
     margin: auto;
@@ -97,6 +105,30 @@
     margin-top: 1vw;
 }
 
+.calendar-selection .calendar-grid .calendar-day .doctor .schedule-item .status {
+    font-size: 1vw;
+    padding: 1%;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 5%;
+    border-radius: 20px;
+    margin-right: 25%;
+}
+
+.calendar-selection .calendar-grid .calendar-day .doctor .schedule-item .status-3 {
+    background-color: rgb(255, 72, 72);
+    color: rgb(255, 255, 255);
+}
+
+.calendar-selection .calendar-grid .calendar-day .doctor .schedule-item .status-2 {
+    background-color: rgb(255, 255, 60);
+}
+
+.calendar-selection .calendar-grid .calendar-day .doctor .schedule-item .status-1 {
+    background-color: rgb(77, 224, 89);
+    color: rgb(255, 255, 255);
+}
+
 .calendar-selection .calendar-grid .calendar-day .doctors {
     display: flex;
     font-size: 0.7vw;
@@ -107,3 +139,83 @@
     margin-top: 0.5vw !important;
     font-weight: 550;
 }
+
+
+@media screen and (max-width: 768px) {
+    /* Hide desktop version */
+    .calendar-selection > .calendar-desktop {
+        display: none;
+    }
+
+    /* Show mobile version */
+    .calendar-selection > .calendar-mobile {
+        display: block;
+        width: 100%;
+        padding: 4vw;
+        box-sizing: border-box;
+    }
+
+    .calendar-mobile > .calendar-header-mobile {
+        font-size: 4vw;
+        margin-bottom: 4vw;
+    }
+
+    .calendar-mobile > .calendar-header-mobile .selection {
+        display: flex;
+        gap: 4vw;
+        margin-top: 2vw;
+    }
+
+    .calendar-mobile > .calendar-header-mobile .selection select {
+        font-size: 3.5vw;
+        padding: 2vw;
+        width: 50%;
+        border-radius: 40px;
+        border: none;
+    }
+
+    .calendar-mobile > .calendar-list-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    .calendar-mobile > .calendar-list-mobile > .calendar-day-mobile {
+        background-color: transparent;
+        padding: 3vw;
+        border-radius: 10px;
+        border: 1.9px dashed rgb(0, 0, 0);
+        font-size: 3.5vw;
+    }
+
+    .calendar-mobile > .calendar-list-mobile > .calendar-day-mobile > .mobile-date {
+        font-weight: bold;
+        margin-bottom: 2vw;
+    }
+
+    .calendar-mobile > .calendar-list-mobile > .calendar-day-mobile > .mobile-schedules {
+        display: flex;
+        flex-direction: column;
+        gap: 2vw;
+    }
+
+    .calendar-mobile > .calendar-list-mobile > .calendar-day-mobile > .mobile-schedules > .schedule-item-mobile {
+        background-color: white;
+        padding: 2.5vw;
+        font-size: 3.2vw;
+        border-radius: 10px;
+    }
+
+    .calendar-mobile .slots {
+        margin-top: 1vw;
+        font-size: 3vw;
+        color: #666;
+    }
+
+    .calendar-mobile .status {
+        margin-top: 1vw;
+        font-size: 3vw;
+        font-weight: bold;
+    }
+}
+
