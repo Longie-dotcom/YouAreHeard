@@ -41,7 +41,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-size: 0.95vw;
+    font-size: 0.8vw;
     gap: 2vw;
 }
 
@@ -50,7 +50,7 @@
     color: #222;
     font-weight: 700;
     padding: 8px 12px;
-    font-size: 0.95vw;
+    font-size: 0.8vw;
     border-radius: 0;
     cursor: pointer;
     transition: color 0.2s;
@@ -79,7 +79,8 @@
     flex-direction: row;
     align-items: center;
     gap: 1vw;
-    width: auto;
+    width: 260px;
+    justify-content: flex-end;
 }
 
 .nav-bar-detail .authentication button {
@@ -100,8 +101,9 @@
     padding: 8px 18px;
     border-radius: 0;
     cursor: pointer;
-    font-size: 0.95vw;
+    font-size: 0.8vw;
     transition: color 0.2s;
+    white-space: nowrap;
 }
 
 .nav-bar-detail .authentication .login:hover {
@@ -116,12 +118,14 @@
     padding: 15px 40px;
     border-radius: 40px;
     cursor: pointer;
-    font-size: 0.95vw;
-    transition: background 0.2s;
+    font-size: 0.8vw;
+    transition: background 0.2s, padding 0.3s;
+    white-space: nowrap;
 }
 
 .nav-bar-detail .authentication .register:hover {
     background-color: #394eba;
+    padding: 15px 60px;
 }
 
 .nav-bar-detail .authentication .logout {
