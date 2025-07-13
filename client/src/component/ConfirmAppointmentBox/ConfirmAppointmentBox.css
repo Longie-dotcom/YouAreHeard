@@ -36,49 +36,36 @@
     font-weight: 550;
 }
 
+.confirm-appointment-box .body .detail .title {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.confirm-appointment-box .body .detail .title .main-title {
+    width: 60%;
+}
+
+.confirm-appointment-box .body .detail .title .sub-title {
+    color: white;
+    text-align: center;
+    font-size: 1vw;
+    border-radius: 50px;
+    padding: 1%;
+}
+
+.confirm-appointment-box .body .detail .title .online {
+    background-color: rgb(135, 100, 231);
+}
+
+.confirm-appointment-box .body .detail .title .offline {
+    background-color: rgb(97, 204, 97);
+}
+
 .confirm-appointment-box .body .detail div label {
     font-size: 1vw;
     color: #3F4246;
     margin-bottom: 2%;
-}
-
-.confirm-appointment-box .body .detail .type .type-selection {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 0;
-}
-
-.confirm-appointment-box .body .detail .type .type-selection button {
-    width: 45%;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-    background-color: transparent;
-    border-radius: 9px;
-    border: 1px solid #00000025;
-    margin-top: 2%;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.confirm-appointment-box .body .detail .type .type-selection button:hover {
-    background-color: #625596;
-    color: rgb(255, 255, 255);
-}
-
-.confirm-appointment-box .body .detail .type .type-selection .active-button {
-    background-color: #625596;
-    color: rgb(255, 255, 255);
-}
-
-.confirm-appointment-box .body .detail .type .type-selection button .type-name {
-    font-size: 1vw;
-    font-weight: bold;
-    margin: 4%;
-}
-
-.confirm-appointment-box .body .detail .type .type-selection button .type {
-    font-size: 0.9vw;
-    margin: 4%;
 }
 
 .confirm-appointment-box .body .detail .reason textarea,
@@ -171,4 +158,80 @@
     width: 95%;
     margin-left: 0%;
     margin-right: 0%;
+}
+
+
+@media screen and (max-width: 768px) {
+    .confirm-appointment-box .body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .confirm-appointment-box .body .detail,
+    .confirm-appointment-box .body .confirm {
+        width: 90%;
+        margin: 4% 0;
+        padding: 5%;
+        border-radius: 10px;
+    }
+
+    .confirm-appointment-box .body .detail .title,
+    .confirm-appointment-box .body .confirm .title {
+        font-size: 4vw;
+    }
+
+    .confirm-appointment-box .body .detail .title div {
+        font-size: 3vw !important;
+    }
+
+    .confirm-appointment-box .body .detail div label,
+    .confirm-appointment-box .body .confirm div p {
+        font-size: 3.8vw;
+    }
+
+    .confirm-appointment-box .body .detail .reason textarea,
+    .confirm-appointment-box .body .detail .note textarea {
+        font-size: 3.5vw;
+        padding: 3vw;
+    }
+
+    .confirm-appointment-box .body .detail .reason textarea::placeholder,
+    .confirm-appointment-box .body .detail .note textarea::placeholder {
+        font-size: 3.5vw;
+    }
+
+    .confirm-appointment-box .body .detail .anonymous label {
+        font-size: 3.8vw;
+        margin-left: 2vw;
+    }
+
+    .confirm-appointment-box .body .confirm div {
+        margin: 3vw 0;
+    }
+
+    .confirm-appointment-box .body .confirm div .icon-holder {
+        width: 10%;
+    }
+
+    .confirm-appointment-box .body .confirm div .icon-holder .icon {
+        width: 3vh;
+        height: auto;
+    }
+
+    .confirm-appointment-box .body .confirm .name .doctor-detail .specialties {
+        font-size: 3vw;
+    }
+
+    .confirm-appointment-box .body .confirm .submit-button {
+        width: 100%;
+        padding: 4%;
+        font-size: 4vw;
+        margin: 5% 0;
+        border-radius: 50px;
+    }
+
+    .confirm-appointment-box .body .confirm .submit-button:active {
+        background-color: #7089c9;
+        width: 100%;
+    }
 }

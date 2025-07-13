@@ -17,7 +17,7 @@ import Icon from '../Icon/Icon';
 // Hooks
 import useCreateTreatmentPlan from '../../hook/useCreateTreatmentPlan';
 
-function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, setLoading, selectedRegimen, isAdjusted }) {
+function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, setLoading, selectedRegimen, isAdjusted, setFinish }) {
     const t1 = 'Xác nhận thông tin đơn thuốc/phác đồ điều trị';
     const t2 = 'Ghi chú cho thuốc'
     const t6 = 'Loại phác đồ';
@@ -40,7 +40,7 @@ function ConfirmTreatmentPlan({ confirmTreatmentPlan, setIsSubmit, setError, set
 
     const {
         createTreatmentPlan
-    } = useCreateTreatmentPlan({ setError, setLoading, setIsSubmit });
+    } = useCreateTreatmentPlan({ setError, setLoading, setIsSubmit, setFinish });
 
     const transformedPillRemindTimes = confirmTreatmentPlan.pillRemindTime.flatMap(med =>
         Array.isArray(med.remindTimes)

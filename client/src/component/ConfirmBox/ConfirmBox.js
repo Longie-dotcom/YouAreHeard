@@ -3,15 +3,12 @@
 // Styling sheet
 import './ConfirmBox.css';
 
-// Assets
-import ConfirmIcon from '../../uploads/icon/confirm.png';
-
 // Components
 import Icon from '../Icon/Icon';
 
 // Hooks
 
-function ConfirmBox({ setOpenConfirm, action, text }) {
+function ConfirmBox({ setOpenConfirm, action, title, detail, icon, alt }) {
     const t1 = 'Xác nhận';
     const t2 = 'Hủy';
 
@@ -27,8 +24,15 @@ function ConfirmBox({ setOpenConfirm, action, text }) {
         >
 
             <div className='confirm-box'>
-                <Icon src={ConfirmIcon} alt={'confirm-icon'} />
-                {text}
+                <div className='title'>
+                    <Icon src={icon} alt={alt ? alt : 'icon'} />
+                    {title}
+                </div>
+
+                <div className='detail'>
+                    {detail}
+                </div>
+                
                 <div className='confirm-buttons'>
                     <button
                         onClick={() => {

@@ -9,6 +9,7 @@ import PersonIcon from '../../uploads/icon/person.png';
 import TimeIcon from '../../uploads/icon/time.png';
 import ScheduleIcon from '../../uploads/icon/schedule.png';
 import LocationIcon from '../../uploads/icon/location.png';
+import ConfirmIcon from '../../uploads/icon/confirm.png';
 
 // Components
 import ErrorBox from '../ErrorBox/ErrorBox';
@@ -19,31 +20,27 @@ import ConfirmBox from '../ConfirmBox/ConfirmBox';
 // Hooks
 import useRequestAppointment from '../../hook/useRequestAppointment';
 
-function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, type }) {
+function ConfirmAppointmentBox({ user, choosenAppointment, type }) {
     const t1 = 'Chi tiết cuộc hẹn';
-    const t2 = 'Chọn loại cuộc hẹn';
     const t3 = 'Lý do cho cuộc hẹn (thêm)';
     const t4 = 'Ghi chú (thêm)';
     const t5 = 'Ẩn danh tính trong quá trình tư vấn';
     const t6 = 'Xác nhận thông tin';
     const t7 = 'Nhập lý do';
     const t8 = 'Nhập ghi chú';
-    const t9 = 'Khám/Điều trị';
-    const t10 = 'Tư vấn trực tuyến';
-    const t11 = 'Offline';
-    const t12 = 'Online';
     const t14m1 = 'Xác nhận thông tin';
     const t15 = 'BS.';
     const t16 = '-';
-    const t17 = 'Xác nhận gửi yêu cầu';
+    const t17 = 'Hệ thống sẽ không hoàn lại tiền khi bạn hủy lịch, bạn có muốn tiếp tục đăng ký lịch không?';
     const t18 = 'Zoom meeting';
-
+    const t9 = 'Tư vấn trực tuyến (Online)';
+    const t10 = 'Khám/Điều trị trực tiếp (Offline)';
+    const t11 = 'Lịch của bạn hiện tại là tạm thời';
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);  
     const reasonRef = useRef(null);
     const noteRef = useRef(null);
     const [openConfirm, setOpenConfirm] = useState(false);
-    const [activeButton, setActiveButton] = useState('');
 
     const autoGrow = (element) => {
         element.style.height = "auto";
@@ -54,7 +51,7 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, t
         anonymous, setAnonymous,
         setNote, setReason,
         handleRequest
-    } = useRequestAppointment({ user, choosenAppointment, setResult, type, setError, setLoading });
+    } = useRequestAppointment({ user, choosenAppointment, type, setError, setLoading });
 
     return (
         <div className='confirm-appointment-box'>
@@ -65,32 +62,11 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, t
             <div className='body'>
                 <div className='detail'>
                     <div className='title'>
-                        {t1}
-                    </div>
-
-                    <div className='type'>
-                        <label>{t2}</label>
-                        <div className='type-selection'>
-                            <button
-                                className={activeButton == 'type-1' ? 'active-button' : ''}
-                                onClick={() => {
-                                    setType('offline');
-                                    setActiveButton('type-1')
-                                }}
-                            >
-                                <p className='type-name'>{t9}</p>
-                                <p className='type'>{t11}</p>
-                            </button>
-                            <button
-                                className={activeButton == 'type-2' ? 'active-button' : ''}
-                                onClick={() => {
-                                    setType('online');
-                                    setActiveButton('type-2')
-                                }}
-                            >
-                                <p className='type-name'>{t10}</p>
-                                <p className='type'>{t12}</p>
-                            </button>
+                        <div className='main-title'>
+                            {t1}
+                        </div>
+                        <div className={`sub-title ${type === process.env.REACT_APP_ROLE_DOCTOR_ID ? 'offline' : 'online'}`}>
+                            {type === process.env.REACT_APP_ROLE_DOCTOR_ID ? t10 : t9}
                         </div>
                     </div>
 
@@ -118,14 +94,16 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, t
                         />
                     </div>
 
-                    <div className='anonymous'>
-                        <input 
-                            type='checkbox' 
-                            checked={anonymous}
-                            onChange={(e) => setAnonymous(e.target.checked)}
-                        />
-                        <label>{t5}</label>
-                    </div>
+                    {type !== process.env.REACT_APP_ROLE_DOCTOR_ID && (
+                        <div className='anonymous'>
+                            <input 
+                                type='checkbox' 
+                                checked={anonymous}
+                                onChange={(e) => setAnonymous(e.target.checked)}
+                            />
+                            <label>{t5}</label>
+                        </div>
+                    )}
                 </div>
 
                 <div className='confirm'>
@@ -171,7 +149,7 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, t
                             <Icon src={LocationIcon} alt={'time-icon'} />
                         </div>
                         <p>
-                            {type === 'online' ? t18 : choosenAppointment.schedule.location}
+                            {type !== process.env.REACT_APP_ROLE_DOCTOR_ID ? t18 : choosenAppointment.schedule.location}
                         </p>
                     </div>
 
@@ -193,7 +171,14 @@ function ConfirmAppointmentBox({ user, choosenAppointment, setResult, setType, t
             )}
 
             {openConfirm && (
-                <ConfirmBox text={t17} setOpenConfirm={setOpenConfirm} action={handleRequest} />
+                <ConfirmBox 
+                    title={t11}
+                    detail={t17}
+                    alt={'confirm-icon'}
+                    icon={ConfirmIcon}
+                    setOpenConfirm={setOpenConfirm} 
+                    action={handleRequest} 
+                />
             )}
         </div>
     )

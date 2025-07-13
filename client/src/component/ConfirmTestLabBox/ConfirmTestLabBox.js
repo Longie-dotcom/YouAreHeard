@@ -16,7 +16,7 @@ import Icon from '../Icon/Icon';
 // Hooks
 import useCreateTestLab from '../../hook/useCreateTestLab';
 
-function ConfirmTestLabBox({ labResult, setLabResult, setError, setLoading }) {
+function ConfirmTestLabBox({ labResult, setLabResult, setError, setLoading, setFinish }) {
     const t1 = 'Thông tin của bệnh nhân';
     const t2 = 'Thông tin xét nghiệm';
     const t3 = 'Giai đoạn xét nghiệm';
@@ -36,7 +36,7 @@ function ConfirmTestLabBox({ labResult, setLabResult, setError, setLoading }) {
 
     const {
         createTestLab
-    } = useCreateTestLab({ setError, setLoading });
+    } = useCreateTestLab({ setError, setLoading, setFinish });
 
     return (
         <div
