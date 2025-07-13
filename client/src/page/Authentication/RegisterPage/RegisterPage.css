@@ -145,3 +145,72 @@
 #register-page .footer .submit-button:hover {
     width: 25%;
 }
+
+@media screen and (max-width: 768px) {
+    #register-page {
+        height: auto;
+        padding-bottom: 20vh;
+        padding-top: 20vw;
+        max-height: none;
+    }
+
+    #register-page .header .logo img {
+        height: 10vw;
+    }
+
+    #register-page .header .title h1 {
+        font-size: 5vw;
+        margin: 2vw 0;
+    }
+
+    #register-page .header .title p {
+        font-size: 3vw;
+    }
+
+    #register-page .body {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 5vw;
+        display: flex;
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    #register-page .body .input-group label {
+        font-size: 3vw;
+    }
+
+    #register-page .body .input-group input,
+    #register-page .body .input-group .password-input {
+        font-size: 3.5vw;
+    }
+
+    #register-page .body .input-group input::placeholder {
+        font-size: 3vw;
+    }
+
+    #register-page .body .input-group .password-input input {
+        width: 80%;
+    }
+
+    #register-page .body .input-group .password-input button {
+        width: 20%;
+    }
+
+    #register-page .footer .policy .policy-detail {
+        font-size: 2.5vw;
+        width: fit-content;
+        padding: 3%;
+    }
+
+    #register-page .footer .submit-button {
+        width: 70%;
+        font-size: 3.5vw;
+        padding: 2vw;
+        margin-top: 5vw;
+    }
+
+    #register-page .footer .submit-button:hover {
+        width: 75%;
+    }
+}

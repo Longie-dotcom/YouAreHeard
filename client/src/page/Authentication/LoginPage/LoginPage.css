@@ -117,3 +117,67 @@
 #login-page .footer .submit-button:hover {
     width: 25%;
 }
+
+@media screen and (max-width: 768px) {
+    #login-page {
+        height: 100vh;
+        padding-top: 20vw;
+    }
+
+    #login-page .header .logo img {
+        height: 10vw;
+    }
+
+    #login-page .header .title h1 {
+        font-size: 5vw;
+        margin: 2vw 0;
+    }
+
+    #login-page .header .title p {
+        font-size: 3.5vw;
+    }
+
+    #login-page .body {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    #login-page .body .input-group {
+        width: 100%;
+        margin-top: 5vw;
+        gap: 2vw;
+    }
+
+    #login-page .body .input-group label {
+        font-size: 3.5vw;
+    }
+
+    #login-page .body .input-group input,
+    #login-page .body .input-group .password-input {
+        padding: 4vw;
+        font-size: 3.5vw;
+    }
+
+    #login-page .body .input-group input::placeholder {
+        font-size: 3vw;
+    }
+
+    #login-page .body .input-group .password-input input {
+        width: 80%;
+    }
+
+    #login-page .body .input-group .password-input button {
+        width: 20%;
+    }
+
+    #login-page .footer .submit-button {
+        width: 70%;
+        padding: 2.5vw;
+        font-size: 3.5vw;
+        margin-top: 5vw;
+    }
+
+    #login-page .footer .submit-button:hover {
+        width: 75%;
+    }
+}
