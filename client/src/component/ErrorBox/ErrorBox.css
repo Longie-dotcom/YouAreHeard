@@ -8,6 +8,8 @@
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 9999;
+    display: flex;
+    justify-content: center;
 }
 
 .error-box-overlap .error-box {
@@ -31,3 +33,20 @@
     width: 4vw;
     height: auto;
 }
+
+@media screen and (max-width: 768px) {
+  .error-box-overlap .error-box {
+    width: 80vw;
+    padding: 6vw;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 20vh;
+    border-radius: 12px;
+  }
+
+  .error-box-overlap .error-box .icon {
+    margin-bottom: 5vw;
+    width: 10vw;
+  }
+}
+
