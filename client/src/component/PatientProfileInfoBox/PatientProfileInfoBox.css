@@ -1,0 +1,62 @@
+/* PatientProfileInfoBox.css */
+
+.patient-profile-info-box {
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+    font-size: 0.9vw;
+    margin: 0 !important;
+    width: 96% !important;
+}
+
+.patient-profile-info-box > .title {
+    margin-bottom: 1.2vw;
+}
+
+.patient-profile-info-box .patient-profile-info {
+    padding: 5%;
+    border: 1.9px dashed black;
+    border-radius: 10px;
+    margin: 2%;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box .box {
+    display: flex;
+    flex-direction: row;
+    background-color: #ececec;
+    margin-bottom: 2%;
+    border-radius: 5px;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box .box > .title {
+    border: none !important;
+    width: 40%;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box .box > .info {
+    display: flex;
+    align-items: center;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box > .condition-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box > .condition-list > .box {
+    width: 96% !important;
+    padding: 2%;
+    margin-bottom: 1%;
+    display: flex;
+    align-items: center;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box > .condition-list > .box > .info {
+    margin-left: 4%;
+}
+
+.patient-profile-info-box .patient-profile-info .patient-box > .condition-list > .box > .icon {
+    margin-left: 2%;
+}
+
+
