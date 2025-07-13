@@ -1,0 +1,275 @@
+.manage-appointment-box {
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.manage-appointment-box .identity-search {
+    background-color: rgb(255, 255, 255);
+    padding: 2%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+}
+
+.manage-appointment-box .appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.manage-appointment-box .appointment-table th,
+.manage-appointment-box .appointment-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.8vw;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.manage-appointment-box .appointment-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+}
+
+.manage-appointment-box .appointment-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.manage-appointment-box .appointment-table tbody tr .name {
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.manage-appointment-box .appointment-table tbody tr .name:hover {
+    background-color: #ccc;
+}
+
+.manage-appointment-box .appointment-table select {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.manage-appointment-box .appointment-table select:hover {
+    background-color: #ccc;
+}
+
+.manage-appointment-box .identity-search .header {
+    padding: 0px !important;
+    margin: 0px;
+    font-size: 0.9vw;
+    font-weight: 550;
+}
+
+.manage-appointment-box .identity-search .input {
+    display: flex;
+    align-items: center;
+    width: 93%;
+    padding: 2.5%;
+    margin: 1%;
+    background-color: #e7e7e7;
+    border-radius: 10px;
+}
+
+.manage-appointment-box .identity-search .input > input {
+    padding: 1%;
+    margin-right: 1vw;
+    border: 1.9px dashed rgb(0, 0, 0);
+    font-size: 1vw;
+    font-weight: 600;
+    background-color: #e7e7e7;
+    width: 40%;
+    border-radius: 50px;
+}
+
+.manage-appointment-box .identity-search .input > button {
+    padding: 1%;
+    border-radius: 50px;
+    color: rgb(255, 255, 255);
+    background-color: #0040FF;
+    border: none;
+    cursor: pointer;
+    font-size: 1vw;
+    font-weight: 600;
+    width: 20%;
+}
+
+.manage-appointment-box .identity-search .verify-info {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish {
+    width: 55vw;
+    padding: 2%;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .header {
+    width: auto;
+    margin: 0;
+    display: flex;
+    margin-bottom: 3%;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .header .header-title {
+    font-size: 1.2vw;
+    font-weight: 550;
+    display: flex;
+    align-items: center;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .header .header-title .icon {
+    width: 2.5vw;
+    height: auto;
+    margin-right: 0.7vw;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .header .logo {
+    height: 6vh;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .header .logo img {
+    height: 100%;
+    width: auto;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .queue-number {
+    width: 30%;
+    margin-left: 3%;
+    border: 1.9px dashed rgb(0, 0, 0);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .queue-number .detail {
+    font-size: 3vw;
+    margin-bottom: 2vh;
+    font-weight: 700;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .queue-number .title {
+    font-size: 1.1vw;
+    font-weight: 550;
+    color: #989898;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail {
+    border-radius: 10px;
+    width: 100%;
+    border: 1.9px dashed rgb(0, 0, 0);
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail div {
+    display: flex;
+    margin: 2%;
+    border-radius: 10px;
+    background-color: #ece9e9;
+    padding: 0.3%;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail div .title {
+    width: 50%;
+    font-size: 1vw;
+    font-weight: 400;
+    color: #3F4246;
+    display: flex;
+    font-weight: 600;
+    align-items: center;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail div .detail {
+    width: 50%;
+    font-size: 1vw;
+    font-weight: 530;
+    display: flex;
+    align-items: center;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail .doctor .detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail .doctor .detail p {
+    margin: 0;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail .note {
+    font-size: 0.9vw;
+    color: #3F4246;
+    margin-top: 0.9vw;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail .note p {
+    margin: 0;
+    text-align: center;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .body .finish-detail .note .email {
+    color: #0040FF;
+    font-weight: 550;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .footer {
+    width: 100%;
+    margin-top: 2vw;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .footer button {
+    width: 20%;
+    font-size: 1vw;
+    margin: 1.5%;
+    padding: 1.5%;
+    border-radius: 40px;
+    border: none;
+    font-weight: 550;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .footer .back {
+    background-color: #4EA6D5;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .footer .back:hover {
+    background-color: #2c698a;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .footer .new-request {
+    background-color: #3E6073;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.manage-appointment-box .identity-search .verify-info .finish .footer .new-request:hover {
+    background-color: rgb(24, 59, 78);
+}
