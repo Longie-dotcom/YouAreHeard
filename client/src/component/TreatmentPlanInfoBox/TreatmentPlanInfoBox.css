@@ -1,13 +1,248 @@
-.pill-grid-header,
-.pill-grid-row {
+.treatment-plan-info-box {
+    display: flex;
+    flex-direction: row;
+    padding: 5%;
+}
+
+.treatment-plan-info-box .section {
+    width: 40%;
+    padding: 2.5%;
+    margin: 2.5%;
+    background-color: white;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.treatment-plan-info-box .section > .title {
+    margin: 0.5vw;
+    padding: 0.2vw;
+    border-bottom: 1.9px solid rgb(158, 158, 158);
+    font-size: 0.9vw;
+    font-weight: 550;
+    margin-bottom: 2vw;
+    color: rgb(158, 158, 158);
+}
+
+.treatment-plan-info-box .section > .detail-info,
+.treatment-plan-info-box .section > .general-info {
+    border: 1.9px dashed rgb(0, 0, 0);
+    padding: 3%;
+    border-radius: 10px;
+    margin: 3%;
+}
+
+.treatment-plan-info-box .section .general-info .header,
+.treatment-plan-info-box .section .detail-info .header {
+    font-size: 0.9vw !important;
+    display: flex;
+    justify-content: left !important;
+    width: 100%;
+    margin-left: 0 !important;
+    margin: 2%;
+}
+
+.treatment-plan-info-box .section > .detail-info > .box,
+.treatment-plan-info-box .section .general-info > .box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1vw;
+    background-color: #ececec;
+    padding: 0.9vw;
+    margin: 0.5vw;
+    border-radius: 10px;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.treatment-plan-info-box .section > .detail-info > .box:hover,
+.treatment-plan-info-box .section .general-info > .box:hover {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+.treatment-plan-info-box .section > .detail-info > .box .title,
+.treatment-plan-info-box .section .general-info > .box .title {
+    width: 40%;
+    font-weight: 550;
+}
+
+
+.treatment-plan-info-box .section > .detail-info > .box .info,
+.treatment-plan-info-box .section .general-info > .box .info {
+    width: 60%;
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+.treatment-plan-info-box .section  .pill-grid-header,
+.treatment-plan-info-box .section  .pill-grid-row {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     gap: 12px;
+    font-size: 1vw;
     padding: 6px 0;
 }
 
-.pill-grid-header {
+.treatment-plan-info-box .section .pill-grid-header {
     font-weight: bold;
     border-bottom: 1px solid #ccc;
     margin-bottom: 6px;
+}
+
+.treatment-plan-info-box .section .pill-grid-header > div {
+    display: flex;
+    align-items: center;
+}
+
+.treatment-plan-info-box .section .pill-grid-header > div > .icon {
+    margin-right: 1vw;
+}
+
+.treatment-plan-info-box .section  .pill-grid-row > div {
+    background-color: #ececec;
+    padding: 0.9vw;
+    border-radius: 10px;
+    margin: 0.5vw;
+}
+
+.treatment-plan-info-box .section  .pill-notes {
+    padding: 0.8vw;
+    margin-top: 2vh;
+    border: 1.9px dashed rgb(0, 0, 0);
+}
+
+.treatment-plan-info-box .section  .pill-notes .pill-note {
+    display: flex;
+    padding: 0.9vw;
+    margin: 0.2vw;
+    background-color: #ececec;
+    border-radius: 10px;
+    flex-direction: row;
+    font-size: 1vw;
+    align-items: center;
+}
+
+.treatment-plan-info-box .section  .pill-notes .pill-note .name {
+    width: 30%;
+}
+
+.treatment-plan-info-box .section  .pill-notes .pill-note .note {
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+.treatment-plan-info-box .empty {
+    width: 100%;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: 500;
+    color: #9a9c9f;
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .treatment-plan-info-box {
+        flex-direction: column;
+        padding: 0 !important;
+        width: 90vw !important;
+        margin: 5vw;
+    }
+
+    .treatment-plan-info-box .section {
+        width: 90%;
+        margin: 2.5%;
+        padding: 2.5%;
+    }
+
+    .treatment-plan-info-box .section > .title {
+        font-size: 4vw;
+        margin-bottom: 5vw;
+        padding-bottom: 1.5vw;
+    }
+
+    .treatment-plan-info-box .section > .detail-info,
+    .treatment-plan-info-box .section > .general-info {
+        padding: 4vw;
+    }
+
+    .treatment-plan-info-box .section .general-info .header,
+    .treatment-plan-info-box .section .detail-info .header {
+        font-size: 3.5vw !important;
+        margin: 2vw 0;
+    }
+
+    .treatment-plan-info-box .section > .detail-info > .box,
+    .treatment-plan-info-box .section .general-info > .box {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 3.5vw;
+        padding: 3vw;
+        margin-bottom: 2vh;
+    }
+
+    .treatment-plan-info-box .section > .detail-info > .box .title,
+    .treatment-plan-info-box .section .general-info > .box .title {
+        width: 100%;
+        font-weight: 550;
+        margin-bottom: 1vw;
+    }
+
+    .treatment-plan-info-box .section > .detail-info > .box .info,
+    .treatment-plan-info-box .section .general-info > .box .info {
+        width: 100%;
+    }
+
+    .treatment-plan-info-box .section .pill-grid-header,
+    .treatment-plan-info-box .section .pill-grid-row {
+        font-size: 3vw;
+    }
+
+    .treatment-plan-info-box .section .pill-grid-header > div {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .treatment-plan-info-box .section .pill-grid-row > div {
+        padding: 3vw;
+        font-size: 3vw;
+    }
+
+    .treatment-plan-info-box .section .pill-notes {
+        padding: 3vw;
+        margin-top: 4vw;
+        border: none;
+    }
+
+    .treatment-plan-info-box .section .pill-notes .pill-note {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 3vw;
+        font-size: 3vw;
+        margin-bottom: 2vh;
+    }
+
+    .treatment-plan-info-box .section .pill-notes .pill-note .name {
+        width: 100%;
+        font-weight: bold;
+        margin-bottom: 1vw;
+    }
+
+    .treatment-plan-info-box .section .pill-notes .pill-note .note {
+        width: 100%;
+    }
+
+    .treatment-plan-info-box .empty {
+        font-size: 5vw;
+    }
 }

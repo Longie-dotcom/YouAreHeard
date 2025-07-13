@@ -7,6 +7,7 @@ import './TreatmentBox.css';
 // Assets
 import ZoomIcon from '../../uploads/icon/zoom.png';
 import BigPillIcon from '../../uploads/icon/big-pill.png';
+import ConfirmIcon from '../../uploads/icon/confirm.png';
 
 // Components
 import Icon from '../Icon/Icon';
@@ -14,12 +15,18 @@ import ErrorBox from '../ErrorBox/ErrorBox';
 import SkeletonUI from '../SkeletonUI/SkeletonUI';
 import ConfirmTreatmentPlan from '../ConfirmTreatmentPlan/ConfirmTreatmentPlan';
 import MedicationInfoBox from '../MedicationInfoBox/MedicationInfoBox';
+import ReAppointmentBox from '../ReAppointmentBox/ReAppointmentBox';
+import PatientProfileInfoBox from '../PatientProfileInfoBox/PatientProfileInfoBox';
+import TestResultInfoBox from '../TestResultInfoBox/TestResultInfoBox';
+import TextBox from '../TextBox/TextBox';
+import TreatmentPlanInfoBox from '../TreatmentPlanInfoBox/TreatmentPlanInfoBox';
 
 // Hooks
 import useLoadAllRegimens from '../../hook/useLoadAllRegimens';
 import useLoadAllMedications from '../../hook/useLoadAllMedications';
+import useLoadDoctorSchedule from '../../hook/useLoadDoctorSchedule';
 
-function TreatmentBox({ appointments }) {
+function TreatmentBox({ appointments, user }) {
     const t1 = 'Danh sách bệnh nhân';
     const t2 = 'Kết quả xét nghiệm gần nhất của bệnh nhân';
     const t3 = 'Tạo kế hoạch điều trị';
@@ -33,12 +40,10 @@ function TreatmentBox({ appointments }) {
     const t11 = 'Chống chỉ định';
     const t12 = 'Tác dụng phụ';
     const t14m1 = 'Thuốc';
-    const t14 = 'Nhóm bệnh nhân';
-    const t15 = 'Chọn nhóm bệnh nhân';
+    const t14 = 'Lịch tái khám';
+    const t15 = 'Lên lịch tái khám';
     const t16 = 'Tùy chỉnh thông tin phác đồ';
     const t17 = 'Chọn loại phác đồ';
-    const t18 = 'Liều lượng điều chỉnh';
-    const t19 = '/1 lần uống';
     const t20 = 'Chọn thuốc thay thế (sẵn có)';
     const t21 = 'Tạo kế hoạch điều trị';
     const t22 = '-';
@@ -53,6 +58,11 @@ function TreatmentBox({ appointments }) {
     const t32 = 'Xóa lịch';
     const t33 = 'Thời gian';
     const t34 = 'Liều lượng';
+    const title2 = 'Thông tin hồ sơ bệnh nhân';
+    const t35 = 'Ngày tái khám';
+    const t36 = 'Thời gian';
+    const t37 = 'Địa điểm';
+
 
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
@@ -63,18 +73,23 @@ function TreatmentBox({ appointments }) {
 
     const [isCustomizing, setIsCustomizing] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
+    const [isReAppointment, setIsReAppointment] = useState(false);
+    const [reAppointment, setReAppointment] = useState(null);
 
     const [medicationInfo, setMedicationInfo] = useState(null);
     const [selectedRegimen, setSelectedRegimen] = useState(null);
     const [selectedMedications, setSelectedMedications] = useState(null);
     const [notes, setNotes] = useState('');
-
+    const [finish, setFinish] = useState(null);
     const {
         medications
     } = useLoadAllMedications({ setError, setLoading });
     const {
         regimens
     } = useLoadAllRegimens({ setError, setLoading });
+    const {
+        schedules
+    } = useLoadDoctorSchedule({ doctorId: user?.UserId, setError, setLoading })
 
     const formatTime = (timeStr) => {
         const [hours, minutes] = timeStr.split(':');
@@ -136,38 +151,52 @@ function TreatmentBox({ appointments }) {
                 {t1}
             </div>
 
+            {loading && (
+                <SkeletonUI />
+            )}
+
+            {error && (
+                <ErrorBox error={error} setError={setError} />
+            )}
+
+            {finish && (
+                <TextBox setText={setFinish} text={finish} title={<Icon src={ConfirmIcon} alt={'confirm-icon'} />} />
+            )}
+
             {upcomingAppointments && (
                 <div className='patient-list'>
-                    {upcomingAppointments.map((appointment, key) => (
-                        <div key={key} className='appointment-later'>
-                            <div className='name'>
-                                {appointment.patientName}
+                    {upcomingAppointments
+                        .filter((appointment) => !appointment.isOnline)
+                        .map((appointment, key) => (
+                            <div key={key} className='appointment-later'>
+                                <div className='name'>
+                                    {appointment.patientName}
+                                </div>
+                                <div className='date'>
+                                    {appointment.scheduleDate?.split("T")[0]}
+                                </div>
+                                <div className='time'>
+                                    {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
+                                </div>
+                                <div className='location'>
+                                    {appointment.zoomLink ? (
+                                        <div>
+                                            <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
+                                        </div>
+                                    ) : appointment.location}
+                                </div>
+                                <div className='queue-number'>
+                                    {t25}{appointment.queueNumber}
+                                </div>
+                                <div className='patient-detail'>
+                                    <button
+                                        onClick={() => setSelectedTreatmentOF(appointment)}
+                                    >
+                                        {t24}
+                                    </button>
+                                </div>
                             </div>
-                            <div className='date'>
-                                {appointment.scheduleDate?.split("T")[0]}
-                            </div>
-                            <div className='time'>
-                                {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
-                            </div>
-                            <div className='location'>
-                                {appointment.zoomLink ? (
-                                    <div>
-                                        <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
-                                    </div>
-                                ) : appointment.location}
-                            </div>
-                            <div className='queue-number'>
-                                {t25}{appointment.queueNumber}
-                            </div>
-                            <div className='patient-detail'>
-                                <button
-                                    onClick={() => setSelectedTreatmentOF(appointment)}
-                                >
-                                    {t24}
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             )}
 
@@ -177,7 +206,12 @@ function TreatmentBox({ appointments }) {
                         {t2}
                     </div>
                     <div className='test-result'>
-                        Kết quả xết nghiệm của {selectedTreatmentOf.patientName} sẽ nằm ở đây
+                        <div className='patient-profile-info-box'>
+                            <div className='title'>{title2}</div>
+                            <PatientProfileInfoBox selectedTreatmentOf={selectedTreatmentOf} setError={setError} setLoading={setLoading} />
+                            <TestResultInfoBox user={{ UserId: selectedTreatmentOf.patientID }} />
+                            <TreatmentPlanInfoBox user={{ UserId: selectedTreatmentOf.patientID }} />
+                        </div>
                     </div>
 
                     <div className='title'>
@@ -215,6 +249,51 @@ function TreatmentBox({ appointments }) {
                                         onChange={(e) => setIsCustomizing(e.target.checked)}
                                     />
                                     <div>{t5}</div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className='re-appointment'>
+                            <div className='title'>
+                                {t14}
+                            </div>
+                            {!reAppointment ? (
+                                <div className='detail'>
+                                    <div className='re-appointment-toggle'>
+                                        <input
+                                            type="checkbox"
+                                            checked={isReAppointment}
+                                            onChange={(e) => setIsReAppointment(e.target.checked)}
+                                        />
+                                        <div>{t15}</div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='detail'>
+                                    <div className='re-appointment-box'>
+                                        <div className='re-appointment-title'>
+                                            {t35}
+                                        </div>
+                                        <div className='re-appointment-info'>
+                                            {reAppointment.date.split('T')[0]}
+                                        </div>
+                                    </div>
+                                    <div className='re-appointment-box'>
+                                        <div className='re-appointment-title'>
+                                            {t36}
+                                        </div>
+                                        <div className='re-appointment-info'>
+                                            {reAppointment.startTime}-{reAppointment.endTime}
+                                        </div>
+                                    </div>
+                                    <div className='re-appointment-box'>
+                                        <div className='re-appointment-title'>
+                                            {t37}
+                                        </div>
+                                        <div className='re-appointment-info'>
+                                            {reAppointment.location}
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -471,7 +550,6 @@ function TreatmentBox({ appointments }) {
                                                 />
                                             </div>
                                         </div>
-
                                         <button
                                             className='submit'
                                             onClick={() => setIsSubmit(true)}
@@ -482,11 +560,9 @@ function TreatmentBox({ appointments }) {
                                 );
                             })()}
                         </div>
-
                     </div>
                 </>
             )}
-
 
             {isSubmit && (
                 <ConfirmTreatmentPlan
@@ -495,7 +571,6 @@ function TreatmentBox({ appointments }) {
                             patientID: selectedTreatmentOf.patientID,
                             doctorID: selectedTreatmentOf.doctorID,
                             regimenID: selectedRegimen.regimenID,
-                            date: new Date().toISOString(),
                             isCustomized: isCustomizing,
                             notes: notes
                         }
@@ -504,6 +579,7 @@ function TreatmentBox({ appointments }) {
                     setLoading={setLoading}
                     selectedRegimen={selectedRegimen}
                     isAdjusted={isCustomizing}
+                    setFinish={setFinish}
                 />
             )}
 
@@ -511,12 +587,16 @@ function TreatmentBox({ appointments }) {
                 <MedicationInfoBox medicationInfo={medicationInfo} setMedicationInfo={setMedicationInfo} />
             )}
 
-            {loading && (
-                <SkeletonUI />
-            )}
-
-            {error && (
-                <ErrorBox error={error} setError={setError} />
+            {isReAppointment && (
+                <ReAppointmentBox
+                    schedules={schedules}
+                    setIsReAppointment={setIsReAppointment}
+                    doctorID={user?.UserId} patientID={selectedTreatmentOf?.patientID}
+                    setError={setError}
+                    setLoading={setLoading}
+                    setReAppointment={setReAppointment}
+                    setFinish={setFinish}
+                />
             )}
         </div>
     )

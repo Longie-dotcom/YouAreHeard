@@ -98,6 +98,17 @@
     margin-top: 1vw;
 }
 
+.treatment-box .test-result .patient-profile-info-box > .treatment-plan-info-box {
+    padding:  0 !important;
+}
+
+.treatment-box .test-result .patient-profile-info-box > .treatment-plan-info-box .treatment-general-info {
+    display: none;
+}
+
+.treatment-box .test-result .patient-profile-info-box > .treatment-plan-info-box .pill-table {
+    width: 100%;
+}
 
 .treatment-box .treatment-form {
     background-color: rgb(255, 255, 255);
@@ -494,6 +505,37 @@
     border: #000000 dashed 2px;
     overflow: hidden;
     resize: none;
+}
+
+.treatment-box .treatment-form .re-appointment .detail {
+    padding: 2%;
+    margin: 2%;
+    border-radius: 5px;
+    font-size: 1vw;
+    border: 1.9px dashed rgb(0, 0, 0);
+}
+
+.treatment-box .treatment-form .re-appointment .detail .re-appointment-box {
+    display: flex;
+    padding: 1.5%;
+    border-radius: 5px;
+    margin: 1%;
+    background-color: #f0f0f0;
+    flex-direction: row;
+}
+
+.treatment-box .treatment-form .re-appointment .detail .re-appointment-box .re-appointment-title {
+    width: 40%;
+    font-weight: 550;
+}
+
+.treatment-box .treatment-form .re-appointment .detail .re-appointment-toggle{
+    margin: 2%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1vw;
+    font-weight: 550;
 }
 
 .treatment-box .treatment-form .body .submit {
