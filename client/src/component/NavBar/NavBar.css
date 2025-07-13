@@ -43,7 +43,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 10px;
     cursor: pointer;
     width: 25%;
 }
@@ -77,10 +77,16 @@
     font-weight: 540;
     background-color: transparent;
     border: none;
+    border-radius: 40px;
     cursor: pointer;
+    margin-left: 2%;
     padding: 4%;
     font-size: 0.9vw;
-    transition: width 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.nav-bar-detail .authentication button .icon {
+    display: none;
 }
 
 .nav-bar-detail .authentication .register {
@@ -104,10 +110,9 @@
 }
 
 .nav-bar-detail .authentication .logout:hover {
-    width: 60%;
+    width: 55%;
 }
 
-/* Hamburger menu button */
 .menu-toggle {
     display: none;
     font-size: 24px;
@@ -117,46 +122,30 @@
     margin-left: auto;
 }
 
+.nav-bar-detail .authentication .profile:hover {
+    background-color: #7285e1;
+    color: white;
+}
+
 @media screen and (max-width: 768px) {
-    .menu-toggle {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 5vh;
-        width: 50vw;
-        margin: 25vw;
-        margin-top: 2vh;
-        justify-content: center;
-        background-color: #7285e1;
-        box-shadow: 0px 4px 20px rgb(0, 0, 0, 0.1);
-        border-radius: 40px;
+    .nav-bar {
+        bottom: 0;
         position: fixed;
-        top: 0;
-        left: 0;
-        color: rgb(255, 255, 255);
-        transition: all 0.1s ease-in-out;
     }
 
-    .menu-toggle:active {
-        background-color: rgb(195, 196, 197);
-    }
 
     .nav-bar-detail {
+        width: 100vw;
+        background-color: white;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: auto;
-        width: 50vw !important;
-        margin: 25vw !important;
-        padding: 0;
-        margin-top: 10vh !important;
-        background-color: transparent;
+        border-radius: 0;
+        position: relative;
+        bottom: 0;
         justify-content: center;
-        box-shadow: none;
-        border-radius: 40px;
-        position: fixed;
-        top: 0;
-        left: 0;
+        padding: 0;
+        margin: 0;
+        align-items: center;
+        z-index: 1000;
     }
 
     .nav-bar-detail .logo {
@@ -164,41 +153,35 @@
     }
 
     .nav-bar-detail .navigation {
-        width: 100%;
+        flex: 1;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: left;
         font-size: 1.5vw;
+        padding: 0;
         font-weight: 550;
+        height: 100%;
     }
 
     .nav-bar-detail .navigation div {
         position: relative;
         display: flex;
         align-items: center;
+        padding: 0;
         justify-content: center;
-        padding: 0 !important;
-        padding-bottom: 2vw !important;
-        padding-top: 2vw !important;
-        background-color: #b0bcfa;
         cursor: pointer;
-        margin: 1vw;
-        width: 100%;
-        border-radius: 40px;
+        flex: 1;
+        height: 100%;
     }
 
-    .nav-bar-detail .navigation div::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: transparent;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s ease-in-out;
+    .nav-bar-detail .navigation div .icon {
+        width: 3.5vw;
+        height: auto;
+    }
+
+    .nav-bar-detail .navigation div span {
+        display: none;
     }
 
     .nav-bar-detail .navigation div:active {
@@ -207,44 +190,35 @@
 
     .nav-bar-detail .authentication {
         display: flex;
-        flex-direction: column;
-        width: 100%;
+        flex-direction: row;
+        width: 40%;
+        height: 100%;
     }
 
     .nav-bar-detail .authentication button {
-        width: 100%;
+        flex: 1;
         font-weight: 540;
-        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border: none;
         cursor: pointer;
-        padding: 4%;
-        margin-top: 1vw;
-        font-size: 1.5vw;
-        transition: width 0.3s ease;
+        height: 100%;
+        padding: 0 !important;
+        background-color: transparent !important;
     }
 
-    .nav-bar-detail .authentication .register {
-        border-radius: 40px;
-        background-color: #4A67F3;
-        color: rgb(255, 255, 255);
+    .nav-bar-detail .authentication button .icon {
+        display: flex;
+        width: 3.5vw;
+        height: auto;
     }
 
-    .nav-bar-detail .authentication button:hover {
-        width: 100%;
+    .nav-bar-detail .authentication button span {
+        display: none;
     }
 
-    .nav-bar-detail .authentication .login:hover {
-        color: #4A67F3;
-    }
-
-    .nav-bar-detail .authentication .logout {
-        border-radius: 40px;
-        background-color: #4A67F3;
-        color: rgb(255, 255, 255);
-    }
-
-    .nav-bar-detail .authentication .logout:hover {
-        background-color: #394eba;
-        width: 100%;
+    .nav-bar-detail .non-login {
+        width: 50%;
     }
 }
