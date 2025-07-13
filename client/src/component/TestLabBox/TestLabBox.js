@@ -6,17 +6,22 @@ import './TestLabBox.css';
 
 // Assets
 import ZoomIcon from '../../uploads/icon/zoom.png';
+import ConfirmIcon from '../../uploads/icon/confirm.png';
 
 // Components
 import Icon from '../Icon/Icon';
 import SkeletonUI from '../SkeletonUI/SkeletonUI';
 import ErrorBox from '../ErrorBox/ErrorBox';
 import ConfirmTestLabBox from '../ConfirmTestLabBox/ConfirmTestLabBox';
+import PatientProfileInfoBox from '../PatientProfileInfoBox/PatientProfileInfoBox';
+import TextBox from '../TextBox/TextBox';
 
 // Hooks
 import useLoadTestType from '../../hook/useLoadTestType';
 import useLoadAllTestMetric from '../../hook/useLoadAllTestMetric';
 import useLoadTestStage from '../../hook/useLoadTestStage';
+import useLoadHIVStatus from '../../hook/useLoadHIVStatus';
+import useUpdatePatientHIVStatus from '../../hook/useUpdatePatientHIVStatus';
 
 function TestLabBox({ appointments }) {
     const t1 = 'Danh sách bệnh nhân';
@@ -34,6 +39,8 @@ function TestLabBox({ appointments }) {
     const t14m1 = 'Xác nhận';
     const t14 = 'Chọn giai đoạn kiểm tra';
     const t15 = 'Ghi chú chung';
+    const t16 = 'Xác nhận trạng thái HIV mới';
+    const t17 = 'Cập nhật trạng thái HIV mới';
 
     const t22 = '-';
     const t23 = 'Trực tuyến';
@@ -52,6 +59,8 @@ function TestLabBox({ appointments }) {
     const [isCustomized, SetIsCustomized] = useState(false);
     const [upcomingAppointments, setUpcomingAppointments] = useState(null);
     const [selectedTestOf, setSelectedTestOf] = useState(null);
+    const [hivStatusID, setHivStatusID] = useState('');
+    const [finish, setFinish] = useState(null);
 
     const {
         testTypes
@@ -62,6 +71,12 @@ function TestLabBox({ appointments }) {
     const {
         testStages
     } = useLoadTestStage({ setError, setLoading });
+    const {
+        updatePatientHIVStatus
+    } = useUpdatePatientHIVStatus({ setError, setLoading, setFinish })
+    const {
+        hivStatus
+    } = useLoadHIVStatus({ setError, setLoading });
 
     const formatTime = (timeStr) => {
         const [hours, minutes] = timeStr.split(':');
@@ -128,36 +143,38 @@ function TestLabBox({ appointments }) {
 
             {upcomingAppointments && (
                 <div className='patient-list'>
-                    {upcomingAppointments.map((appointment) => (
-                        <div className='appointment-later'>
-                            <div className='name'>
-                                {appointment.patientName}
+                    {upcomingAppointments
+                        .filter((appointment) => !appointment.isOnline)
+                        .map((appointment, key) => (
+                            <div className='appointment-later'>
+                                <div className='name'>
+                                    {appointment.patientName}
+                                </div>
+                                <div className='date'>
+                                    {appointment.scheduleDate?.split("T")[0]}
+                                </div>
+                                <div className='time'>
+                                    {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
+                                </div>
+                                <div className='location'>
+                                    {appointment.zoomLink ? (
+                                        <div>
+                                            <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
+                                        </div>
+                                    ) : appointment.location}
+                                </div>
+                                <div className='queue-number'>
+                                    {t25}{appointment.queueNumber}
+                                </div>
+                                <div className='patient-detail'>
+                                    <button
+                                        onClick={() => setSelectedTestOf(appointment)}
+                                    >
+                                        {t24}
+                                    </button>
+                                </div>
                             </div>
-                            <div className='date'>
-                                {appointment.scheduleDate?.split("T")[0]}
-                            </div>
-                            <div className='time'>
-                                {formatTime(appointment.startTime)}{t22}{formatTime(appointment.endTime)}
-                            </div>
-                            <div className='location'>
-                                {appointment.zoomLink ? (
-                                    <div>
-                                        <Icon src={ZoomIcon} alt={'zoom-icon'} /> {t23}
-                                    </div>
-                                ) : appointment.location}
-                            </div>
-                            <div className='queue-number'>
-                                {t25}{appointment.queueNumber}
-                            </div>
-                            <div className='patient-detail'>
-                                <button
-                                    onClick={() => setSelectedTestOf(appointment)}
-                                >
-                                    {t24}
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             )}
 
@@ -167,7 +184,7 @@ function TestLabBox({ appointments }) {
                         {t2}
                     </div>
                     <div className='patient-info'>
-                        Thông tin bệnh nhân {selectedTestOf.patientName} sẽ nằm ở đây
+                        <PatientProfileInfoBox selectedTreatmentOf={selectedTestOf} setError={setError} setLoading={setLoading} />
                     </div>
 
                     <div className='title'>
@@ -306,6 +323,28 @@ function TestLabBox({ appointments }) {
                                     </div>
 
                                     <div className='header'>
+                                        {t17}
+                                    </div>
+                                    <div className='update-hiv-status'>
+                                        <select
+                                            value={hivStatusID} onChange={(e) => setHivStatusID(parseInt(e.target.value))}>
+                                            <option value="">Chọn trạng thái</option>
+                                            {hivStatus?.map(status => (
+                                                <option key={status.hivStatusID} value={status.hivStatusID}>
+                                                    {status.hivStatusName}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        <button
+                                            onClick={() => updatePatientHIVStatus({ patientID: selectedTestOf.patientID, hivStatusID })}
+                                        >
+                                            {t16}
+                                        </button>
+                                    </div>
+
+
+                                    <div className='header'>
                                         {t15}
                                     </div>
                                     <div className='note-form'>
@@ -349,8 +388,12 @@ function TestLabBox({ appointments }) {
                 </>
             )}
 
+            {finish && (
+                <TextBox setText={setFinish} text={finish} title={<Icon src={ConfirmIcon} alt={'confirm-icon'} />} />
+            )}
+
             {labResult && (
-                <ConfirmTestLabBox labResult={labResult} setLabResult={setLabResult} setError={setError} setLoading={setLoading} />
+                <ConfirmTestLabBox labResult={labResult} setLabResult={setLabResult} setError={setError} setLoading={setLoading} setFinish={setFinish} />
             )}
 
             {loading && (

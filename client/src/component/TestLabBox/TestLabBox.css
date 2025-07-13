@@ -287,6 +287,42 @@
     font-weight: 550;
 }
 
+.test-lab-box .test-form .body .update-hiv-status {
+    padding: 5%;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    margin: 1%;
+}
+
+.test-lab-box .test-form .body .update-hiv-status select {
+    padding: 2%;
+    margin-right: 1vw;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.test-lab-box .test-form .body .update-hiv-status button {
+    padding: 2%;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background-color: #3348ad;
+    color: white;
+    font-weight: 550;
+    transition: all 0.1s ease-in-out;
+}
+
+.test-lab-box .test-form .body .update-hiv-status button:hover {
+    background-color: #6a7ee3;
+}
+
+.test-lab-box .test-form .body .update-hiv-status select:hover {
+    background-color: rgb(183, 183, 183);
+    color: rgb(255, 255, 255);
+}
+
 .test-lab-box .test-form .body .note-form {
     width: 92%;
     padding: 3%;
