@@ -128,7 +128,7 @@
     background-color: #394eba;
     padding: 12px 32px;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(74, 103, 243, 0.3);
+
 }
 
 .nav-bar-detail .authentication .logout {
@@ -209,9 +209,10 @@
     .nav-bar-detail .authentication .login {
         padding: 8px 16px;
     }
+    .nav-bar-detail .authentication .register {
         padding: 13px 30px;
     }
-)
+}
 
 /* Small desktops/tablets (769px to 991px) */
 @media screen and (max-width: 991px) and (min-width: 769px) {
@@ -252,29 +253,6 @@
 /* Mobile view */
 
 @media screen and (max-width: 768px) {
-    .menu-toggle {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 45px;
-        width: 160px;
-        margin: 80px;
-        margin-top: 15px;
-        justify-content: center;
-        background-color: #7285e1;
-        box-shadow: 0px 4px 20px rgb(0, 0, 0, 0.1);
-        border-radius: 35px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        color: rgb(255, 255, 255);
-        transition: all 0.1s ease-in-out;
-    }
-
-    .menu-toggle:active {
-        background-color: rgb(195, 196, 197);
-    }
-
     .nav-bar-detail {
         display: flex;
         flex-direction: row;
@@ -291,6 +269,9 @@
         position: fixed;
         top: 0;
         left: 0;
+    }
+    .nav-bar-detail .logo {
+        display: none;
     }
 
     .nav-bar-detail .logo {
