@@ -54,25 +54,25 @@ function NavBar({ user, setReloadCookies }) {
 
                 <div className='navigation'>
                     <div onClick={() => navigate('/homePage')} className='home item'>
-                        <Icon src={HomeIcon} alt={'home-icon'} />
+                        {/* <Icon src={HomeIcon} alt={'home-icon'} /> */}
                             <span>&nbsp;&nbsp;&nbsp;{t1}</span>
                     </div>
 
                     {user && (
                         <div onClick={() => navigate('/infoPage')} className='info item'>
-                            <Icon src={UserIcon} alt={'info-icon'} />
+                            {/* <Icon src={UserIcon} alt={'info-icon'} /> */}
                             <span>&nbsp;&nbsp;&nbsp;{t6}</span>
                         </div>
                     )}
 
                     <div onClick={() => navigate('/blogPage')} className='blog item'>
-                        <Icon src={BookIcon} alt={'blog-icon'} />
+                        {/* <Icon src={BookIcon} alt={'blog-icon'} /> */}
                             <span>&nbsp;&nbsp;&nbsp;{t2}</span>
                     </div>
 
                     {user && (
                         <div onClick={() => navigate('/appointmentPage')} className='appointment item'>
-                            <Icon src={AppointmentIcon} alt={'appointment-icon'} />
+                            {/* <Icon src={AppointmentIcon} alt={'appointment-icon'} /> */}
                             <span>&nbsp;&nbsp;&nbsp;{t3}</span>
                         </div>
                     )}
@@ -81,22 +81,22 @@ function NavBar({ user, setReloadCookies }) {
                 {user ? (
                     <div className='authentication'>
                         <button onClick={() => navigate('/patientProfile')} className='profile item'>
-                            <Icon src={ProfileIcon} alt={'profile-icon'} />
+                            {/* <Icon src={ProfileIcon} alt={'profile-icon'} /> */}
                             <span>{t8}</span>
                         </button>
                         <button onClick={() => logout()} className='logout item'>
-                            <Icon src={LogoutIcon} alt={'logout-icon'} />
+                            {/* <Icon src={LogoutIcon} alt={'logout-icon'} /> */}
                             <span>{t7}</span>
                         </button>
                     </div>
                 ) : (
                     <div className='authentication non-login'>
                         <button onClick={() => navigate('/login')} className='login item'>
-                            <Icon src={LoginIcon} alt={'login-icon'} />
+                            {/* <Icon src={LoginIcon} alt={'login-icon'} /> */}
                             <span>{t4}</span>
                         </button>
                         <button onClick={() => navigate('/register')} className='register item'>
-                            <Icon src={SigninIcon} alt={'signin-icon'} />
+                            {/* <Icon src={SigninIcon} alt={'signin-icon'} /> */}
                             <span>{t5}</span>
                         </button>
                     </div>
