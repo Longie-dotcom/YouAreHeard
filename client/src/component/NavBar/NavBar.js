@@ -37,42 +37,56 @@ function NavBar({ user, setReloadCookies }) {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     const {
         logout
     } = useLogout({ setReloadCookies, setError, setLoading });
 
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
+
+    const handleNavigation = (path) => {
+        navigate(path);
+        setMobileMenuOpen(false);
+    };
+
+    const handleLogout = () => {
+        logout();
+        setMobileMenuOpen(false);
+    };
 
     return (
         <div className='nav-bar'>
-            <div className='nav-bar-detail'>
+            <div className={`nav-bar-detail ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                 <div className='logo'>
                     <img src={LogoPicture} alt='logo-picture' />
                     <img src={LogoText} alt='logo-text' />
                 </div>
 
+                <button className='menu-toggle' onClick={toggleMobileMenu}>
+                    {mobileMenuOpen ? '✕' : '☰'}
+                </button>
+
                 <div className='navigation'>
-                    <div onClick={() => navigate('/homePage')} className='home item'>
-                        {/* <Icon src={HomeIcon} alt={'home-icon'} /> */}
-                            <span>&nbsp;&nbsp;&nbsp;{t1}</span>
+                    <div onClick={() => handleNavigation('/homePage')} className='home item'>
+                        <span>&nbsp;&nbsp;&nbsp;{t1}</span>
                     </div>
 
                     {user && (
-                        <div onClick={() => navigate('/infoPage')} className='info item'>
-                            {/* <Icon src={UserIcon} alt={'info-icon'} /> */}
+                        <div onClick={() => handleNavigation('/infoPage')} className='info item'>
                             <span>&nbsp;&nbsp;&nbsp;{t6}</span>
                         </div>
                     )}
 
-                    <div onClick={() => navigate('/blogPage')} className='blog item'>
-                        {/* <Icon src={BookIcon} alt={'blog-icon'} /> */}
-                            <span>&nbsp;&nbsp;&nbsp;{t2}</span>
+                    <div onClick={() => handleNavigation('/blogPage')} className='blog item'>
+                        <span>&nbsp;&nbsp;&nbsp;{t2}</span>
                     </div>
 
                     {user && (
-                        <div onClick={() => navigate('/appointmentPage')} className='appointment item'>
-                            {/* <Icon src={AppointmentIcon} alt={'appointment-icon'} /> */}
+                        <div onClick={() => handleNavigation('/appointmentPage')} className='appointment item'>
                             <span>&nbsp;&nbsp;&nbsp;{t3}</span>
                         </div>
                     )}
@@ -80,23 +94,19 @@ function NavBar({ user, setReloadCookies }) {
 
                 {user ? (
                     <div className='authentication'>
-                        <button onClick={() => navigate('/patientProfile')} className='profile item'>
-                            {/* <Icon src={ProfileIcon} alt={'profile-icon'} /> */}
+                        <button onClick={() => handleNavigation('/patientProfile')} className='profile item'>
                             <span>{t8}</span>
                         </button>
-                        <button onClick={() => logout()} className='logout item'>
-                            {/* <Icon src={LogoutIcon} alt={'logout-icon'} /> */}
+                        <button onClick={handleLogout} className='logout item'>
                             <span>{t7}</span>
                         </button>
                     </div>
                 ) : (
                     <div className='authentication non-login'>
-                        <button onClick={() => navigate('/login')} className='login item'>
-                            {/* <Icon src={LoginIcon} alt={'login-icon'} /> */}
+                        <button onClick={() => handleNavigation('/login')} className='login item'>
                             <span>{t4}</span>
                         </button>
-                        <button onClick={() => navigate('/register')} className='register item'>
-                            {/* <Icon src={SigninIcon} alt={'signin-icon'} /> */}
+                        <button onClick={() => handleNavigation('/register')} className='register item'>
                             <span>{t5}</span>
                         </button>
                     </div>

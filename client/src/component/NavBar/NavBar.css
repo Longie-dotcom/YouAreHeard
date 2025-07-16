@@ -6,7 +6,6 @@
     margin: 1% auto;
     width: 95%;
     max-width: 1720px;
-    width: 100vw;
     left: 50%;
     transform: translateX(-50%);
     justify-content: space-between;
@@ -20,13 +19,13 @@
     z-index: 100;
 }
 
- /* Logo */
-
+/* Logo */
 .nav-bar-detail .logo {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: auto;
+    flex-shrink: 0;
 }
 
 .nav-bar-detail .logo img {
@@ -36,7 +35,6 @@
 }
 
 /* Navigation */
-
 .nav-bar-detail .navigation {
     width: 50%;
     display: flex;
@@ -58,6 +56,7 @@
     transition: color 0.2s;
     display: flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 .nav-bar-detail .navigation div:hover {
@@ -65,17 +64,7 @@
     color: #4A67F3;
 }
 
-
-.nav-bar-detail .navigation div::after {
-    display: none;
-}
-
-.nav-bar-detail .navigation div:hover::after {
-    transform: scaleX(1);
-}
-
 /* Authentication */
-
 .nav-bar-detail .authentication {
     display: flex;
     flex-direction: row;
@@ -83,6 +72,7 @@
     gap: 10px;
     width: 220px;
     justify-content: flex-end;
+    flex-shrink: 0;
 }
 
 .nav-bar-detail .authentication button {
@@ -129,7 +119,6 @@
     background-color: #394eba;
     padding: 12px 32px;
     transform: translateY(-1px);
-
 }
 
 .nav-bar-detail .authentication .logout {
@@ -139,46 +128,112 @@
 }
 
 .nav-bar-detail .authentication .logout:hover {
-    width: 60%;
+    background-color: #394eba;
 }
 
-/* Hamburger menu button */
+/* Mobile menu toggle */
 .menu-toggle {
     display: none;
     font-size: 24px;
     background: none;
     border: none;
     cursor: pointer;
-    margin-left: auto;
+    color: #222;
+    z-index: 101;
 }
 
-/* Responsive Design */
+/* Mobile navigation overlay */
+.nav-bar-detail.mobile-open {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 80px;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+}
 
-/* Large screens (1200px and above) */
-@media screen and (min-width: 1200px) {
+.nav-bar-detail.mobile-open .navigation {
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 40px;
+}
+
+.nav-bar-detail.mobile-open .navigation div {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    margin: 8px 0;
+    background-color: #f8f9ff;
+    border-radius: 16px;
+    justify-content: center;
+    font-size: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+.nav-bar-detail.mobile-open .navigation div:hover {
+    background-color: #4A67F3;
+    color: #fff;
+}
+
+.nav-bar-detail.mobile-open .authentication {
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 40px;
+    align-items: center;
+}
+
+.nav-bar-detail.mobile-open .authentication button {
+    width: 90%;
+    max-width: 400px;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 16px;
+}
+
+.nav-bar-detail.mobile-open .authentication .register {
+    background-color: #4A67F3;
+    color: #fff;
+}
+
+.nav-bar-detail.mobile-open .authentication .register:hover {
+    background-color: #394eba;
+    padding: 16px;
+    transform: none;
+}
+
+/* Responsive breakpoints */
+
+/* Extra Large screens (1400px and above) */
+@media screen and (min-width: 1400px) {
     .nav-bar-detail {
         height: 80px;
         width: 90%;
         border-radius: 70px;
+        padding-left: 3%;
+        padding-right: 3%;
     }
     .nav-bar-detail .logo img {
         height: 45px;
     }
     .nav-bar-detail .navigation {
         font-size: 16px;
-        gap: 28px;
+        gap: 32px;
     }
     .nav-bar-detail .authentication {
-        gap: 14px;
-        width: 260px;
+        gap: 16px;
+        width: 280px;
     }
     .nav-bar-detail .authentication button {
         padding: 8px 12px;
+        font-size: 16px;
     }
     .nav-bar-detail .authentication .login {
         padding: 8px 16px;
     }
-    
     .nav-bar-detail .authentication .register {
         padding: 12px 28px;
     }
@@ -187,8 +242,8 @@
     }
 }
 
-/* Medium screens (992px to 1199px) */
-@media screen and (max-width: 1199px) and (min-width: 992px) {
+/* Large screens (1200px to 1399px) */
+@media screen and (max-width: 1399px) and (min-width: 1200px) {
     .nav-bar-detail {
         height: 75px;
         width: 92%;
@@ -198,7 +253,7 @@
         height: 42px;
     }
     .nav-bar-detail .navigation {
-        gap: 22px;
+        gap: 24px;
     }
     .nav-bar-detail .authentication {
         gap: 12px;
@@ -211,7 +266,43 @@
         padding: 8px 16px;
     }
     .nav-bar-detail .authentication .register {
+        padding: 11px 26px;
+    }
+    .nav-bar-detail .authentication .register:hover {
         padding: 13px 30px;
+    }
+}
+
+/* Medium screens (992px to 1199px) */
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+    .nav-bar-detail {
+        height: 70px;
+        width: 94%;
+        border-radius: 60px;
+    }
+    .nav-bar-detail .logo img {
+        height: 40px;
+    }
+    .nav-bar-detail .navigation {
+        gap: 18px;
+        font-size: 14px;
+    }
+    .nav-bar-detail .authentication {
+        gap: 10px;
+        width: 200px;
+    }
+    .nav-bar-detail .authentication button {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+    .nav-bar-detail .authentication .login {
+        padding: 6px 14px;
+    }
+    .nav-bar-detail .authentication .register {
+        padding: 10px 22px;
+    }
+    .nav-bar-detail .authentication .register:hover {
+        padding: 12px 26px;
     }
 }
 
@@ -221,160 +312,121 @@
         height: 65px;
         width: 96%;
         border-radius: 55px;
+        padding-left: 2%;
+        padding-right: 2%;
     }
     .nav-bar-detail .logo img {
         height: 38px;
         margin-right: 6px;
     }
     .nav-bar-detail .navigation {
-        gap: 16px;
+        gap: 14px;
+        font-size: 14px;
     }
     .nav-bar-detail .authentication {
         gap: 8px;
-        width: 200px;
+        width: 180px;
     }
     .nav-bar-detail .authentication button {
         padding: 5px 8px;
+        font-size: 14px;
     }
     .nav-bar-detail .authentication .login {
         padding: 5px 12px;
     }
-    
     .nav-bar-detail .authentication .register {
-        padding: 8px 20px;
+        padding: 8px 18px;
         border-radius: 20px;
     }
     .nav-bar-detail .authentication .register:hover {
-        padding: 10px 24px;
+        padding: 10px 22px;
         transform: translateY(-1px);
         box-shadow: 0 3px 8px rgba(74, 103, 243, 0.3);
     }
 }
 
-/* Mobile view */
-
+/* Mobile view (768px and below) */
 @media screen and (max-width: 768px) {
     .nav-bar-detail {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: auto;
-        width: 100% !important;
-        margin: 0 !important;
+        height: 60px;
+        width: 100%;
+        margin: 0;
         padding: 0 20px;
-        margin-top: 0 !important;
-        background-color: transparent;
-        justify-content: space-between;
-        box-shadow: none;
-        border-radius: 40px;
+        background-color: #fff;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+        border-radius: 0;
         position: fixed;
         top: 0;
         left: 0;
-    }
-    .nav-bar-detail .logo {
-        display: none;
-    }
-
-    .nav-bar-detail .logo {
-        display: none;
-    }
-
-    .nav-bar-detail {
-        display: flex;
+        transform: none;
         flex-direction: row;
-        align-items: center;
-        height: auto;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 20px;
-        margin-top: 0 !important;
-        background-color: transparent;
         justify-content: space-between;
-        box-shadow: none;
-        border-radius: 40px;
-        position: fixed;
-        top: 0;
-        left: 0;
+        align-items: center;
     }
+    
     .nav-bar-detail .logo {
-        display: none;
+        display: flex;
     }
+    
+    .nav-bar-detail .logo img {
+        height: 35px;
+    }
+    
     .nav-bar-detail .navigation {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: left;
-        font-size: 16px;
-        font-weight: 550;
+        display: none;
     }
-    .nav-bar-detail .navigation div {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 !important;
-        padding-bottom: 16px !important;
-        padding-top: 16px !important;
-        background-color: #b0bcfa;
-        cursor: pointer;
-        margin: 8px;
-        width: 100%;
-        border-radius: 35px;
-    }
-    .nav-bar-detail .navigation div::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: transparent;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s ease-in-out;
-    }
-    .nav-bar-detail .navigation div:active {
-        background-color: rgb(194, 199, 203);
-    }
-    .nav-bar-detail .navigation div:hover {
-        color: #fff !important;
-        border-radius: 40px;
-        transition: background 0.2s, color 0.2s;
-    }
+    
     .nav-bar-detail .authentication {
-        gap: 8px;
-        width: auto;
-        white-space: nowrap;
+        display: none;
     }
-    .nav-bar-detail .authentication button {
-        width: 100%;
-        font-weight: 540;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 3%;
-        margin-top: 8px;
-        font-size: 16px;
-        transition: width 0.3s ease;
+    
+    .menu-toggle {
+        display: block;
     }
-    .nav-bar-detail .authentication .register {
-        border-radius: 35px;
+    
+    /* When mobile menu is open */
+    .nav-bar-detail.mobile-open .navigation {
+        display: flex;
     }
-    .nav-bar-detail .authentication .register:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 3px 8px rgba(74, 103, 243, 0.3);
+    
+    .nav-bar-detail.mobile-open .authentication {
+        display: flex;
     }
-    .nav-bar-detail .authentication button:hover {
-        width: 100%;
+    
+    .nav-bar-detail.mobile-open .logo {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        z-index: 102;
     }
-    .nav-bar-detail .authentication .logout {
-        border-radius: 35px;
-        background-color: #4A67F3;
-        color: rgb(255, 255, 255);
+    
+    .nav-bar-detail.mobile-open .menu-toggle {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        z-index: 102;
     }
-    .nav-bar-detail .authentication .logout:hover {
-        background-color: #394eba;
-        width: 100%;
+}
+
+/* Very small screens (480px and below) */
+@media screen and (max-width: 480px) {
+    .nav-bar-detail {
+        padding: 0 16px;
+    }
+    
+    .nav-bar-detail .logo img {
+        height: 32px;
+    }
+    
+    .nav-bar-detail.mobile-open .navigation div {
+        width: 95%;
+        padding: 18px;
+        font-size: 15px;
+    }
+    
+    .nav-bar-detail.mobile-open .authentication button {
+        width: 95%;
+        padding: 14px;
+        font-size: 15px;
     }
 }
