@@ -16,7 +16,7 @@ import RegisterPage from './page/Authentication/RegisterPage/RegisterPage';
 
 // Pages
 import AppointmentPage from './page/PatientPage/AppointmentPage/AppointmentPage';
-import HomePage from './page/PatientPage/HomePage/HomePage';
+import HomePage from './page/HomePage/HomePage';
 import InfoPage from './page/PatientPage/InfoPage/InfoPage';
 import SuccessAppointmentPage from './page/PatientPage/SuccessAppointmentPage/SuccessAppointmentPage';
 import PatientProfilePage from './page/PatientPage/PatientProfilePage/PatientProfilePage';
@@ -39,11 +39,11 @@ function AppContent() {
       )}
       <Routes>
         <Route path='/' element={<LoginPage setReloadCookies={setReloadCookies} />} />
+        <Route path='/' element={<HomePage />} />
 
         <Route path="/login" element={<LoginPage setReloadCookies={setReloadCookies} />} />
         <Route path="/register" element={<RegisterPage />} />
-
-        <Route path="/homePage" element={<HomePage user={user} />} />
+        <Route path="/homePage" element={<HomePage />} />
         <Route path="/appointmentPage" element={<AppointmentPage user={user} />} />
         <Route path="/infoPage" element={<InfoPage user={user} />} />
         <Route path="/appointment-success/:orderCode" element={<SuccessAppointmentPage user={user} />} />

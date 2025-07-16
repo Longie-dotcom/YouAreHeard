@@ -5,17 +5,18 @@
     height: 70px;
     margin: 1% auto;
     width: 95%;
-    max-width: 1400px;
+    max-width: 1720px;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
     justify-content: space-between;
     background-color: #fff;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
     border-radius: 60px;
     padding-left: 2%;
     padding-right: 2%;
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
     z-index: 100;
 }
 
@@ -127,7 +128,7 @@
 .nav-bar-detail .authentication .register:hover {
     background-color: #394eba;
     padding: 12px 32px;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 
 }
 

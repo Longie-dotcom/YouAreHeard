@@ -1,0 +1,19 @@
+.animated-line-container {
+  width: 100%;
+  position: relative;
+  height: 0;
+}
+
+.homepage-animated-line {
+  position: absolute;
+  top: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 2;
+  width: 0;
+  transition: width 0.8s cubic-bezier(.77,0,.18,1);
+}
+
+.homepage-animated-line.animated {
+  /* width is set inline by JS */
+}
