@@ -1094,3 +1094,692 @@ html {
     gap: 40px;
   }
 }
+
+/* Enhanced responsive design for all popular resolutions */
+
+/* Mobile First - iPhone SE (375x667) and similar */
+@media (max-width: 425px) {
+  #home-page .homepage-root {
+    padding: 0 16px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  #home-page .homepage-hero {
+    grid-template-columns: 1fr;
+    margin: 40px auto 0 auto;
+    column-gap: 0;
+    row-gap: 32px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+  }
+  
+  #home-page .homepage-hero-text {
+    grid-column: 1;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  #home-page .homepage-hero-image {
+    grid-column: 1;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 8px;
+  }
+  
+  /* Fix video display for mobile */
+  #home-page .homepage-hero-image video,
+  #home-page .homepage-hero-image img {
+    width: 280px !important;
+    height: 280px !important;
+    max-width: 280px !important;
+    border-radius: 16px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Center the appointment button */
+  #home-page .appointment-btn {
+    width: 140px;
+    height: 44px;
+    font-size: 14px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #home-page .appointment-btn-bg {
+    width: 140px;
+    height: 44px;
+    border-radius: 22px;
+  }
+  
+  #home-page .appointment-btn-text {
+    width: 140px;
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  #home-page .appointment-btn-hover .appointment-btn-bg {
+    width: 160px;
+  }
+  
+  #home-page .appointment-btn-arrow {
+    left: 100px;
+    top: 12px;
+  }
+  
+  #home-page .homepage-section {
+    margin-top: 60px;
+    padding: 0 16px;
+    text-align: center;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 20px;
+    width: 100%;
+    line-height: 1.4;
+    text-align: center;
+    padding: 0 8px;
+  }
+  
+  #home-page .video-section {
+    margin-top: 40px;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #home-page .video-section-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  #home-page .video-wrapper {
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  #home-page .video-wrapper.right {
+    margin-left: 0;
+  }
+  
+  #home-page .video-container {
+    width: 100% !important;
+    max-width: 320px !important;
+    height: 240px !important;
+    margin: 0 auto;
+  }
+  
+  #home-page .video-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  #home-page .homepage-cards-container {
+    height: 80vh;
+    margin-top: -200px;
+    padding: 40px 0;
+  }
+  
+  #home-page .homepage-cards {
+    padding: 0 16px;
+    gap: 16px;
+    justify-content: center;
+  }
+  
+  #home-page .homepage-card {
+    width: 280px;
+    min-width: 280px;
+    min-height: 320px;
+    margin: 0 auto;
+  }
+  
+  #home-page .homepage-card-title {
+    font-size: 20px;
+    margin: 0 20px 16px 20px;
+    text-align: center;
+  }
+  
+  #home-page .homepage-card-desc {
+    font-size: 14px;
+    margin: 0 20px 20px 20px;
+    text-align: center;
+  }
+  
+  #home-page .homepage-cta-container {
+    margin: 0 16px;
+    padding: 32px 20px;
+    margin-top: -60px;
+    text-align: center;
+  }
+  
+  #home-page .homepage-cta-title {
+    font-size: 24px;
+    line-height: 1.3;
+    text-align: center;
+  }
+  
+  #home-page .homepage-cta-subtitle {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  #home-page .homepage-cta-button {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #home-page .homepage-footer-container {
+    padding: 0 16px;
+  }
+  
+  #home-page .homepage-footer-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  #home-page .homepage-footer-links {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* iPhone SE specific fixes */
+@media (max-width: 375px) {
+  #home-page .homepage-hero {
+    padding: 0 12px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 15px;
+    padding: 0 4px;
+  }
+  
+  #home-page .homepage-hero-image video,
+  #home-page .homepage-hero-image img {
+    width: 260px !important;
+    height: 260px !important;
+    max-width: 260px !important;
+  }
+  
+  #home-page .appointment-btn {
+    width: 130px;
+    height: 42px;
+  }
+  
+  #home-page .appointment-btn-bg {
+    width: 130px;
+    height: 42px;
+  }
+  
+  #home-page .appointment-btn-text {
+    width: 130px;
+    height: 42px;
+    line-height: 42px;
+    font-size: 13px;
+  }
+  
+  #home-page .video-container {
+    max-width: 300px !important;
+    height: 220px !important;
+  }
+}
+
+/* Mobile - iPhone 12/13/14 (390x844) and similar */
+@media (min-width: 376px) and (max-width: 480px) {
+  #home-page .homepage-hero {
+    padding: 0 20px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 18px;
+  }
+  
+  #home-page .homepage-hero-image video,
+  #home-page .homepage-hero-image img {
+    width: 320px !important;
+    height: 320px !important;
+    max-width: 320px !important;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 22px;
+  }
+  
+  #home-page .video-container {
+    max-width: 350px !important;
+    height: 260px !important;
+  }
+  
+  #home-page .homepage-card {
+    width: 300px;
+    min-width: 300px;
+  }
+}
+
+/* Tablet Portrait - iPad (768x1024) */
+@media (min-width: 481px) and (max-width: 768px) {
+  #home-page .homepage-hero {
+    grid-template-columns: 1fr;
+    margin: 60px auto 0 auto;
+    row-gap: 40px;
+  }
+  
+  #home-page .homepage-hero-text {
+    grid-column: 1;
+    margin-left: 0;
+    text-align: center;
+  }
+  
+  #home-page .homepage-hero-image {
+    grid-column: 1;
+    margin-right: 0;
+    justify-content: center;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 48px;
+    line-height: 56px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 20px;
+    max-width: 600px;
+    margin: 16px auto;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 400px;
+    height: 400px;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 26px;
+    max-width: 700px;
+  }
+  
+  #home-page .video-section-container {
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  #home-page .video-container {
+    width: 100% !important;
+    max-width: 500px !important;
+    height: 350px !important;
+  }
+  
+  #home-page .homepage-cards {
+    padding: 0 40px;
+    gap: 20px;
+  }
+  
+  #home-page .homepage-card {
+    width: 350px;
+    min-width: 350px;
+  }
+}
+
+/* Tablet Landscape - iPad Landscape (1024x768) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #home-page .homepage-hero {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    align-items: center;
+  }
+  
+  #home-page .homepage-hero-text {
+    grid-column: 1;
+    margin-left: 40px;
+    text-align: left;
+  }
+  
+  #home-page .homepage-hero-image {
+    grid-column: 2;
+    margin-right: 40px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 52px;
+    line-height: 60px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 22px;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 450px;
+    height: 450px;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 28px;
+  }
+  
+  #home-page .video-container {
+    height: 380px !important;
+  }
+  
+  #home-page .homepage-cards {
+    padding: 0 60px;
+    gap: 24px;
+  }
+  
+  #home-page .homepage-card {
+    width: 380px;
+    min-width: 380px;
+  }
+}
+
+/* Small Laptop - 13" MacBook (1280x800) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  #home-page .homepage-hero {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    margin: 80px auto 0 auto;
+  }
+  
+  #home-page .homepage-hero-text {
+    grid-column: 1 / span 6;
+    margin-left: 60px;
+  }
+  
+  #home-page .homepage-hero-image {
+    grid-column: 7 / span 6;
+    margin-right: 60px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 64px;
+    line-height: 72px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 24px;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 500px;
+    height: 500px;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 28px;
+    max-width: 800px;
+  }
+  
+  #home-page .video-container {
+    height: 400px !important;
+  }
+  
+  #home-page .homepage-cards {
+    padding: 0 60px;
+    gap: 28px;
+  }
+  
+  #home-page .homepage-card {
+    width: 400px;
+    min-width: 400px;
+  }
+  
+  #home-page .homepage-cta-container {
+    margin: 0 60px;
+    padding: 60px 40px;
+  }
+  
+  #home-page .homepage-cta-title {
+    font-size: 40px;
+  }
+  
+  #home-page .homepage-footer-container {
+    padding: 0 60px;
+  }
+}
+
+/* Medium Laptop - 14" (1366x768) and 15" (1440x900) */
+@media (min-width: 1367px) and (max-width: 1680px) {
+  #home-page .homepage-hero {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 28px;
+    margin: 100px auto 0 auto;
+  }
+  
+  #home-page .homepage-hero-text {
+    grid-column: 1 / span 6;
+    margin-left: 80px;
+  }
+  
+  #home-page .homepage-hero-image {
+    grid-column: 7 / span 6;
+    margin-right: 80px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 72px;
+    line-height: 84px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 24px;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 550px;
+    height: 550px;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 30px;
+  }
+  
+  #home-page .video-container {
+    height: 420px !important;
+  }
+  
+  #home-page .homepage-cards {
+    padding: 0 80px;
+    gap: 32px;
+  }
+  
+  #home-page .homepage-card {
+    width: 420px;
+    min-width: 420px;
+  }
+  
+  #home-page .homepage-cta-container {
+    margin: 0 80px;
+    padding: 70px 50px;
+  }
+  
+  #home-page .homepage-cta-title {
+    font-size: 44px;
+  }
+  
+  #home-page .homepage-footer-container {
+    padding: 0 80px;
+  }
+}
+
+/* Large Desktop - 1920x1080 and above */
+@media (min-width: 1681px) {
+  #home-page .homepage-hero {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 31px;
+    margin: 120px auto 0 auto;
+  }
+  
+  #home-page .homepage-hero-text {
+    grid-column: 1 / span 6;
+    margin-left: 100px;
+  }
+  
+  #home-page .homepage-hero-image {
+    grid-column: 7 / span 6;
+    margin-right: 100px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 80px;
+    line-height: 100px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 26px;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 600px;
+    height: 600px;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 32px;
+  }
+  
+  #home-page .video-container {
+    height: 500px !important;
+  }
+  
+  #home-page .homepage-cards {
+    padding: 0 100px;
+    gap: 40px;
+  }
+  
+  #home-page .homepage-card {
+    width: 480px;
+    min-width: 480px;
+  }
+  
+  #home-page .homepage-cta-container {
+    margin: 0 100px;
+    padding: 80px 60px;
+  }
+  
+  #home-page .homepage-cta-title {
+    font-size: 48px;
+  }
+  
+  #home-page .homepage-footer-container {
+    padding: 0 100px;
+  }
+}
+
+/* Fix for ultra-wide screens */
+@media (min-width: 2560px) {
+  #home-page .homepage-hero {
+    max-width: 2400px;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 96px;
+    line-height: 116px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 30px;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 720px;
+    height: 720px;
+  }
+  
+  #home-page .homepage-section-desc {
+    font-size: 36px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 480px) {
+  #home-page .homepage-hero {
+    margin: 40px auto 0 auto;
+  }
+  
+  #home-page .homepage-title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  
+  #home-page .homepage-subtitle {
+    font-size: 14px;
+  }
+  
+  #home-page .homepage-hero-image video {
+    width: 200px;
+    height: 200px;
+  }
+  
+  #home-page .homepage-section {
+    margin-top: 40px;
+  }
+  
+  #home-page .homepage-cards-container {
+    height: 60vh;
+    margin-top: -100px;
+  }
+}
+
+/* High DPI screens adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  #home-page .homepage-hero-image video {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
