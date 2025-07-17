@@ -66,8 +66,11 @@ function NavBar({ user, setReloadCookies }) {
                     <img src={LogoText} alt='logo-text' />
                 </div>
 
-                <button className='menu-toggle' onClick={toggleMobileMenu}>
-                    {mobileMenuOpen ? '✕' : '☰'}
+                <button 
+                    className={`menu-toggle ${mobileMenuOpen ? 'active' : ''}`} 
+                    onClick={toggleMobileMenu}
+                >
+                    {/* Remove the text content since we're using CSS pseudo-elements */}
                 </button>
 
                 <div className='navigation'>
