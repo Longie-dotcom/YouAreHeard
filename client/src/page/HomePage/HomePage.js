@@ -152,6 +152,11 @@ export default function HomePage() {
   // Horizontal scroll effect for cards
   useEffect(() => {
     const handleScroll = () => {
+      // Disable horizontal scroll on mobile
+      if (window.innerWidth <= 480) {
+        return;
+      }
+      
       if (!cardsContainerRef.current || !cardsScrollRef.current) return;
 
       const container = cardsContainerRef.current;
@@ -237,6 +242,41 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+  // Add this useEffect to ensure videos are visible on mobile
+  useEffect(() => {
+    const handleMobileVideoVisibility = () => {
+      if (window.innerWidth <= 480) {
+        // Force videos to be visible on mobile
+        const heroVideo = vidRef.current;
+        const videoContainers = document.querySelectorAll('.video-container');
+        
+        if (heroVideo) {
+          heroVideo.style.display = 'block';
+          heroVideo.style.visibility = 'visible';
+          heroVideo.style.opacity = '1';
+        }
+        
+        videoContainers.forEach(container => {
+          container.style.display = 'block';
+          container.style.visibility = 'visible';
+          container.style.opacity = '1';
+        });
+        
+        // Reset cards to vertical layout
+        const cardsContainer = cardsScrollRef.current;
+        if (cardsContainer) {
+          cardsContainer.style.transform = 'none';
+          cardsContainer.style.position = 'static';
+        }
+      }
+    };
+
+    handleMobileVideoVisibility();
+    window.addEventListener('resize', handleMobileVideoVisibility);
+    
+    return () => window.removeEventListener('resize', handleMobileVideoVisibility);
+  }, []);
+
   return (
     <div id="home-page" className="homepage-root">
       <div
@@ -250,7 +290,7 @@ export default function HomePage() {
           minHeight: '700px'
         }}
       >
-        <div className="homepage-hero-text" style={{ marginTop: '148px', flex: '0 0 auto' }}>
+        <div className="homepage-hero-text" style={{ marginTop: '124px', flex: '0 0 auto' }}>
           <div
             ref={titleRef}
             className={`homepage-title homepage-slide-up${heroTextVisible ? ' visible' : ''}`}
@@ -407,12 +447,12 @@ export default function HomePage() {
             style={{
               color: '#000',
               fontFamily: '"LT Superior Serif", serif',
-              fontSize: '64px',
+              fontSize: '56px',
               fontStyle: 'medium',
               fontWeight: 500,
               lineHeight: '70px',
               textAlign: 'left',
-              marginLeft: '100px',
+              marginLeft: '0px',
               marginTop: '30px',
             }}
           >
