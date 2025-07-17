@@ -452,7 +452,7 @@ export default function HomePage() {
               fontWeight: 500,
               lineHeight: '70px',
               textAlign: 'left',
-              marginLeft: '0px',
+              marginLeft: window.innerWidth <= 480 ? '0px' : '100px', // Add conditional margin
               marginTop: '30px',
             }}
           >

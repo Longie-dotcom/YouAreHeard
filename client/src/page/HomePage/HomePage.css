@@ -2338,6 +2338,29 @@ html {
   }
 }
 
+@media (min-width: 1920px) and (max-width: 1920px) and (min-height: 1080px) and (max-height: 1080px) {
+  #home-page .homepage-cards-container {
+    height: 600px !important; /* Increase height for 1920x1080 */
+    padding: 0 60px; /* Add side padding */
+    margin-top: 300px;
+  }
+  
+  #home-page .homepage-cards {
+    gap: 24px; /* Ensure proper spacing between cards */
+  }
+  
+  #home-page .homepage-card {
+    min-width: 380px !important; /* Ensure cards are wide enough */
+    max-width: 420px !important;
+    flex-shrink: 0;
+  }
+  
+  /* Ensure cards don't get cut off at edges */
+  #home-page .homepage-cards-section {
+    overflow: visible;
+  }
+}
+
 /* Large Mobile Phones - S23 Ultra, iPhone Pro Max (415-480px) */
 @media (min-width: 415px) and (max-width: 480px) {
   #home-page .homepage-title {
