@@ -699,7 +699,8 @@
 }
 
 /* Also add this to ensure no horizontal scrolling anywhere */
-* {
+#home-page,
+#home-page * {
   box-sizing: border-box;
 }
 

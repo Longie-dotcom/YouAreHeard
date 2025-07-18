@@ -145,6 +145,7 @@
     height: 40px;
     align-items: center;
     justify-content: center;
+    margin-right: 25px;
     border-radius: 8px;
 }
 
@@ -602,13 +603,14 @@
     
     .nav-bar-detail.mobile-open .navigation div {
         width: 95%;
-        padding: 18px;
+        padding: 12px;
         font-size: 15px;
     }
     
     .nav-bar-detail.mobile-open .authentication button {
         width: 95%;
         padding: 14px;
+        margin-right: 40px;
         font-size: 15px;
     }
 }
