@@ -70,4 +70,28 @@ public class BlogController : ControllerBase
         }
         return Ok(blogs);
     }
+
+    [HttpPost("upload-image")]
+    public async Task<IActionResult> UploadImage([FromForm] FileUploadDTO model)
+    {
+        var file = model.File;
+
+        if (file == null || file.Length == 0)
+            return BadRequest(new { message = "No file uploaded." });
+
+        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", "blog-images");
+        if (!Directory.Exists(folderPath))
+            Directory.CreateDirectory(folderPath);
+
+        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+        var fullPath = Path.Combine(folderPath, fileName);
+
+        using (var stream = new FileStream(fullPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        var relativePath = $"/uploads/blog-images/{fileName}";
+        return Ok(new { fileName, url = relativePath });
+    }
 }

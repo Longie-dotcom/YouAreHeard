@@ -10,6 +10,6 @@
         public DateTime Date { get; set; }
         public int DoctorScheduleStatus { get; set; }
         public string? DoctorScheduleStatusName { get; set; }
-        public DoctorProfileDTO DoctorProfile { get; set; }
+        public DoctorProfileDTO? DoctorProfile { get; set; }
     }
 }

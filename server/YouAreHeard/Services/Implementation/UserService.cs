@@ -89,5 +89,10 @@ namespace YouAreHeard.Services.Implementation
         {
             return _userRepository.GetUserById(id);
         }
+
+        public void SaveFacebookPSID(int userId, string senderId)
+        {
+            _userRepository.SavePSID(userId, senderId);
+        }
     }
 }

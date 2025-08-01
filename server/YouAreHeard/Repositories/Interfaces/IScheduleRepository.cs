@@ -9,7 +9,8 @@ namespace YouAreHeard.Repositories.Interfaces
         DoctorScheduleDTO GetScheduleById(int scheduleId, int status, DateTime date);
         DoctorScheduleDTO GetScheduleById(int scheduleId, DateTime date);
         public void UpdateScheduleStatus(int scheduleId, int status);
-        public List<DoctorScheduleDTO> GetAllSchedulesWithAvailability(List<int> statusList, DateTime date);
+        public List<DoctorScheduleDTO> GetAllSchedulesWithAvailability(List<int> statusList, DateTime date, int roleID);
         List<DoctorScheduleDTO> GetAllSchedules();
+        void InsertSchedule(DoctorScheduleDTO schedule);
     }
 }

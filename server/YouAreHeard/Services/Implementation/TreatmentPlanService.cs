@@ -35,6 +35,7 @@ namespace YouAreHeard.Services.Implementation
 
         public void CreateTreatmentPlan(RequestTreatmentPlanDTO requestTreatmentPlan)
         {
+            requestTreatmentPlan.TreatmentPlan.Date = DateTime.Now;
             int treatmentPlanId = _treatmentPlanRepository.insertTreatmentPlan(requestTreatmentPlan.TreatmentPlan);
             if (treatmentPlanId >= 0)
             {

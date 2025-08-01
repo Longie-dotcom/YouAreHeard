@@ -35,6 +35,13 @@ namespace YouAreHeard.Services.Implementation
             _otpRepository.InsertOrUpdateOtp(email, otp);
         }
 
+        public void GenerateAndAutoVerifyOtp(string email)
+        {
+            var otp = GenerateOTP();
+            SaveOtpToDatabase(email, otp);
+            _otpRepository.MarkOtpAsVerified(email, otp);
+        }
+
         private string GenerateOTP(int length = 6)
         {
             var random = new Random();

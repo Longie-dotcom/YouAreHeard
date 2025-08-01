@@ -6,7 +6,9 @@ namespace YouAreHeard.Repositories.Interfaces
     {
         DoctorProfileDTO GetDoctorProfileByDoctorId(int userId);
         List<DoctorScheduleDTO> GetAllAvailableDoctorScheduleByDoctorId(int userId);
-        List<DoctorProfileDTO> GetAllDoctorProfiles();
-        List<DoctorScheduleDTO> GetAllAvailableDoctorSchedules();
+        List<DoctorProfileDTO> GetAllDoctorProfiles(int roleID);
+        List<DoctorScheduleDTO> GetAllAvailableDoctorSchedules(int roleID);
+        bool InsertDoctorProfile(DoctorProfileDTO doctor);
+        List<DoctorProfileDTO> GetAllDoctorProfilesByAdmin();
     }
 }

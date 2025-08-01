@@ -205,7 +205,7 @@ namespace YouAreHeard.Repositories.Implementation
             command.ExecuteNonQuery();
         }
 
-        public List<DoctorScheduleDTO> GetAllSchedulesWithAvailability(List<int> statusList, DateTime date)
+        public List<DoctorScheduleDTO> GetAllSchedulesWithAvailability(List<int> statusList, DateTime date, int roleID)
         {
             List<DoctorScheduleDTO> schedules = new List<DoctorScheduleDTO>();
 
@@ -217,32 +217,32 @@ namespace YouAreHeard.Repositories.Implementation
             string inClause = string.Join(", ", statusParams);
 
             string query = $@"
-        SELECT 
-            ds.DoctorScheduleID,
-            ds.UserID,
-            ds.Location,
-            ds.StartTime,
-            ds.EndTime,
-            ds.Date,
-            ds.doctorScheduleStatusID,
-            dss.doctorScheduleStatusName,
+                SELECT 
+                    ds.DoctorScheduleID,
+                    ds.UserID,
+                    ds.Location,
+                    ds.StartTime,
+                    ds.EndTime,
+                    ds.Date,
+                    ds.doctorScheduleStatusID,
+                    dss.doctorScheduleStatusName,
 
-            u.Name AS DoctorName,
-            u.Phone,
+                    u.Name AS DoctorName,
+                    u.Phone,
 
-            dp.Specialties,
-            dp.YearsOfExperience,
-            dp.Image,
-            dp.Gender,
-            dp.Description,
-            dp.LanguagesSpoken
+                    dp.Specialties,
+                    dp.YearsOfExperience,
+                    dp.Image,
+                    dp.Gender,
+                    dp.Description,
+                    dp.LanguagesSpoken
 
-        FROM DoctorSchedule ds
-        INNER JOIN [User] u ON ds.UserID = u.UserID
-        INNER JOIN DoctorProfile dp ON ds.UserID = dp.UserID
-        INNER JOIN DoctorScheduleStatus dss ON ds.doctorScheduleStatusID = dss.doctorScheduleStatusID
-        WHERE ds.doctorScheduleStatusID IN ({inClause}) AND ds.Date > @Date
-    ";
+                FROM DoctorSchedule ds
+                INNER JOIN [User] u ON ds.UserID = u.UserID
+                INNER JOIN DoctorProfile dp ON ds.UserID = dp.UserID
+                INNER JOIN DoctorScheduleStatus dss ON ds.doctorScheduleStatusID = dss.doctorScheduleStatusID
+                WHERE ds.doctorScheduleStatusID IN ({inClause}) AND ds.Date > @Date AND u.RoleID = @RoleID
+            ";
 
             using SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -251,7 +251,7 @@ namespace YouAreHeard.Repositories.Implementation
             {
                 cmd.Parameters.AddWithValue($"@status{i}", statusList[i]);
             }
-
+            cmd.Parameters.AddWithValue("@RoleID", roleID);
             cmd.Parameters.AddWithValue("@Date", date);
 
             using SqlDataReader reader = cmd.ExecuteReader();
@@ -354,6 +354,29 @@ namespace YouAreHeard.Repositories.Implementation
             }
 
             return schedules;
+        }
+
+        public void InsertSchedule(DoctorScheduleDTO schedule)
+        {
+            using var connection = DBContext.GetConnection();
+            connection.Open();
+
+            var query = @"
+            INSERT INTO DoctorSchedule 
+                (UserID, Location, StartTime, EndTime, Date, DoctorScheduleStatusID)
+            VALUES 
+                (@UserID, @Location, @StartTime, @EndTime, @Date, @DoctorScheduleStatusID);
+            ";
+
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@UserID", schedule.UserID);
+            command.Parameters.AddWithValue("@Location", schedule.Location ?? string.Empty);
+            command.Parameters.AddWithValue("@StartTime", schedule.StartTime);
+            command.Parameters.AddWithValue("@EndTime", schedule.EndTime);
+            command.Parameters.AddWithValue("@Date", schedule.Date.Date);
+            command.Parameters.AddWithValue("@DoctorScheduleStatusID", schedule.DoctorScheduleStatus);
+
+            command.ExecuteNonQuery();
         }
     }
 }

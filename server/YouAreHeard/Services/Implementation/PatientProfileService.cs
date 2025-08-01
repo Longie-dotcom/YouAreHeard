@@ -1,3 +1,4 @@
+using YouAreHeard.Enums;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Interfaces;
 using YouAreHeard.Services.Interfaces;
@@ -52,11 +53,25 @@ namespace YouAreHeard.Services
 
         public void InsertPatientProfile(PatientProfileDTO pp)
         {
-            _patientProfileRepository.InsertPatientProfile(pp);
-            foreach (var condition in pp.Conditions)
+            if (_patientProfileRepository.IsPatientProfileExists(pp.UserID))
             {
-                _patientConditionRepository.InsertPatientCondition(condition, pp.UserID);
+                _patientProfileRepository.UpdatePatientProfile(pp);
+                _patientConditionRepository.UpdatePatientConditions(pp.UserID, pp.Conditions);
             }
+            else
+            {
+                pp.HivStatusID = Constraints.DefaultHIVStatus;
+                _patientProfileRepository.InsertPatientProfile(pp);
+                foreach (var condition in pp.Conditions)
+                {
+                    _patientConditionRepository.InsertPatientCondition(condition, pp.UserID);
+                }
+            }
+        }
+
+        public void UpdatePatientHIVStatus(UpdatePatientHIVStatusDTO update)
+        {
+            _patientProfileRepository.UpdatePatientHIVStatus(update);
         }
     }
 }

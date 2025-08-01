@@ -68,7 +68,8 @@ namespace YouAreHeard.Services.Implementation
             Console.WriteLine(responseJson);
 
             var result = JsonConvert.DeserializeObject<dynamic>(responseJson);
-            return result?.data?.checkoutUrl?.ToString();
+            var checkoutUrl = result?.data?.checkoutUrl?.ToString();
+            return $"{checkoutUrl}?expiredAt={expiredAt}";
         }
 
         public string GeneratePayOSSignature(int orderCode, int amount, string description, string returnUrl, string cancelUrl, string checksumKey)

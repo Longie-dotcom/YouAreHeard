@@ -15,15 +15,16 @@ namespace YouAreHeard.Repositories.Implementation
 
             string query = @"
             INSERT INTO Appointment 
-            (doctorID, patientID, doctorScheduleID, appointmentStatusID, zoomLink, notes, reason, isAnonymous, isOnline, queueNumber, date, orderCode)
+            (doctorID, patientID, doctorScheduleID, appointmentStatusID, zoomLink, notes, reason, isAnonymous, isOnline, queueNumber, date, orderCode, doctorNotes)
             OUTPUT INSERTED.appointmentID
             VALUES 
-            (@DoctorID, @PatientID, @DoctorScheduleID, @AppointmentStatusID, @ZoomLink, @Notes, @Reason, @IsAnonymous, @IsOnline, @QueueNumber, @CreatedDate, @OrderCode)";
+            (@DoctorID, @PatientID, @DoctorScheduleID, @AppointmentStatusID, @ZoomLink, @Notes, @Reason, @IsAnonymous, @IsOnline, @QueueNumber, @CreatedDate, @OrderCode, @DoctorNotes)";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@DoctorID", appointment.DoctorID);
             cmd.Parameters.AddWithValue("@PatientID", appointment.PatientID);
             cmd.Parameters.AddWithValue("@DoctorScheduleID", appointment.DoctorScheduleID);
+            cmd.Parameters.AddWithValue("@DoctorNotes", (object?)appointment.DoctorNotes ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@AppointmentStatusID", (object?)appointment.AppointmentStatusID ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@ZoomLink", (object?)appointment.ZoomLink ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@Notes", (object?)appointment.Notes ?? DBNull.Value);
@@ -55,6 +56,7 @@ namespace YouAreHeard.Repositories.Implementation
                 a.isOnline,
                 a.appointmentStatusID,
                 a.queueNumber,
+                a.orderCode,
                 a.date AS createdDate,
                 s.appointmentStatusName,
                 doc.name AS doctorName,
@@ -96,13 +98,14 @@ namespace YouAreHeard.Repositories.Implementation
                     AppointmentStatusID = reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
                     QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("createdDate")),
+                    OrderCode = reader.IsDBNull(reader.GetOrdinal("orderCode")) ? null : reader.GetString(reader.GetOrdinal("orderCode")),
 
                     AppointmentStatusName = reader.IsDBNull(reader.GetOrdinal("appointmentStatusName")) ? null : reader.GetString(reader.GetOrdinal("appointmentStatusName")),
                     DoctorName = reader.IsDBNull(reader.GetOrdinal("doctorName")) ? null : reader.GetString(reader.GetOrdinal("doctorName")),
                     PatientName = reader.IsDBNull(reader.GetOrdinal("patientName")) ? null : reader.GetString(reader.GetOrdinal("patientName")),
                     PatientPhone = reader.IsDBNull(reader.GetOrdinal("patientPhone")) ? null : reader.GetString(reader.GetOrdinal("patientPhone")),
                     PatientDob = reader.IsDBNull(reader.GetOrdinal("patientDob")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("patientDob")),
-
+                    
                     ScheduleDate = reader.GetDateTime(reader.GetOrdinal("date")),
                     StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
                     EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
@@ -298,57 +301,97 @@ namespace YouAreHeard.Repositories.Implementation
 
         public AppointmentDTO GetAppointmentByOrderCode(string orderCode)
         {
-            using var connection = DBContext.GetConnection();
-            connection.Open();
-
+            AppointmentDTO appointment = null;
             string query = @"
-            SELECT 
-                appointmentID,
-                doctorScheduleID,
-                appointmentStatusID,
-                zoomLink,
-                notes,
-                reason,
-                isAnonymous,
-                isOnline,
-                queueNumber,
-                date,
-                doctorID,
-                patientID
-            FROM Appointment
-            WHERE orderCode = @OrderCode";
+                SELECT 
+                    a.appointmentID,
+                    a.doctorScheduleID,
+                    a.appointmentStatusID,
+                    a.zoomLink,
+                    a.notes,
+                    a.reason,
+                    a.isAnonymous,
+                    a.isOnline,
+                    a.queueNumber,
+                    a.date,
+                    a.doctorID,
+                    a.patientID,
+                    a.orderCode,
 
-            using var command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@OrderCode", orderCode);
+                    ds.date AS scheduleDate,
+                    ds.startTime,
+                    ds.endTime,
+                    ds.location,
 
-            using var reader = command.ExecuteReader();
+                    u_patient.name AS patientName,
+                    u_patient.phone AS patientPhone,
+                    u_patient.dob AS patientDob,
+                    u_patient.email AS patientEmail,
 
-            if (reader.Read())
+                    u_doctor.name AS doctorName
+
+                FROM Appointment a
+                JOIN DoctorSchedule ds ON a.doctorScheduleID = ds.doctorScheduleID
+                JOIN [User] u_patient ON a.patientID = u_patient.userID
+                JOIN [User] u_doctor ON a.doctorID = u_doctor.userID
+                WHERE a.orderCode = @OrderCode;
+            ";
+
+            using var conn = DBContext.GetConnection();
+            using (SqlCommand command = new SqlCommand(query, conn))
             {
-                return new AppointmentDTO
+                command.Parameters.AddWithValue("@OrderCode", orderCode);
+                conn.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
-                    DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
-                    AppointmentStatusID = reader.IsDBNull(reader.GetOrdinal("appointmentStatusID"))
-                        ? (int?)null : reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
-                    ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink"))
-                        ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
-                    Notes = reader.IsDBNull(reader.GetOrdinal("notes"))
-                        ? null : reader.GetString(reader.GetOrdinal("notes")),
-                    Reason = reader.IsDBNull(reader.GetOrdinal("reason"))
-                        ? null : reader.GetString(reader.GetOrdinal("reason")),
-                    IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
-                    IsOnline = reader.GetBoolean(reader.GetOrdinal("isOnline")),
-                    QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber"))
-                        ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
-                    CreatedDate = reader.IsDBNull(reader.GetOrdinal("date"))
-                        ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("date")),
-                    DoctorID = reader.GetInt32(reader.GetOrdinal("doctorID")),
-                    PatientID = reader.GetInt32(reader.GetOrdinal("patientID"))
-                };
+                    if (reader.Read())
+                    {
+                        appointment = new AppointmentDTO
+                        {
+                            AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
+                            DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
+                            AppointmentStatusID = reader.IsDBNull(reader.GetOrdinal("appointmentStatusID"))
+                                ? (int?)null : reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
+                            ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink"))
+                                ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
+                            Notes = reader.IsDBNull(reader.GetOrdinal("notes"))
+                                ? null : reader.GetString(reader.GetOrdinal("notes")),
+                            Reason = reader.IsDBNull(reader.GetOrdinal("reason"))
+                                ? null : reader.GetString(reader.GetOrdinal("reason")),
+                            IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
+                            IsOnline = reader.GetBoolean(reader.GetOrdinal("isOnline")),
+                            QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber"))
+                                ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
+                            CreatedDate = reader.IsDBNull(reader.GetOrdinal("date"))
+                                ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("date")),
+                            DoctorID = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                            PatientID = reader.GetInt32(reader.GetOrdinal("patientID")),
+                            OrderCode = reader.GetString(reader.GetOrdinal("orderCode")),
+
+                            // Schedule info
+                            ScheduleDate = reader.GetDateTime(reader.GetOrdinal("scheduleDate")),
+                            StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
+                            EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
+                            Location = reader.GetString(reader.GetOrdinal("location")),
+
+                            // Patient info
+                            PatientName = reader.GetString(reader.GetOrdinal("patientName")),
+                            PatientPhone = reader.IsDBNull(reader.GetOrdinal("patientPhone"))
+                                ? null : reader.GetString(reader.GetOrdinal("patientPhone")),
+                            PatientDob = reader.IsDBNull(reader.GetOrdinal("patientDob"))
+                                ? null : reader.GetDateTime(reader.GetOrdinal("patientDob")),
+                            PatientEmail = reader.IsDBNull(reader.GetOrdinal("patientEmail"))
+                                ? null : reader.GetString(reader.GetOrdinal("patientEmail")),
+
+                            // Doctor info
+                            DoctorName = reader.GetString(reader.GetOrdinal("doctorName"))
+                        };
+                    }
+                }
             }
 
-            return null;
+            return appointment;
         }
 
         public List<AppointmentDTO> GetConfirmedAppointmentsByScheduleId(int scheduleId)
@@ -414,7 +457,9 @@ namespace YouAreHeard.Repositories.Implementation
                 a.reason,
                 a.queueNumber,
                 a.isAnonymous,
+                a.doctorID,
 
+                -- Patient Info
                 u.userID AS patientUserID,
                 u.name AS patientName,
                 u.phone AS patientPhone,
@@ -423,12 +468,19 @@ namespace YouAreHeard.Repositories.Implementation
                 pp.height,
                 pp.weight,
                 pp.gender,
-
                 hs.HIVStatusName,
                 ps.pregnancyStatusName,
 
                 c.conditionID,
-                c.conditionName
+                c.conditionName,
+
+                -- Schedule Info
+                ds.date,
+                ds.startTime,
+                ds.endTime,
+
+                -- Doctor name only
+                du.name AS doctorName
 
             FROM Appointment a
             INNER JOIN [User] u ON a.patientID = u.userID
@@ -437,6 +489,10 @@ namespace YouAreHeard.Repositories.Implementation
             LEFT JOIN PregnancyStatus ps ON pp.pregnancyStatusID = ps.PregnancyStatusID
             LEFT JOIN PatientCondition pc ON pc.userID = u.userID
             LEFT JOIN [Condition] c ON c.conditionID = pc.conditionID
+
+            LEFT JOIN DoctorSchedule ds ON a.doctorScheduleID = ds.doctorScheduleID
+            LEFT JOIN [User] du ON a.doctorID = du.userID
+
             WHERE a.appointmentID = @AppointmentID";
 
             using var command = new SqlCommand(query, connection);
@@ -461,10 +517,15 @@ namespace YouAreHeard.Repositories.Implementation
                         Reason = reader["reason"] as string,
                         QueueNumber = reader.GetValue("queueNumber") as int?,
                         IsAnonymous = reader.GetBoolean("isAnonymous"),
+                        DoctorID = reader.GetInt32("doctorID"),
+
+                        // Patient Info
                         PatientID = reader.GetInt32("patientUserID"),
                         PatientName = reader["patientName"] as string,
                         PatientPhone = reader["patientPhone"] as string,
-                        PatientDob = reader["patientDob"] as DateTime?,
+                        PatientDob = reader.GetValue("patientDob") as DateTime?,
+
+                        // Patient Profile
                         PatientProfile = new PatientProfileDTO
                         {
                             Height = reader.IsDBNull("height") ? null : (double?)reader.GetDouble("height"),
@@ -473,10 +534,20 @@ namespace YouAreHeard.Repositories.Implementation
                             HIVStatusName = reader["HIVStatusName"] as string,
                             PregnancyStatusName = reader["pregnancyStatusName"] as string,
                             Conditions = conditions
-                        }
+                        },
+
+                        // Schedule Info
+                        ScheduleDate = reader.GetDateTime("date"),
+                        StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
+                        EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
+
+                        // Doctor Info
+                        DoctorName = reader["doctorName"] as string,
+
                     };
                 }
 
+                // Add conditions (if any)
                 if (!reader.IsDBNull(reader.GetOrdinal("conditionID")))
                 {
                     conditions.Add(new ConditionDTO
@@ -488,6 +559,34 @@ namespace YouAreHeard.Repositories.Implementation
             }
 
             return appointment;
+        }
+
+        public string GetLatestDoctorNotes(int patientId, int doctorId)
+        {
+            using var connection = DBContext.GetConnection();
+            connection.Open();
+
+            string query = @"
+                SELECT TOP 1 a.doctorNotes, ds.date
+                FROM Appointment a
+                INNER JOIN DoctorSchedule ds ON a.doctorScheduleID = ds.doctorScheduleID
+                WHERE a.patientID = @PatientID AND a.doctorId = @DoctorID
+                  AND a.doctorNotes IS NOT NULL AND LTRIM(RTRIM(a.doctorNotes)) <> ''
+                ORDER BY ds.date DESC, ds.startTime DESC";
+
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@PatientID", patientId);
+            command.Parameters.AddWithValue("@DoctorID", doctorId);
+
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var notes = reader["doctorNotes"] as string;
+                var date = reader.GetDateTime(reader.GetOrdinal("date"));
+                return $"{notes} ({date:yyyy-MM-dd})";
+            }
+
+            return null;
         }
 
         public void UpdateZoomLink(int appointmentId, string zoomLink)
@@ -532,6 +631,310 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@ScheduleID", scheduleId);
 
             cmd.ExecuteNonQuery();
+        }
+        public void UpdateDoctorNoteAppointment(DoctorAppointmentNoteDTO note)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+            UPDATE Appointment
+            SET doctorNotes = @Note
+            WHERE appointmentID = @AppointmentID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Note", (object?)note.Notes ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@AppointmentID", note.AppointmentID);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public List<AppointmentDTO> GetAllAppointmentHasDoctorNotes(int doctorId)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+            SELECT 
+                a.appointmentID,
+                a.doctorID,
+                a.patientID,
+                a.doctorScheduleID,
+                a.zoomLink,
+                a.notes,
+                a.reason,
+                a.doctorNotes,
+                a.isAnonymous,
+                a.isOnline,
+                a.appointmentStatusID,
+                a.queueNumber,
+                a.date AS createdDate,
+                s.appointmentStatusName,
+                doc.name AS doctorName,
+                pat.name AS patientName,
+                pat.phone AS patientPhone,
+                pat.dob AS patientDob,
+                ds.date,
+                ds.startTime,
+                ds.endTime,
+                ds.location
+            FROM Appointment a
+            INNER JOIN AppointmentStatus s ON a.appointmentStatusID = s.appointmentStatusID
+            INNER JOIN DoctorSchedule ds ON a.doctorScheduleID = ds.doctorScheduleID
+            INNER JOIN [User] doc ON a.doctorID = doc.userID
+            INNER JOIN [User] pat ON a.patientID = pat.userID
+            WHERE a.doctorID = @DoctorID AND a.doctorNotes IS NOT NULL AND LTRIM(RTRIM(a.doctorNotes)) <> ''
+            ORDER BY ds.date DESC, ds.startTime DESC";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@DoctorID", doctorId);
+
+            using var reader = cmd.ExecuteReader();
+            var appointments = new List<AppointmentDTO>();
+
+            while (reader.Read())
+            {
+                var appointment = new AppointmentDTO
+                {
+                    AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
+                    DoctorID = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                    PatientID = reader.GetInt32(reader.GetOrdinal("patientID")),
+                    DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
+                    ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink")) ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
+                    Notes = reader.IsDBNull(reader.GetOrdinal("notes")) ? null : reader.GetString(reader.GetOrdinal("notes")),
+                    Reason = reader.IsDBNull(reader.GetOrdinal("reason")) ? null : reader.GetString(reader.GetOrdinal("reason")),
+                    DoctorNotes = reader.IsDBNull(reader.GetOrdinal("doctorNotes")) ? null : reader.GetString(reader.GetOrdinal("doctorNotes")),
+                    IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
+                    IsOnline = reader.GetBoolean(reader.GetOrdinal("isOnline")),
+                    AppointmentStatusID = reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
+                    QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
+                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("createdDate")),
+
+                    AppointmentStatusName = reader.IsDBNull(reader.GetOrdinal("appointmentStatusName")) ? null : reader.GetString(reader.GetOrdinal("appointmentStatusName")),
+                    DoctorName = reader.IsDBNull(reader.GetOrdinal("doctorName")) ? null : reader.GetString(reader.GetOrdinal("doctorName")),
+                    PatientName = reader.IsDBNull(reader.GetOrdinal("patientName")) ? null : reader.GetString(reader.GetOrdinal("patientName")),
+                    PatientPhone = reader.IsDBNull(reader.GetOrdinal("patientPhone")) ? null : reader.GetString(reader.GetOrdinal("patientPhone")),
+                    PatientDob = reader.IsDBNull(reader.GetOrdinal("patientDob")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("patientDob")),
+
+                    ScheduleDate = reader.GetDateTime(reader.GetOrdinal("date")),
+                    StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
+                    EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
+                    Location = reader.GetString(reader.GetOrdinal("location"))
+                };
+
+                appointments.Add(appointment);
+            }
+
+            return appointments;
+        }
+
+        public List<AppointmentDTO> GetAllAppointments()
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+            SELECT 
+                a.appointmentID,
+                a.doctorID,
+                a.patientID,
+                a.doctorScheduleID,
+                a.zoomLink,
+                a.notes,
+                a.reason,
+                a.doctorNotes,
+                a.isAnonymous,
+                a.isOnline,
+                a.appointmentStatusID,
+                a.queueNumber,
+                a.date AS createdDate,
+                s.appointmentStatusName,
+                doc.name AS doctorName,
+                pat.name AS patientName,
+                pat.phone AS patientPhone,
+                pat.dob AS patientDob,
+                ds.date,
+                ds.startTime,
+                ds.endTime,
+                ds.location
+            FROM Appointment a
+            INNER JOIN AppointmentStatus s ON a.appointmentStatusID = s.appointmentStatusID
+            INNER JOIN DoctorSchedule ds ON a.doctorScheduleID = ds.doctorScheduleID
+            INNER JOIN [User] doc ON a.doctorID = doc.userID
+            INNER JOIN [User] pat ON a.patientID = pat.userID
+            ORDER BY ds.date DESC, ds.startTime DESC";
+
+            using var cmd = new SqlCommand(query, conn);
+
+            using var reader = cmd.ExecuteReader();
+            var appointments = new List<AppointmentDTO>();
+
+            while (reader.Read())
+            {
+                var appointment = new AppointmentDTO
+                {
+                    AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
+                    DoctorID = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                    PatientID = reader.GetInt32(reader.GetOrdinal("patientID")),
+                    DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
+                    ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink")) ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
+                    Notes = reader.IsDBNull(reader.GetOrdinal("notes")) ? null : reader.GetString(reader.GetOrdinal("notes")),
+                    Reason = reader.IsDBNull(reader.GetOrdinal("reason")) ? null : reader.GetString(reader.GetOrdinal("reason")),
+                    DoctorNotes = reader.IsDBNull(reader.GetOrdinal("doctorNotes")) ? null : reader.GetString(reader.GetOrdinal("doctorNotes")),
+                    IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
+                    IsOnline = reader.GetBoolean(reader.GetOrdinal("isOnline")),
+                    AppointmentStatusID = reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
+                    QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
+                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("createdDate")),
+
+                    AppointmentStatusName = reader.IsDBNull(reader.GetOrdinal("appointmentStatusName")) ? null : reader.GetString(reader.GetOrdinal("appointmentStatusName")),
+                    DoctorName = reader.IsDBNull(reader.GetOrdinal("doctorName")) ? null : reader.GetString(reader.GetOrdinal("doctorName")),
+                    PatientName = reader.IsDBNull(reader.GetOrdinal("patientName")) ? null : reader.GetString(reader.GetOrdinal("patientName")),
+                    PatientPhone = reader.IsDBNull(reader.GetOrdinal("patientPhone")) ? null : reader.GetString(reader.GetOrdinal("patientPhone")),
+                    PatientDob = reader.IsDBNull(reader.GetOrdinal("patientDob")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("patientDob")),
+
+                    ScheduleDate = reader.GetDateTime(reader.GetOrdinal("date")),
+                    StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
+                    EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
+                    Location = reader.GetString(reader.GetOrdinal("location"))
+                };
+
+                appointments.Add(appointment);
+            }
+
+            return appointments;
+        }
+
+        public void UpdateAppointmentStatus(UpdateAppointmentStatusDTO appointmentStatusDTO)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+            UPDATE Appointment
+            SET appointmentStatusID = @NewStatusID
+            WHERE appointmentID = @AppointmentID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@NewStatusID", appointmentStatusDTO.AppointmentStatusID);
+            cmd.Parameters.AddWithValue("@AppointmentID", appointmentStatusDTO.AppointmentID);
+
+            int rowsAffected = cmd.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new Exception($"No appointment found with ID {appointmentStatusDTO.AppointmentID}.");
+            }
+        }
+
+        public AppointmentDTO UpdateAppointmentSchedule(UpdateScheduleAppointmentDTO dto)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            // Begin a transaction in case something fails mid-way
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                // Step 1: Update
+                string updateQuery = @"
+                UPDATE Appointment
+                SET doctorScheduleID = @DoctorScheduleID,
+                    doctorID = @DoctorID
+                WHERE appointmentID = @AppointmentID";
+
+                using (var updateCmd = new SqlCommand(updateQuery, conn, transaction))
+                {
+                    updateCmd.Parameters.AddWithValue("@DoctorScheduleID", dto.DoctorScheduleID);
+                    updateCmd.Parameters.AddWithValue("@DoctorID", dto.DoctorID);
+                    updateCmd.Parameters.AddWithValue("@AppointmentID", dto.AppointmentID);
+
+                    int affected = updateCmd.ExecuteNonQuery();
+                    if (affected == 0)
+                        throw new Exception($"No appointment found with ID {dto.AppointmentID}.");
+                }
+
+                // Step 2: Retrieve Updated Appointment
+                string selectQuery = @"
+                SELECT 
+                    a.appointmentID,
+                    a.doctorID,
+                    a.patientID,
+                    a.doctorScheduleID,
+                    a.zoomLink,
+                    a.notes,
+                    a.reason,
+                    a.doctorNotes,
+                    a.isAnonymous,
+                    a.isOnline,
+                    a.appointmentStatusID,
+                    a.queueNumber,
+                    a.date AS createdDate,
+                    s.appointmentStatusName,
+                    doc.name AS doctorName,
+                    pat.name AS patientName,
+                    pat.phone AS patientPhone,
+                    pat.dob AS patientDob,
+                    pat.email AS patientEmail,
+                    ds.date,
+                    ds.startTime,
+                    ds.endTime,
+                    ds.location
+                FROM Appointment a
+                INNER JOIN AppointmentStatus s ON a.appointmentStatusID = s.appointmentStatusID
+                INNER JOIN DoctorSchedule ds ON a.doctorScheduleID = ds.doctorScheduleID
+                INNER JOIN [User] doc ON a.doctorID = doc.userID
+                INNER JOIN [User] pat ON a.patientID = pat.userID
+                WHERE a.appointmentID = @AppointmentID";
+
+                using var selectCmd = new SqlCommand(selectQuery, conn, transaction);
+                selectCmd.Parameters.AddWithValue("@AppointmentID", dto.AppointmentID);
+
+                AppointmentDTO appointment;
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        throw new Exception("Appointment not found after update.");
+
+                    // Map to DTO
+                    appointment = new AppointmentDTO
+                    {
+                        AppointmentID = reader.GetInt32(reader.GetOrdinal("appointmentID")),
+                        DoctorID = reader.GetInt32(reader.GetOrdinal("doctorID")),
+                        PatientID = reader.GetInt32(reader.GetOrdinal("patientID")),
+                        DoctorScheduleID = reader.GetInt32(reader.GetOrdinal("doctorScheduleID")),
+                        ZoomLink = reader.IsDBNull(reader.GetOrdinal("zoomLink")) ? null : reader.GetString(reader.GetOrdinal("zoomLink")),
+                        Notes = reader.IsDBNull(reader.GetOrdinal("notes")) ? null : reader.GetString(reader.GetOrdinal("notes")),
+                        Reason = reader.IsDBNull(reader.GetOrdinal("reason")) ? null : reader.GetString(reader.GetOrdinal("reason")),
+                        DoctorNotes = reader.IsDBNull(reader.GetOrdinal("doctorNotes")) ? null : reader.GetString(reader.GetOrdinal("doctorNotes")),
+                        IsAnonymous = reader.GetBoolean(reader.GetOrdinal("isAnonymous")),
+                        IsOnline = reader.GetBoolean(reader.GetOrdinal("isOnline")),
+                        AppointmentStatusID = reader.GetInt32(reader.GetOrdinal("appointmentStatusID")),
+                        QueueNumber = reader.IsDBNull(reader.GetOrdinal("queueNumber")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("queueNumber")),
+                        CreatedDate = reader.GetDateTime(reader.GetOrdinal("createdDate")),
+
+                        AppointmentStatusName = reader.GetString(reader.GetOrdinal("appointmentStatusName")),
+                        DoctorName = reader.GetString(reader.GetOrdinal("doctorName")),
+                        PatientName = reader.GetString(reader.GetOrdinal("patientName")),
+                        PatientEmail = reader.GetString(reader.GetOrdinal("patientEmail")),
+                        PatientPhone = reader.GetString(reader.GetOrdinal("patientPhone")),
+                        PatientDob = reader.GetDateTime(reader.GetOrdinal("patientDob")),
+                        ScheduleDate = reader.GetDateTime(reader.GetOrdinal("date")),
+                        StartTime = reader.GetTimeSpan(reader.GetOrdinal("startTime")),
+                        EndTime = reader.GetTimeSpan(reader.GetOrdinal("endTime")),
+                        Location = reader.GetString(reader.GetOrdinal("location"))
+                    };
+                }
+
+                transaction.Commit();
+                return appointment;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
     }
 }

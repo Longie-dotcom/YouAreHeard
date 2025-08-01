@@ -25,6 +25,7 @@
         public string? PatientName { get; set; }
         public string? PatientPhone { get; set; }
         public DateTime? PatientDob { get; set; }
+        public string? PatientEmail { get; set; }
         public PatientProfileDTO? PatientProfile { get; set; }
 
         // User(patient doctor) data (table User + DoctorProfile)

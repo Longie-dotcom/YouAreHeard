@@ -12,34 +12,33 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-            SELECT
-                b.blogID,
-                b.userID,
-                b.details,
-                b.title,
-                b.image,
-                b.date
+            SELECT b.blogID, b.userID, b.details, b.title, b.image, b.date,
+                   u.name
             FROM Blog b
-            ";
-            using var cmd = new SqlCommand(query, conn);
-            using var reader = cmd.ExecuteReader();
+            INNER JOIN [User] u ON b.userID = u.userID
+            ORDER BY b.date DESC";
 
+            using var cmd = new SqlCommand(query, conn);
+
+            using var reader = cmd.ExecuteReader();
             var blogs = new List<BlogDTO>();
 
             while (reader.Read())
             {
-                blogs.Add(new BlogDTO
+                var blog = new BlogDTO
                 {
                     blogId = reader.GetInt32(reader.GetOrdinal("blogID")),
                     userId = reader.GetInt32(reader.GetOrdinal("userID")),
                     details = reader.GetString(reader.GetOrdinal("details")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     image = reader.GetString(reader.GetOrdinal("image")),
-                    date = reader.GetDateTime(reader.GetOrdinal("date"))
-                });
+                    date = reader.GetDateTime(reader.GetOrdinal("date")),
+                    UserName = reader.GetString(reader.GetOrdinal("name"))
+                };
+                blogs.Add(blog);
             }
-            return blogs;
 
+            return blogs;
         }
 
         public void UploadBlog(BlogDTO blog)
@@ -105,10 +104,12 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-                SELECT blogID, userID, details, title, image, date
-                FROM Blog
-                WHERE userID = @userID
-                ORDER BY date DESC";
+            SELECT b.blogID, b.userID, b.details, b.title, b.image, b.date,
+                   u.name
+            FROM Blog b
+            INNER JOIN [User] u ON b.userID = u.userID
+            WHERE b.userID = @userID
+            ORDER BY b.date DESC";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@userID", userId);
@@ -125,7 +126,8 @@ namespace YouAreHeard.Repositories.Implementation
                     details = reader.GetString(reader.GetOrdinal("details")),
                     title = reader.GetString(reader.GetOrdinal("title")),
                     image = reader.GetString(reader.GetOrdinal("image")),
-                    date = reader.GetDateTime(reader.GetOrdinal("date"))
+                    date = reader.GetDateTime(reader.GetOrdinal("date")),
+                    UserName = reader.GetString(reader.GetOrdinal("name"))
                 };
                 blogs.Add(blog);
             }

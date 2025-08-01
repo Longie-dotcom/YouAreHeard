@@ -1,4 +1,6 @@
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using YouAreHeard.BackgroundServices;
 using YouAreHeard.Models;
 using YouAreHeard.Repositories.Implementation;
 using YouAreHeard.Repositories.Interfaces;
@@ -8,6 +10,10 @@ using YouAreHeard.Services.Interfaces;
 using YouAreHeard.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 builder.Services.AddHttpClient();
 
 // CORS
@@ -27,7 +33,17 @@ builder.Services.AddControllers();
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "YouAreHeard API",
+        Version = "v1"
+    });
+
+    // Enable support for IFormFile in Swagger UI
+    c.OperationFilter<FileUploadOperationFilter>();
+});
 
 // Register Application Services
 builder.Services.AddHttpContextAccessor();
@@ -41,6 +57,10 @@ builder.Services.AddScoped<ILabTestService, LabTestService>();
 builder.Services.AddScoped<IPatientProfileService, PatientProfileService>();
 builder.Services.AddScoped<IPayOSService, PayOSService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IMessengerService, MessengerService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+
+builder.Services.AddHostedService<PillReminderBackgroundService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -64,6 +84,8 @@ builder.Services.AddScoped<IPregnancyStatusRepository, PregnancyStatusRepository
 builder.Services.AddScoped<IPatientConditionRepository, PatientConditionRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IDoctorRatingRepository, DoctorRatingRepository>();
+builder.Services.AddScoped<IAppointmentStatusRepository, AppointmentStatusRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 var app = builder.Build();
 
@@ -118,6 +140,17 @@ try
 catch (Exception ex)
 {
     app.Logger.LogError(ex, "Failed to initialize PayOS!");
+}
+
+// Deployment config
+try
+{
+    var deploymentSettings = builder.Configuration.GetSection("Deployment").Get<DeploymentSettings>();
+    DeploymentSettingsContext.Initialize(deploymentSettings);
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Failed to initialize deployment settings.");
 }
 
 // DB config

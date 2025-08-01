@@ -14,7 +14,13 @@ namespace YouAreHeard.Repositories.Interfaces
         public List<AppointmentDTO> GetConfirmedAppointmentsByScheduleId(int scheduleId);
         public void UpdateQueueNumber(int appointmentId, int? newQueueNumber);
         public AppointmentDTO GetAppointmentWithPatientDetailsById(int appointmentId);
+        public string GetLatestDoctorNotes(int patientId, int doctorId);
         public void UpdateZoomLink(int appointmentId, string zoomLink);
         public void CancelExpiredPendingAppointmentsBySchedule(int scheduleId, DateTime now, int expirationMinutes);
+        public void UpdateDoctorNoteAppointment(DoctorAppointmentNoteDTO note);
+        public List<AppointmentDTO> GetAllAppointmentHasDoctorNotes(int doctorId);
+        public List<AppointmentDTO> GetAllAppointments();
+        public void UpdateAppointmentStatus(UpdateAppointmentStatusDTO appointmentStatusDTO);
+        public AppointmentDTO UpdateAppointmentSchedule(UpdateScheduleAppointmentDTO update);
     }
 }

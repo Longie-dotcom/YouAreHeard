@@ -13,5 +13,7 @@ namespace YouAreHeard.Models
         public string image { get; set; }
 
         public DateTime date { get; set; }
+
+        public string? UserName { get; set; }
     }
 }

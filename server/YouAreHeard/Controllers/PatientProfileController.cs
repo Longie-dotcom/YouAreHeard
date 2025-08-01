@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using YouAreHeard;
+using YouAreHeard.Models;
 using YouAreHeard.Services.Interfaces;
 
 [ApiController]
@@ -40,6 +41,20 @@ public class PatientProfileController : ControllerBase
         _patientProfileService.InsertPatientProfile(pp);
         return Ok();
     }
+
+    [HttpPost("updateHIVStatus")]
+    public IActionResult UpdateHIVStatus([FromBody] UpdatePatientHIVStatusDTO update)
+    {
+        if (!ModelState.IsValid)
+        {
+            {
+                return BadRequest(ModelState);
+            }
+        }
+        _patientProfileService.UpdatePatientHIVStatus(update);
+        return Ok();
+    }
+
 
     [HttpGet("conditions")]
     public IActionResult GetAllConditions()

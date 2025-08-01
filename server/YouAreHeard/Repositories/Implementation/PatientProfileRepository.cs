@@ -50,24 +50,27 @@ namespace YouAreHeard.Repositories.Implementation
             conn.Open();
 
             string query = @"
-        SELECT
-            pp.userID,
-            pp.hivStatusID,
-            hs.HIVStatusName,
-            pp.pregnancyStatusID,
-            ps.pregnancyStatusName,
-            pp.height,
-            pp.weight,
-            pp.gender,
-            pc.conditionID,
-            c.conditionName
-        FROM PatientProfile pp
-        LEFT JOIN HIVStatus hs ON pp.hivStatusID = hs.HIVStatusID
-        LEFT JOIN PregnancyStatus ps ON pp.pregnancyStatusID = ps.pregnancyStatusID
-        LEFT JOIN PatientCondition pc ON pp.userID = pc.userID
-        LEFT JOIN [Condition] c ON pc.conditionID = c.conditionID
-        WHERE pp.userID = @userID
-    ";
+                SELECT
+                    pp.userID,
+                    u.name,
+                    u.dob,
+                    pp.hivStatusID,
+                    hs.HIVStatusName,
+                    pp.pregnancyStatusID,
+                    ps.pregnancyStatusName,
+                    pp.height,
+                    pp.weight,
+                    pp.gender,
+                    pc.conditionID,
+                    c.conditionName
+                FROM PatientProfile pp
+                LEFT JOIN [User] u ON pp.userID = u.userID
+                LEFT JOIN HIVStatus hs ON pp.hivStatusID = hs.HIVStatusID
+                LEFT JOIN PregnancyStatus ps ON pp.pregnancyStatusID = ps.pregnancyStatusID
+                LEFT JOIN PatientCondition pc ON pp.userID = pc.userID
+                LEFT JOIN [Condition] c ON pc.conditionID = c.conditionID
+                WHERE pp.userID = @userID
+            ";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@userID", id);
@@ -90,6 +93,8 @@ namespace YouAreHeard.Repositories.Implementation
                         Height = reader.IsDBNull(reader.GetOrdinal("height")) ? null : reader.GetDouble(reader.GetOrdinal("height")),
                         Weight = reader.IsDBNull(reader.GetOrdinal("weight")) ? null : reader.GetDouble(reader.GetOrdinal("weight")),
                         Gender = reader.GetString(reader.GetOrdinal("gender")),
+                        PatientName = reader.IsDBNull(reader.GetOrdinal("name")) ? null : reader.GetString(reader.GetOrdinal("name")),
+                        PatientDob = reader.IsDBNull(reader.GetOrdinal("dob")) ? null : reader.GetDateTime(reader.GetOrdinal("dob")).ToString("yyyy-MM-dd"),
                         Conditions = conditions
                     };
                 }
@@ -126,6 +131,62 @@ namespace YouAreHeard.Repositories.Implementation
             cmd.Parameters.AddWithValue("@height", pp.Height);
             cmd.Parameters.AddWithValue("@weight", pp.Weight);
             cmd.Parameters.AddWithValue("@gender", pp.Gender);
+            cmd.ExecuteNonQuery();
+        }
+
+        public bool IsPatientProfileExists(int userId)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = "SELECT COUNT(1) FROM PatientProfile WHERE userID = @userID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@userID", userId);
+
+            int count = (int)cmd.ExecuteScalar();
+            return count > 0;
+        }
+
+        public void UpdatePatientProfile(PatientProfileDTO pp)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+                UPDATE PatientProfile
+                SET
+                    pregnancyStatusID = @pregnancyStatusID,
+                    height = @height,
+                    weight = @weight,
+                    gender = @gender
+                WHERE userID = @userID
+            ";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@userID", pp.UserID);
+            cmd.Parameters.AddWithValue("@pregnancyStatusID", pp.PregnancyStatusID);
+            cmd.Parameters.AddWithValue("@height", pp.Height);
+            cmd.Parameters.AddWithValue("@weight", pp.Weight);
+            cmd.Parameters.AddWithValue("@gender", pp.Gender);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void UpdatePatientHIVStatus(UpdatePatientHIVStatusDTO update)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+                UPDATE PatientProfile
+                SET
+                    hivStatusID = @HivStatusID
+                WHERE userID = @userID
+            ";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@HivStatusID", update.HIVStatusID);
+            cmd.Parameters.AddWithValue("@userID", update.PatientID);
             cmd.ExecuteNonQuery();
         }
     }

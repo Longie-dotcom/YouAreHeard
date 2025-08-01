@@ -121,5 +121,26 @@ namespace YouAreHeard.Repositories.Implementation
             };
         }
 
+        public string GetPSID(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SavePSID(int userId, string senderId)
+        {
+            using var conn = DBContext.GetConnection();
+            conn.Open();
+
+            string query = @"
+                UPDATE [User]
+                SET FacebookPSID = @PSID
+                WHERE UserID = @UserID";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@PSID", senderId);
+            cmd.Parameters.AddWithValue("@UserID", userId);
+
+            cmd.ExecuteNonQuery();
+        }
     }
 }
